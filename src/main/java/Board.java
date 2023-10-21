@@ -1,53 +1,67 @@
+import java.util.ArrayList;
+
 public class Board {
+    private ArrayList<Point> pointsPlaced;
+    private int score;
+
     public Board() {
+        this.pointsPlaced = new ArrayList<>();
+        this.score = 0;
         initCross();
     }
 
     public void initCross() {
-        new Point(3, 6);
-        new Point(3, 7);
-        new Point(3, 8);
-        new Point(3, 9);
+        addPoint(3, 6);
+        addPoint(3, 7);
+        addPoint(3, 8);
+        addPoint(3, 9);
 
-        new Point(4, 6);
-        new Point(4, 9);
+        addPoint(4, 6);
+        addPoint(4, 9);
 
-        new Point(5, 6);
-        new Point(5, 9);
+        addPoint(5, 6);
+        addPoint(5, 9);
 
-        new Point(6, 3);
-        new Point(6, 4);
-        new Point(6, 5);
-        new Point(6, 6);
-        new Point(6, 9);
-        new Point(6, 10);
-        new Point(6, 11);
-        new Point(6, 12);
+        addPoint(6, 3);
+        addPoint(6, 4);
+        addPoint(6, 5);
+        addPoint(6, 6);
+        addPoint(6, 9);
+        addPoint(6, 10);
+        addPoint(6, 11);
+        addPoint(6, 12);
 
-        new Point(7, 3);
-        new Point(7, 12);
+        addPoint(7, 3);
+        addPoint(7, 12);
 
-        new Point(8, 3);
-        new Point(8, 12);
+        addPoint(8, 3);
+        addPoint(8, 12);
 
-        new Point(9, 3);
-        new Point(9, 4);
-        new Point(9, 5);
-        new Point(9, 6);
-        new Point(9, 9);
-        new Point(9, 10);
-        new Point(9, 11);
-        new Point(9, 12);
+        addPoint(9, 3);
+        addPoint(9, 4);
+        addPoint(9, 5);
+        addPoint(9, 6);
+        addPoint(9, 9);
+        addPoint(9, 10);
+        addPoint(9, 11);
+        addPoint(9, 12);
 
-        new Point(10, 6);
-        new Point(10, 9);
+        addPoint(10, 6);
+        addPoint(10, 9);
 
-        new Point(11, 6);
-        new Point(11, 9);
+        addPoint(11, 6);
+        addPoint(11, 9);
 
-        new Point(12, 6);
-        new Point(12, 7);
-        new Point(12, 8);
-        new Point(12, 9);
+        addPoint(12, 6);
+        addPoint(12, 7);
+        addPoint(12, 8);
+        addPoint(12, 9);
+    }
+
+    // TODO : verify that we can place the point
+    public void addPoint(int x, int y) {
+        Point pointToAdd = new Point(x, y);
+        if (!pointsPlaced.contains(pointToAdd))
+            pointsPlaced.add(pointToAdd);
     }
 }
