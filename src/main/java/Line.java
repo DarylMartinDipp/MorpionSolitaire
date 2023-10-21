@@ -9,7 +9,7 @@ public class Line {
         this.direction = direction;
     }
 
-    public ArrayList<Point> getPoints() {
+    public ArrayList<Point> getPointsOfTheLine() {
         return points;
     }
 
@@ -22,9 +22,5 @@ public class Line {
         extremities.add(this.points.get(0));
         extremities.add(this.points.get(this.points.size() - 1));
         return extremities;
-    }
-
-    public boolean sameDirection(Line lineToCompare) {
-        return (this.direction == lineToCompare.direction);
     }
 }
