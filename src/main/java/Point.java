@@ -21,12 +21,15 @@ public class Point {
         return ((x >= 0 && x < 16) && (y >= 0 && y < 16));
     }
 
-    public boolean equals(Point pointToCompare) {
-        if (pointToCompare == null)
+    public boolean equals(Object pointToCompare) {
+        if (this == pointToCompare) {
+            return true;
+        }
+        if (pointToCompare == null || getClass() != pointToCompare.getClass()) {
             return false;
-        if (getClass() != pointToCompare.getClass())
-            return false;
-        return (this.x == pointToCompare.x) && (this.y == pointToCompare.y);
+        }
+        return x == ((Point) pointToCompare).x && y == ((Point) pointToCompare).y;
+
     }
 
     @Override
