@@ -7,7 +7,20 @@ public class Board {
     public Board() {
         this.pointsPlaced = new ArrayList<>();
         this.score = 0;
+        initBoard();
+    }
+
+    public void initBoard() {
         initCross();
+        for (int i = 0; i < 16; i++) {
+            for (int j = 0; j < 16; j++) {
+                if (pointsPlaced.contains(new Point(i,j)))
+                    System.out.print("O");
+                else
+                    System.out.print(".");
+            }
+            System.out.println("\n");
+        }
     }
 
     public void initCross() {

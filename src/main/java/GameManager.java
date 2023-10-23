@@ -3,24 +3,24 @@ public class GameManager {
     private Board board;
 
 
-    public GameManager(Player player, Board board) {
+    public GameManager(Player player) {
         this.player = player;
-        this.board = board;
     }
 
     public void initBoard(){
-
+        this.board = new Board();
     }
 
     public void StartGame(){
 
     }
 
-    public void EndGame(){
-
+    public boolean isGameFinished() {
+        return false;
     }
 
-    public void SwitchTurn() {
-
+    public static void main(String[] args) {
+        GameManager gm = new GameManager(new Player("Daryl"));
+        gm.initBoard();
     }
 }
