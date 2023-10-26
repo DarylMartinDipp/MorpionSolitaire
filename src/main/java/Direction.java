@@ -1,6 +1,6 @@
 public enum Direction {
     HORIZONTAL,
-    Vertical,
-    L_Diagonal,
-    R_Diagonal,
+    VERTICAL,
+    L_DIAGONAL,
+    R_DIAGONAL,
 }

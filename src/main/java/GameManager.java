@@ -1,6 +1,7 @@
 public class GameManager {
     private Player player;
-    private Board board;
+    private static Board board;
+    public static int DIMENSION = 16;
 
 
     public GameManager(Player player) {
@@ -8,19 +9,18 @@ public class GameManager {
     }
 
     public void initBoard(){
-        this.board = new Board();
-    }
-
-    public void StartGame(){
-
-    }
-
-    public boolean isGameFinished() {
-        return false;
+        board = new Board();
     }
 
     public static void main(String[] args) {
         GameManager gm = new GameManager(new Player("Daryl"));
         gm.initBoard();
+
+        int maxPoint = 10;
+        while (maxPoint > 0) {
+            board.askPoint();
+            board.displayBoard();
+            maxPoint--;
+        }
     }
 }

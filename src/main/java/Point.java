@@ -18,7 +18,7 @@ public class Point {
     }
 
     public boolean valid(int x, int y) {
-        return ((x >= 0 && x < 16) && (y >= 0 && y < 16));
+        return ((x >= 0 && x < GameManager.DIMENSION) && (y >= 0 && y < GameManager.DIMENSION));
     }
 
     public boolean equals(Object pointToCompare) {
