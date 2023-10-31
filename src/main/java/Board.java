@@ -119,10 +119,25 @@ public class Board {
         if (pointsPlaced.contains(pointToAdd)) {
             System.out.println("The point already exists.");
             askPoint();
+        } else if (canPointBePlayed(pointToAdd)) {
+            System.out.println("The point cannot be placed here.");
+            askPoint();
         } else {
             addPoint(x,y);
             System.out.println("Point successfully added.");
         }
+    }
 
+    private boolean canPointBePlayed(Point pointToPlay) {
+        int x = pointToPlay.getX();
+        int y = pointToPlay.getY();
+
+        // Ici, faire un algorithme qui regarde dans toutes les directions (H,V,LD,RD)
+        // s'il y a déjà 4 points alignés. Dans ce cas, le 5ème fait une ligne.
+        // Pour cela, il faut utiliser Direction.java
+        // Après, il faudrait voir si un de ces points fait déjà partie d'une ligne ou pas,
+        // parce que dans ce cas, ce n'est pas bon.
+
+        return true;
     }
 }
