@@ -19,7 +19,7 @@ public class Board {
     public void displayBoard() {
         for (int i = 0; i < GameManager.DIMENSION; i++) {
             for (int j = 0; j < GameManager.DIMENSION; j++) {
-                if (pointsPlaced.contains(new Point(i,j)))
+                if (pointsPlaced.contains(new Point(j,i))) // Inversé pour avoir x en horizontal et j en vertical
                     System.out.print("O ");
                 else
                     System.out.print(". ");
@@ -77,6 +77,7 @@ public class Board {
     }
 
     // Private car on doit utiliser askPoint ou initBoard pour l'utiliser uniquement
+    // Beaucoup de classes dans ce genre
     private void addPoint(int x, int y) {
         Point pointToAdd = new Point(x, y);
         if (!pointsPlaced.contains(pointToAdd))
@@ -119,7 +120,7 @@ public class Board {
         if (pointsPlaced.contains(pointToAdd)) {
             System.out.println("The point already exists.");
             askPoint();
-        } else if (canPointBePlayed(pointToAdd)) {
+        } else if (!canPointBePlayed(pointToAdd)) {
             System.out.println("The point cannot be placed here.");
             askPoint();
         } else {
@@ -132,12 +133,54 @@ public class Board {
         int x = pointToPlay.getX();
         int y = pointToPlay.getY();
 
-        // Ici, faire un algorithme qui regarde dans toutes les directions (H,V,LD,RD)
-        // s'il y a déjà 4 points alignés. Dans ce cas, le 5ème fait une ligne.
-        // Pour cela, il faut utiliser Direction.java
-        // Après, il faudrait voir si un de ces points fait déjà partie d'une ligne ou pas,
-        // parce que dans ce cas, ce n'est pas bon.
+        for (Direction direction : Direction.values()) {
+            if (hasAlignmentInDirection(x, y, direction)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
-        return true;
+    private boolean hasAlignmentInDirection(int x, int y, Direction direction) {
+        int dx = 0, dy = 0;
+
+        switch (direction) {
+            case HORIZONTAL -> dx = 1;
+            case VERTICAL -> dy = 1;
+            case L_DIAGONAL -> {
+                dx = -1;
+                dy = 1;
+            }
+            case R_DIAGONAL -> {
+                dx = 1;
+                dy = 1;
+            }
+        }
+
+        int count = 0;
+        for (int i = -4; i <= 4; i++) {
+            if (i == 0) {
+                continue; // Ignorer le point central
+            }
+            int currentX = x + i * dx;
+            int currentY = y + i * dy;
+
+            if (currentX < 0 || currentX >= GameManager.DIMENSION || currentY < 0 || currentY >= GameManager.DIMENSION) {
+                continue;
+            }
+
+            Point point = new Point(currentX, currentY);
+            if (pointsPlaced.contains(point)) {
+                count++; // Incrémenter le compteur si un point est trouvé
+            } else {
+                continue;
+            }
+
+            if (count == 4) {
+                return true; // 4 points alignés ont été trouvés, le 5ème compléterait la ligne
+            }
+        }
+
+        return false; // Aucun alignement de 4 points dans cette direction
     }
 }
