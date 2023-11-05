@@ -157,11 +157,19 @@ public class Board {
             }
         }
 
-        int count = 0;
+        ArrayList<Point> pointsAligned = new ArrayList<>();
         for (int i = -4; i <= 4; i++) {
             if (i == 0) {
-                continue; // Ignorer le point central
+                pointsAligned.add(new Point(x,y));
+
+                if (pointsAligned.size() == 5) {
+                    new Line(pointsAligned);
+                    return true;
+                }
+
+                continue;
             }
+
             int currentX = x + i * dx;
             int currentY = y + i * dy;
 
@@ -170,14 +178,14 @@ public class Board {
             }
 
             Point point = new Point(currentX, currentY);
-            if (pointsPlaced.contains(point)) {
-                count++; // Incrémenter le compteur si un point est trouvé
-            } else {
-                continue;
-            }
+            if (pointsPlaced.contains(point))
+                pointsAligned.add(point);
+            else
+                pointsAligned.clear();
 
-            if (count == 4) {
-                return true; // 4 points alignés ont été trouvés, le 5ème compléterait la ligne
+            if (pointsAligned.size() == 5) {
+                new Line(pointsAligned);
+                return true;
             }
         }
 
