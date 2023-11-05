@@ -4,10 +4,12 @@ import java.util.Scanner;
 public class Board {
     private ArrayList<Point> pointsPlaced;
     private int score;
+    private ArrayList<Line> lines;
 
     public Board() {
         this.pointsPlaced = new ArrayList<>();
         this.score = 0;
+        this.lines = new ArrayList<>();
         initBoard();
     }
 
@@ -163,7 +165,7 @@ public class Board {
                 pointsAligned.add(new Point(x,y));
 
                 if (pointsAligned.size() == 5) {
-                    new Line(pointsAligned);
+                    addLine(pointsAligned, direction);
                     return true;
                 }
 
@@ -173,22 +175,37 @@ public class Board {
             int currentX = x + i * dx;
             int currentY = y + i * dy;
 
-            if (currentX < 0 || currentX >= GameManager.DIMENSION || currentY < 0 || currentY >= GameManager.DIMENSION) {
+            if (currentX < 0 || currentX >= GameManager.DIMENSION || currentY < 0 || currentY >= GameManager.DIMENSION)
                 continue;
-            }
 
             Point point = new Point(currentX, currentY);
-            if (pointsPlaced.contains(point))
+            if (pointsPlaced.contains(point) && !isPointPartOfLine(point, direction))
                 pointsAligned.add(point);
             else
                 pointsAligned.clear();
 
             if (pointsAligned.size() == 5) {
-                new Line(pointsAligned);
+                addLine(pointsAligned, direction);
                 return true;
             }
         }
 
         return false; // Aucun alignement de 4 points dans cette direction
+    }
+
+    private void addLine(ArrayList<Point> pointsOfNewLine, Direction directionOfNewLine) {
+        Line newLine = new Line(pointsOfNewLine, directionOfNewLine);
+        lines.add(newLine);
+    }
+
+    private boolean isPointPartOfLine(Point pointToVerify, Direction direction) {
+        for (Line line : lines) {
+            if (line.getDirection() == direction) {
+                if (line.getPointsOfTheLine().contains(pointToVerify))
+                    return true;
+            }
+        }
+
+        return false;
     }
 }
