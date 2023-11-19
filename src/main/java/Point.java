@@ -36,4 +36,11 @@ public class Point {
     public String toString() {
         return "(" + x + ";" + y + ")";
     }
+
+    public boolean isAdjacentTo(Point other) {
+        int dx = Math.abs(this.x - other.x);
+        int dy = Math.abs(this.y - other.y);
+        return (dx <= 1 && dy <= 1);
+    }
+
 }
