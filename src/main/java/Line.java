@@ -16,12 +16,6 @@ public class Line {
     public Direction getDirection() {
         return direction;
     }
-
-    public void displayLine() {
-        Point[] pointsOfTheLine = new Point[0];
-        for (Point point : pointsOfTheLine) {
-            System.out.print("(" + point.getX() + ", " + point.getY() + ") ");
-        }
-        System.out.println();
-    }
 }
+
+
