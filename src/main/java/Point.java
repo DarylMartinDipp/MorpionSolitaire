@@ -40,7 +40,7 @@ public class Point {
     public boolean isAdjacentTo(Point other) {
         int dx = Math.abs(this.x - other.x);
         int dy = Math.abs(this.y - other.y);
-
-        return (dx == 1 && dy == 0) || (dx == 0 && dy == 1) || (dx == 1 && dy == 1);    }
+        return (dx <= 1 && dy <= 1);
+    }
 
 }

@@ -1,31 +1,30 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 
-
 public class Board5T extends Board {
-        private boolean isAdjacentToAlignment(int x, int y, Direction direction) {
-            // Déterminer le décalage (dx, dy) en fonction de la direction
-            int dx = 0, dy = 0;
-            switch (direction) {
-                case HORIZONTAL -> dx = 1;
-                case VERTICAL -> dy = 1;
-                case L_DIAGONAL -> {
-                    dx = -1;
-                    dy = 1;
-                }
-                case R_DIAGONAL -> {
-                    dx = 1;
-                    dy = 1;
-                }
+    private boolean isAdjacentToAlignment(int x, int y, Direction direction) {
+        // Déterminer le décalage (dx, dy) en fonction de la direction
+        int dx = 0, dy = 0;
+        switch (direction) {
+            case HORIZONTAL -> dx = 1;
+            case VERTICAL -> dy = 1;
+            case L_DIAGONAL -> {
+                dx = -1;
+                dy = 1;
             }
-
-            // Vérifier l'alignement adjacent
-            if (checkAdjacentAlignment(x, y, dx, dy)) {
-                return true;
+            case R_DIAGONAL -> {
+                dx = 1;
+                dy = 1;
             }
-
-            return false;
         }
+
+        // Vérifier l'alignement adjacent
+        if (checkAdjacentAlignment(x, y, dx, dy)) {
+            return true;
+        }
+
+        return false;
+    }
 
     private boolean checkAdjacentAlignment(int x, int y, int dx, int dy) {
         int count = 1; // Commencer à 1 car le point actuel est déjà inclus
@@ -118,13 +117,13 @@ public class Board5T extends Board {
             System.out.println("The point cannot be placed here.");
             askPoint();
         } else {
-                if (!isAdjacentToAlignment(x, y, dir)) {
-                    addPoint(x, y);
-                    System.out.println("Point successfully added.");
-                }
-                else {
-                    scannerPoint.nextLine();
-                    do {
+            if (!isAdjacentToAlignment(x, y, dir)) {
+                addPoint(x, y);
+                System.out.println("Point successfully added.");
+            }
+            else {
+                scannerPoint.nextLine();
+                do {
                     System.out.println("Choose how to play the point (T or D): ");
                     mode = scannerPoint.nextLine().toUpperCase();
 
@@ -141,7 +140,7 @@ public class Board5T extends Board {
                             System.out.println("Invalid mode for the point. Please choose 5T or 5D.");
                     }
                 } while (!mode.equals("T") && !mode.equals("D"));
-                }
             }
         }
+    }
 }
