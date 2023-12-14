@@ -22,11 +22,11 @@ public class Board5T extends Board {
         switch (direction) {
             case HORIZONTAL -> dx = 1;
             case VERTICAL -> dy = 1;
-            case L_DIAGONAL -> {
+            case B_DIAGONAL -> {
                 dx = -1;
                 dy = 1;
             }
-            case R_DIAGONAL -> {
+            case T_DIAGONAL -> {
                 dx = 1;
                 dy = 1;
             }
@@ -90,7 +90,7 @@ public class Board5T extends Board {
 
     @Override
     protected void addLine(ArrayList<Point> pointsOfNewLine, Direction directionOfNewLine) {
-        Line newLine = new Line(pointsOfNewLine, directionOfNewLine);
+        Line newLine = new Line(pointsOfNewLine, directionOfNewLine, 1);
 
         // Vérifier si la nouvelle ligne peut toucher une ligne existante
         for (Line existingLine : lines) {
