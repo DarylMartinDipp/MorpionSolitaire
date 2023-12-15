@@ -168,9 +168,10 @@ public abstract class Board {
      * @param x The x-coordinate to start checking from.
      * @param y The y-coordinate to start checking from.
      * @param direction The direction in which to check for alignment (HORIZONTAL, VERTICAL, B_DIAGONAL, T_DIAGONAL).
+     * @param addLineDirectly If true, a line is directlyAdded (for 5D), false otherwise (for 5T)
      * @return True if an alignment is found and a line is added; otherwise, false.
      */
-    protected boolean hasAlignmentInDirection(int x, int y, Direction direction) {
+    protected boolean hasAlignmentInDirection(int x, int y, Direction direction, boolean addLineDirectly) {
         int[] offset = getOffset(direction);
         int dx = offset[0];
         int dy = offset[1];
@@ -181,9 +182,10 @@ public abstract class Board {
             if (i == 0) {
                 pointsAligned.add(new Point(x,y));
 
-                // If the list size reaches 5, add a line and return true.
+                // If the list size reaches 5, add a line (only for 5D) and return true.
                 if (pointsAligned.size() == 5) {
-                    addLine(pointsAligned, direction);
+                    if (addLineDirectly)
+                        addLine(pointsAligned, direction);
                     return true;
                 }
 
@@ -206,9 +208,10 @@ public abstract class Board {
             else
                 pointsAligned.clear();
 
-            // If the list size reaches 5, add a line and return true.
+            // If the list size reaches 5, add a line (only for 5D) and return true.
             if (pointsAligned.size() == 5) {
-                addLine(pointsAligned, direction);
+                if (addLineDirectly)
+                    addLine(pointsAligned, direction);
                 return true;
             }
         }

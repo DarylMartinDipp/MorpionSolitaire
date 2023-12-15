@@ -1,10 +1,13 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
  * The game board in the 5T mode.
  */
 public class Board5T extends Board {
-    protected Direction dir;
+    private Direction dir;
+    private final ArrayList<Point> upPoints = new ArrayList<>();
+    private final ArrayList<Point> downPoints = new ArrayList<>();
 
     /**
      * Check if the point can be placed here.
@@ -16,13 +19,16 @@ public class Board5T extends Board {
         int x = pointToPlay.getX();
         int y = pointToPlay.getY();
 
+        // Check for all directions if the point can be placed.
         for (Direction direction : Direction.values()) {
-            if (hasAlignmentInDirection(x, y, direction)) {
+            if (hasAlignmentInDirection(x, y, direction, false)) {
+                // Save the local variable "dir" to re-use it to play the point.
                 dir = direction;
                 return true;
             }
         }
 
+        // Any alignment has been found in all direction, the point cannot be played.
         return false;
     }
 
@@ -33,30 +39,23 @@ public class Board5T extends Board {
      */
     @Override
     protected void playPoint(int x, int y) {
-        Scanner scannerPlay = new Scanner(System.in);
-        String playerChoiceInput;
-
+        // Check if two lines can touch.
         if (!isAdjacentToAlignment(x, y, dir)) {
+            // Redo hasAlignmentInDirection to save the line with addLine.
+            hasAlignmentInDirection(x, y, dir, true);
             addPoint(x, y);
             System.out.println("Point successfully added.");
         }
-        else {
-            do {
-                System.out.println("Choose how to play the point (T or D): ");
-                playerChoiceInput = scannerPlay.nextLine().toUpperCase();
 
-                switch (playerChoiceInput) {
-                    case "D" -> {
-                        addPoint(x, y);
-                        System.out.println("Point successfully added in D mode.");
-                    }
-                    case "T" -> {
-                        addPoint(x, y);
-                        System.out.println("Point successfully added in T mode.");
-                    }
-                    default -> System.out.println("Invalid mode for the point. Please choose 5T or 5D.");
-                }
-            } while (!playerChoiceInput.equals("T") && !playerChoiceInput.equals("D"));
+        // Here, two lines can touch.
+        else {
+            System.out.println("Choose where the line is starting (A or B) :");
+
+            // Check if we use the upPoint or the downPoint ArrayLists.
+            if (isUpPoint())
+                process5TUserChoice(x, y, downPoints, upPoints);
+            else
+                process5TUserChoice(x, y, upPoints, downPoints);
         }
     }
 
@@ -85,7 +84,14 @@ public class Board5T extends Board {
      * @return True if there is an adjacent alignment; otherwise, false.
      */
     private boolean checkAdjacentAlignment(int x, int y, int dx, int dy) {
-        int count = 1; // Start at 1 since the current point is already included.
+        Point pointToCheck = new Point(x,y);
+
+        // Clear the upPoints and downPoints ArrayLists and add the current point to both.
+        // It uses the upPoint and downPoint ArrayLists to store the points above and below the current position.
+        upPoints.clear();
+        upPoints.add(pointToCheck);
+        downPoints.clear();
+        downPoints.add(pointToCheck);
 
         // Check points above and below the current position.
         for (int i = 1; i <= 4; i++) {
@@ -97,28 +103,31 @@ public class Board5T extends Board {
 
             // Check valid coordinates for the point above.
             if (isValidCoordinate(currentXUp, currentYUp)) {
-                Point upPoint = new Point(currentXUp, currentYUp);
+                Point currentUpPoint = new Point(currentXUp, currentYUp);
 
                 // Check if the point above is placed.
-                if (pointsPlaced.contains(upPoint))
-                    count++;
+                if (pointsPlaced.contains(currentUpPoint)) {
+                    upPoints.add(currentUpPoint);
+                }
                 else
                     break;
             }
 
-            // Check valid coordinates for the point below
+            // Check valid coordinates for the point below.
             if (isValidCoordinate(currentXDown, currentYDown)) {
-                Point downPoint = new Point(currentXDown, currentYDown);
+                Point currentDownPoint = new Point(currentXDown, currentYDown);
 
-                // Check if the point below is placed
-                if (pointsPlaced.contains(downPoint))
-                    count++;
+                // Check if the point below is placed.
+                if (pointsPlaced.contains(currentDownPoint)) {
+                    downPoints.add(currentDownPoint);
+                }
                 else
                     break;
             }
         }
 
-        return count >= 5 && dx != dy;
+        // If the combined size of upPoints and downPoints is greater than or equal to 10, the line can be D or T.
+        return (upPoints.size() + downPoints.size()) >= 10;
     }
 
     /**
@@ -129,5 +138,62 @@ public class Board5T extends Board {
      */
     private boolean isValidCoordinate(int x, int y) {
         return x >= 0 && x < GameManager.DIMENSION && y >= 0 && y < GameManager.DIMENSION;
+    }
+
+    /**
+     * Checks if the second point in the upPoints ArrayList is part of any existing line.
+     * This is needed to know if the line can be drawn using the points in upPoint or downPoint ArrayLists.
+     * @return True if the line can be drawn using the points in upPoint ArrayLists, false if the line can be drawn using the points in downPoint ArrayLists.
+     */
+    private boolean isUpPoint() {
+        // Iterate through existing lines.
+        for (Line line : lines) {
+            if (line.getPointsOfTheLine().contains(upPoints.get(1)))
+                // The point is part of an existing line: the points in downPoint can be used to draw the new line
+                return false;
+        }
+
+        // The point is not part of any existing line: the points in upPoint can be used to draw the new line.
+        return true;
+    }
+
+    /**
+     * Processes the user's choice for connecting a point in a 5T game.
+     * @param x The x-coordinate of the selected point.
+     * @param y The y-coordinate of the selected point.
+     * @param pointsForA ArrayList containing the points for option A.
+     * @param pointsForB ArrayList containing the points for option B.
+     */
+    private void process5TUserChoice(int x, int y, ArrayList<Point> pointsForA, ArrayList<Point> pointsForB) {
+        Scanner scannerPlay = new Scanner(System.in);
+        String playerChoiceInput;
+        System.out.println("A = " + pointsForA.get(1));
+        System.out.println("B = " + pointsForB.get(0));
+
+        do {
+            playerChoiceInput = scannerPlay.nextLine().toUpperCase();
+            switch (playerChoiceInput) {
+                case "A" -> {
+                    addPoint(x, y);
+                    // Create an ArrayList for option A.
+                    ArrayList<Point> arrayListForA = new ArrayList<>();
+                    arrayListForA.add(pointsForA.get(1));
+                    arrayListForA.add(pointsForB.get(0));
+                    arrayListForA.add(pointsForB.get(1));
+                    arrayListForA.add(pointsForB.get(2));
+                    arrayListForA.add(pointsForB.get(3));
+                    // Add a line for option A.
+                    addLine(arrayListForA, dir);
+                    System.out.println("Point successfully added.");
+                }
+                case "B" -> {
+                    addPoint(x, y);
+                    // Add a line for option B.
+                    addLine(pointsForB, dir);
+                    System.out.println("Point successfully added.");
+                }
+                default -> System.out.println("Invalid mode for the point. Please choose A or B.");
+            }
+        } while (!playerChoiceInput.equals("A") && !playerChoiceInput.equals("B"));
     }
 }

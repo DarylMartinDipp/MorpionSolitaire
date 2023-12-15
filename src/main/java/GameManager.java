@@ -1,7 +1,7 @@
 import java.util.Scanner;
 
 public class GameManager {
-    private Player player;
+    private final Player player;
     private static Board board;
     public static int DIMENSION = 16;
 
@@ -20,12 +20,12 @@ public class GameManager {
 
             switch (mode) {
                 case "5T":
-                    if (board == null || !(board instanceof Board5T)) {
+                    if (!(board instanceof Board5T)) {
                         board = new Board5T();
                     }
                     break;
                 case "5D":
-                    if (board == null || !(board instanceof Board5D)) {
+                    if (!(board instanceof Board5D)) {
                         board = new Board5D();
                     }
                     break;

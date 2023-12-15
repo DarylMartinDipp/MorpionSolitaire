@@ -12,8 +12,9 @@ public class Board5D extends Board{
         int x = pointToPlay.getX();
         int y = pointToPlay.getY();
 
+        // Check for all directions if the point can be placed.
         for (Direction direction : Direction.values()) {
-            if (hasAlignmentInDirection(x, y, direction))
+            if (hasAlignmentInDirection(x, y, direction, true))
                 return true;
         }
 
