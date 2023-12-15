@@ -16,11 +16,16 @@ public abstract class Board {
         initBoard();
     }
 
+    /**
+     * Initialization of the board, by initializing the points of the cross.
+     */
     public void initBoard() {
         initCross();
+        //TODO: to delete after JavaFX
         displayBoard();
     }
 
+    //TODO: to delete after JavaFX
     public void displayBoard() {
         for (int i = 0; i < GameManager.DIMENSION; i++) {
             for (int j = 0; j < GameManager.DIMENSION; j++) {
@@ -29,11 +34,13 @@ public abstract class Board {
                 else
                     System.out.print(". ");
             }
-
             System.out.println();
         }
     }
 
+    /**
+     * initializing of the points of the cross.
+     */
     public void initCross() {
         addPoint(3, 6);
         addPoint(3, 7);
@@ -82,12 +89,22 @@ public abstract class Board {
         addPoint(12, 9);
     }
 
-    private void addPoint(int x, int y) {
+    /**
+     * Adds a point to the collection of placed points on the game grid.
+     * @param x The x-coordinate of the point to be added.
+     * @param y The y-coordinate of the point to be added.
+     */
+    void addPoint(int x, int y) {
         Point pointToAdd = new Point(x, y);
+
+        // Check if the point is not already present in the collection of placed points.
         if (!pointsPlaced.contains(pointToAdd))
             pointsPlaced.add(pointToAdd);
     }
 
+    /**
+     * Ask a point, to know if the point can be placed or not.
+     */
     public void askPoint() {
         Scanner scannerPoint = new Scanner(System.in);
         int x = 0;
@@ -96,8 +113,10 @@ public abstract class Board {
         boolean isYValid = false;
 
         do {
+            // Ask for the x-value.
             System.out.println("What is the x coordinate of the point to place?");
             try {
+                // Try if the x-value is valid.
                 x = scannerPoint.nextInt();
                 new Point(x, 1);
                 isXValid = true;
@@ -108,8 +127,10 @@ public abstract class Board {
         } while (!isXValid);
 
         do {
+            // Ask for the y-value.
             System.out.println("What is the y coordinate of the point to place?");
             try {
+                // Try if the x-value is valid.
                 y = scannerPoint.nextInt();
                 new Point(1, y);
                 isYValid = true;
@@ -119,54 +140,48 @@ public abstract class Board {
             }
         } while (!isYValid);
 
+        // Here, the point entered is valid, so it is created.
         Point pointToAdd = new Point(x, y);
 
+        // Check if the point already exists.
         if (pointsPlaced.contains(pointToAdd)) {
             System.out.println("The point already exists.");
-                askPoint();
+            askPoint();
+        // Check if the point can be placed.
         } else if (!canPointBePlayed(pointToAdd)) {
             System.out.println("The point cannot be placed here.");
             askPoint();
-        } else {
-            addPoint(x,y);
-            System.out.println("Point successfully added.");
-        }
+        // Play the point.
+        } else
+            playPoint(x,y);
     }
 
-    protected boolean canPointBePlayed(Point pointToPlay) {
-        int x = pointToPlay.getX();
-        int y = pointToPlay.getY();
+    /**
+     * Check if the point can be placed here.
+     * @param pointToPlay the point to be placed.
+     * @return True if the point can be placed, false otherwise.
+     */
+    protected abstract boolean canPointBePlayed(Point pointToPlay);
 
-        for (Direction direction : Direction.values()) {
-            if (hasAlignmentInDirection(x, y, direction)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
+    /**
+     * Check if there is a potential alignment of 5 points in the specified direction starting from the given coordinates.
+     * @param x The x-coordinate to start checking from.
+     * @param y The y-coordinate to start checking from.
+     * @param direction The direction in which to check for alignment (HORIZONTAL, VERTICAL, B_DIAGONAL, T_DIAGONAL).
+     * @return True if an alignment is found and a line is added; otherwise, false.
+     */
     protected boolean hasAlignmentInDirection(int x, int y, Direction direction) {
-        int dx = 0, dy = 0;
+        int[] offset = getOffset(direction);
+        int dx = offset[0];
+        int dy = offset[1];
 
-        switch (direction) {
-            case HORIZONTAL -> dx = 1;
-            case VERTICAL -> dy = 1;
-            case B_DIAGONAL -> {
-                dx = -1;
-                dy = 1;
-            }
-            case T_DIAGONAL -> {
-                dx = 1;
-                dy = 1;
-            }
-        }
-
+        // Create a list to store points aligned in the specified direction.
         ArrayList<Point> pointsAligned = new ArrayList<>();
         for (int i = -4; i <= 4; i++) {
             if (i == 0) {
                 pointsAligned.add(new Point(x,y));
 
+                // If the list size reaches 5, add a line and return true.
                 if (pointsAligned.size() == 5) {
                     addLine(pointsAligned, direction);
                     return true;
@@ -175,32 +190,67 @@ public abstract class Board {
                 continue;
             }
 
+            // Calculate the current coordinates based on the direction and index.
             int currentX = x + i * dx;
             int currentY = y + i * dy;
 
+            // Skip points that are outside the grid bounds.
             if (currentX < 0 || currentX >= GameManager.DIMENSION || currentY < 0 || currentY >= GameManager.DIMENSION)
                 continue;
 
             Point point = new Point(currentX, currentY);
+
+            // Check if the point is placed on the grid and not part of an existing line in the specified direction.
             if (pointsPlaced.contains(point) && !isPointPartOfLine(point, direction))
                 pointsAligned.add(point);
             else
                 pointsAligned.clear();
 
+            // If the list size reaches 5, add a line and return true.
             if (pointsAligned.size() == 5) {
                 addLine(pointsAligned, direction);
                 return true;
             }
         }
 
-        return false; // Aucun alignement de 4 points dans cette direction
+        return false;
     }
 
-    protected void addLine(ArrayList<Point> pointsOfNewLine, Direction directionOfNewLine) {
-        Line newLine = new Line(pointsOfNewLine, directionOfNewLine, lines.size() + 1);
-        lines.add(newLine);
+    /**
+     * Determines the offset (change in coordinates) based on the specified direction.
+     * @param direction The direction for which to determine the offset.
+     * @return An array representing the offset where index 0 is the x-coordinate offset and index 1 is the y-coordinate offset.
+     */
+    int[] getOffset(Direction direction) {
+        // Initialize the offset array with default values.
+        int[] offset = {0, 0};
+
+        // Determine the change in coordinates based on the specified direction.
+        switch (direction) {
+            case HORIZONTAL -> offset[0] = 1; // Move one step to the right for horizontal direction.
+            case VERTICAL -> offset[1] = 1;   // Move one step down for vertical direction.
+            case B_DIAGONAL -> {
+                // Move one step to the left and one step down for bottom diagonal direction.
+                offset[0] = -1;
+                offset[1] = 1;
+            }
+            case T_DIAGONAL -> {
+                // Move one step to the right and one step down for top diagonal direction.
+                offset[0] = 1;
+                offset[1] = 1;
+            }
+        }
+
+        // Return the determined offset.
+        return offset;
     }
 
+    /**
+     * Checks if a given point is part of any existing line in the specified direction on the game grid.
+     * @param pointToVerify The point to check for inclusion in a line.
+     * @param direction The direction in which to check for the existence of a line (HORIZONTAL, VERTICAL, B_DIAGONAL, T_DIAGONAL).
+     * @return True if the point is part of an existing line in the specified direction; otherwise, false.
+     */
     protected boolean isPointPartOfLine(Point pointToVerify, Direction direction) {
         for (Line line : lines) {
             if (line.getDirection() == direction) {
@@ -210,5 +260,22 @@ public abstract class Board {
         }
 
         return false;
+    }
+
+    /**
+     * Play the point as in the mode.
+     * @param x The x-coordinate of the point to be added.
+     * @param y The y-coordinate of the point to be added.
+     */
+    protected abstract void playPoint(int x, int y);
+
+    /**
+     * Adds a new line to the list of lines on the game grid based on the given points and direction.
+     * @param pointsOfNewLine The list of points forming the new line.
+     * @param directionOfNewLine The direction of the new line (HORIZONTAL, VERTICAL, B_DIAGONAL, T_DIAGONAL).
+     */
+    protected void addLine(ArrayList<Point> pointsOfNewLine, Direction directionOfNewLine) {
+        Line newLine = new Line(pointsOfNewLine, directionOfNewLine, lines.size() + 1);
+        lines.add(newLine);
     }
 }

@@ -1,121 +1,133 @@
-import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * The game board in the 5T mode.
+ */
 public class Board5T extends Board {
+    protected Direction dir;
 
+    /**
+     * Check if the point can be placed here.
+     * @param pointToPlay the point to be placed.
+     * @return True if the point can be placed, false otherwise.
+     */
     @Override
     protected boolean canPointBePlayed(Point pointToPlay) {
         int x = pointToPlay.getX();
         int y = pointToPlay.getY();
 
         for (Direction direction : Direction.values()) {
-            if (hasAlignmentInDirection(x, y, direction) || canExtendExistingLine(x, y, direction)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    protected boolean canExtendExistingLine(int x, int y, Direction direction) {
-        int dx = 0, dy = 0;
-
-        switch (direction) {
-            case HORIZONTAL -> dx = 1;
-            case VERTICAL -> dy = 1;
-            case B_DIAGONAL -> {
-                dx = -1;
-                dy = 1;
-            }
-            case T_DIAGONAL -> {
-                dx = 1;
-                dy = 1;
-            }
-        }
-
-        // Chercher toutes les lignes existantes dans la direction donnée
-        ArrayList<Line> existingLinesInDirection = new ArrayList<>();
-        for (Line existingLine : lines) {
-            if (existingLine.getDirection() == direction) {
-                existingLinesInDirection.add(existingLine);
-            }
-        }
-
-        // Calculer les coordonnées du dernier point existant
-        int lastX = x - 4 * dx;
-        int lastY = y - 4 * dy;
-
-        // Vérifier si le dernier point existant fait partie d'une ligne existante
-        for (Line existingLine : existingLinesInDirection) {
-            if (existingLine.getPointsOfTheLine().contains(new Point(lastX, lastY))) {
-                // Demander à l'utilisateur à partir de quel point il veut étendre
-                System.out.println("Choose from which point to extend:");
-                int extensionPointIndex = getUserInputForExtension(existingLine);
-                // Ajouter la nouvelle ligne étendue à partir du point choisi
-                addExtendedLine(existingLine, direction, extensionPointIndex, x, y);
+            if (hasAlignmentInDirection(x, y, direction)) {
+                dir = direction;
                 return true;
             }
         }
 
-        // Aucune ligne existante trouvée
         return false;
     }
 
-    private int getUserInputForExtension(Line existingLine) {
-        Scanner scanner = new Scanner(System.in);
-        existingLine.displayLine(); // Afficher la ligne existante complète
-        System.out.println("Enter the index of the point from which to extend (0-4): ");
-        int extensionPointIndex;
-        do {
-            extensionPointIndex = scanner.nextInt();
-        } while (extensionPointIndex < 0 || extensionPointIndex > 4); // S'assurer que l'indice est valide
-        return extensionPointIndex;
-    }
-
-
-    private void addExtendedLine(Line existingLine, Direction direction, int extensionPointIndex, int newX, int newY) {
-        ArrayList<Point> pointsOfNewLine = new ArrayList<>(existingLine.getPointsOfTheLine());
-        pointsOfNewLine.add(extensionPointIndex, new Point(newX, newY));
-        addLine(pointsOfNewLine, direction);
-    }
-
-
-
-    // Méthode pour vérifier si deux points sont adjacents
-    private boolean isAdjacent(Point p1, Point p2) {
-        int dx = Math.abs(p1.getX() - p2.getX());
-        int dy = Math.abs(p1.getY() - p2.getY());
-
-        return (dx == 1 && dy == 0) || (dx == 0 && dy == 1) || (dx == 1 && dy == 1);
-    }
-
+    /**
+     * Play the point as in the mode.
+     * @param x The x-coordinate of the point to be added.
+     * @param y The y-coordinate of the point to be added.
+     */
     @Override
-    protected void addLine(ArrayList<Point> pointsOfNewLine, Direction directionOfNewLine) {
-        Line newLine = new Line(pointsOfNewLine, directionOfNewLine, 1);
+    protected void playPoint(int x, int y) {
+        Scanner scannerPlay = new Scanner(System.in);
+        String playerChoiceInput;
 
-        // Vérifier si la nouvelle ligne peut toucher une ligne existante
-        for (Line existingLine : lines) {
-            if (canLinesTouch(newLine, existingLine)) {
-                lines.add(newLine);
-                score++;
-                return;
+        if (!isAdjacentToAlignment(x, y, dir)) {
+            addPoint(x, y);
+            System.out.println("Point successfully added.");
+        }
+        else {
+            do {
+                System.out.println("Choose how to play the point (T or D): ");
+                playerChoiceInput = scannerPlay.nextLine().toUpperCase();
+
+                switch (playerChoiceInput) {
+                    case "D" -> {
+                        addPoint(x, y);
+                        System.out.println("Point successfully added in D mode.");
+                    }
+                    case "T" -> {
+                        addPoint(x, y);
+                        System.out.println("Point successfully added in T mode.");
+                    }
+                    default -> System.out.println("Invalid mode for the point. Please choose 5T or 5D.");
+                }
+            } while (!playerChoiceInput.equals("T") && !playerChoiceInput.equals("D"));
+        }
+    }
+
+    /**
+     * Checks if there is an alignment adjacent to the specified coordinates in the given direction.
+     * @param x The x-coordinate to check for adjacency.
+     * @param y The y-coordinate to check for adjacency.
+     * @param direction The direction in which to check for adjacency (HORIZONTAL, VERTICAL, B_DIAGONAL, T_DIAGONAL).
+     * @return True if there is an adjacent alignment; otherwise, false.
+     */
+    private boolean isAdjacentToAlignment(int x, int y, Direction direction) {
+        int[] offset = getOffset(direction);
+        int dx = offset[0];
+        int dy = offset[1];
+
+        // Check for adjacent alignment using the specified offset.
+        return checkAdjacentAlignment(x, y, dx, dy);
+    }
+
+    /**
+     * Checks for an alignment adjacent to the specified coordinates based on the given offset.
+     * @param x The x-coordinate to start checking from.
+     * @param y The y-coordinate to start checking from.
+     * @param dx The change in x-coordinate to create an offset.
+     * @param dy The change in y-coordinate to create an offset.
+     * @return True if there is an adjacent alignment; otherwise, false.
+     */
+    private boolean checkAdjacentAlignment(int x, int y, int dx, int dy) {
+        int count = 1; // Start at 1 since the current point is already included.
+
+        // Check points above and below the current position.
+        for (int i = 1; i <= 4; i++) {
+            int currentXUp = x - i * dx;
+            int currentYUp = y - i * dy;
+
+            int currentXDown = x + i * dx;
+            int currentYDown = y + i * dy;
+
+            // Check valid coordinates for the point above.
+            if (isValidCoordinate(currentXUp, currentYUp)) {
+                Point upPoint = new Point(currentXUp, currentYUp);
+
+                // Check if the point above is placed.
+                if (pointsPlaced.contains(upPoint))
+                    count++;
+                else
+                    break;
+            }
+
+            // Check valid coordinates for the point below
+            if (isValidCoordinate(currentXDown, currentYDown)) {
+                Point downPoint = new Point(currentXDown, currentYDown);
+
+                // Check if the point below is placed
+                if (pointsPlaced.contains(downPoint))
+                    count++;
+                else
+                    break;
             }
         }
 
-        // Si la nouvelle ligne ne touche aucune ligne existante, ajouter la ligne normalement
-        lines.add(newLine);
-        score++;
+        return count >= 5 && dx != dy;
     }
 
-    // Ajouter la méthode canLinesTouch pour le jeu 5T
-    private boolean canLinesTouch(Line line1, Line line2) {
-        if (line1.getDirection() == line2.getDirection()) {
-            ArrayList<Point> points1 = line1.getPointsOfTheLine();
-            ArrayList<Point> points2 = line2.getPointsOfTheLine();
-
-            // Vérifier si les lignes se touchent aux extrémités
-            return points1.get(0).equals(points2.get(points2.size() - 1)) || points2.get(0).equals(points1.get(points1.size() - 1));
-        }
-        return false;
+    /**
+     * Checks if the specified coordinates are within the bounds of the game grid.
+     * @param x The x-coordinate to check.
+     * @param y The y-coordinate to check.
+     * @return True if the coordinates are valid; otherwise, false.
+     */
+    private boolean isValidCoordinate(int x, int y) {
+        return x >= 0 && x < GameManager.DIMENSION && y >= 0 && y < GameManager.DIMENSION;
     }
-
 }
