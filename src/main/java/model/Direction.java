@@ -1,3 +1,5 @@
+package model;
+
 /**
  * The four directions in a board game:
  * HORIZONTAL

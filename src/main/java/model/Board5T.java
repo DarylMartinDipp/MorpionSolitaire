@@ -1,3 +1,7 @@
+package model;
+
+import controller.GameManager;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -44,7 +48,7 @@ public class Board5T extends Board {
             // Redo hasAlignmentInDirection to save the line with addLine.
             hasAlignmentInDirection(x, y, dir, true);
             addPoint(x, y);
-            System.out.println("Point successfully added.");
+            System.out.println("model.Point successfully added.");
         }
 
         // Here, two lines can touch.
@@ -184,13 +188,13 @@ public class Board5T extends Board {
                     arrayListForA.add(pointsForB.get(3));
                     // Add a line for option A.
                     addLine(arrayListForA, dir);
-                    System.out.println("Point successfully added.");
+                    System.out.println("model.Point successfully added.");
                 }
                 case "B" -> {
                     addPoint(x, y);
                     // Add a line for option B.
                     addLine(pointsForB, dir);
-                    System.out.println("Point successfully added.");
+                    System.out.println("model.Point successfully added.");
                 }
                 default -> System.out.println("Invalid mode for the point. Please choose A or B.");
             }

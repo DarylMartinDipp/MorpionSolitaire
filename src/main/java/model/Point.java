@@ -1,3 +1,5 @@
+package model;
+
 /**
  * A point in a board.
  */
@@ -28,7 +30,7 @@ public class Point {
      * @return True if the coordinates are in the valid range, false otherwise.
      */
    // public boolean valid(int x, int y) {
-     //   return ((x >= 0 && x < GameManager.DIMENSION) && (y >= 0 && y < GameManager.DIMENSION));
+     //   return ((x >= 0 && x < controller.GameManager.DIMENSION) && (y >= 0 && y < controller.GameManager.DIMENSION));
     //}
     /**
      * Compares this point object with another object for equality.

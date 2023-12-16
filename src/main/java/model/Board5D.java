@@ -1,3 +1,5 @@
+package model;
+
 /**
  * The game board in the 5D mode.
  */
@@ -29,6 +31,6 @@ public class Board5D extends Board{
     @Override
     protected void playPoint(int x, int y) {
         addPoint(x,y);
-        System.out.println("Point successfully added.");
+        System.out.println("model.Point successfully added.");
     }
 }

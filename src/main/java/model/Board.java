@@ -1,3 +1,7 @@
+package model;
+
+import controller.GameManager;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -21,21 +25,6 @@ public abstract class Board {
      */
     public void initBoard() {
         initCross();
-        //TODO: to delete after JavaFX
-        displayBoard();
-    }
-
-    //TODO: to delete after JavaFX
-    public void displayBoard() {
-        for (int i = 0; i < GameManager.DIMENSION; i++) {
-            for (int j = 0; j < GameManager.DIMENSION; j++) {
-                if (pointsPlaced.contains(new Point(j,i)))
-                    System.out.print("O ");
-                else
-                    System.out.print(". ");
-            }
-            System.out.println();
-        }
     }
 
     /**
@@ -277,7 +266,7 @@ public abstract class Board {
      * @param pointsOfNewLine The list of points forming the new line.
      * @param directionOfNewLine The direction of the new line (HORIZONTAL, VERTICAL, B_DIAGONAL, T_DIAGONAL).
      */
-    protected void addLine(ArrayList<Point> pointsOfNewLine, Direction directionOfNewLine) {
+    public void addLine(ArrayList<Point> pointsOfNewLine, Direction directionOfNewLine) {
         Line newLine = new Line(pointsOfNewLine, directionOfNewLine, lines.size() + 1);
         lines.add(newLine);
     }
