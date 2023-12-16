@@ -1,9 +1,11 @@
+import javafx.scene.Node;
+
 import java.util.ArrayList;
 
 /**
  * A line made up of 5 points.
  */
-public class Line {
+public class Line extends javafx.scene.shape.Line {
     private final ArrayList<Point> points;
     private final Direction direction;
     private final int lineNumber;
@@ -25,4 +27,6 @@ public class Line {
     public Direction getDirection() {
         return direction;
     }
+
+
 }

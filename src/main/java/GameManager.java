@@ -1,22 +1,27 @@
 import java.util.Scanner;
 
 public class GameManager {
-    private final Player player;
-    private static Board board;
-    public static int DIMENSION = 16;
+    private static String mode;
+
+    static Board board;
+    public static double DIMENSION = 16;
+
+    public int length;
 
 
-    public GameManager(Player player) {
-        this.player = player;
+    public GameManager() {
+
     }
 
-    public void initBoard() {
-        Scanner scanner = new Scanner(System.in);
 
-        String mode;
+
+
+
+
+    public void initBoard(String mode) {
+
+
         do {
-            System.out.println("Choose the game mode (5T or 5D): ");
-            mode = scanner.nextLine().toUpperCase();
 
             switch (mode) {
                 case "5T":
@@ -35,11 +40,13 @@ public class GameManager {
         } while (!mode.equals("5T") && !mode.equals("5D"));
     }
 
-
+    public static Board getBoard() {
+        return board;
+    }
 
     public static void main(String[] args) {
-        GameManager gm = new GameManager(new Player("Daryl"));
-        gm.initBoard();
+        GameManager gm = new GameManager();
+        gm.initBoard(mode);
 
         int maxPoint = 10;
         while (maxPoint > 0) {
@@ -48,4 +55,10 @@ public class GameManager {
             maxPoint--;
         }
     }
+
+
+    public double getDimension() {
+        return DIMENSION;
+    }
+
 }
