@@ -8,23 +8,28 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="scene1AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="502.0" prefWidth="658.0" style="-fx-background-color: #2F2B43;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="homeController">
-   <children>
-      <Label layoutX="216.0" layoutY="167.0" text="Name :" textFill="WHITE" />
-      <TextField fx:id="usernameField" layoutX="274.0" layoutY="163.0" style="-fx-background-color: #6170ba;" />
-      <Label layoutX="224.0" layoutY="14.0" text="MORPION SOLITAIRE" textFill="WHITE">
-         <font>
-            <Font size="24.0" />
-         </font>
-      </Label>
-      <Label layoutX="208.0" layoutY="200.0" text="Game mode:" textFill="WHITE" />
-      <ComboBox fx:id="gameModeOptions" layoutX="287.0" layoutY="196.0" onAction="#gameModeChanged" prefHeight="26.0" prefWidth="61.0" style="-fx-background-color: #6170ba;" />
-      <Pane layoutX="441.0" layoutY="382.0" prefHeight="239.0" prefWidth="273.0" rotate="60.9" style="-fx-background-color: #6170ba; -fx-background-radius: 70;" />
-      <AnchorPane prefHeight="502.0" prefWidth="200.0" style="-fx-background-color: #393351;">
-         <children>
-            <Button fx:id="PlayButton" layoutX="-3.0" layoutY="361.0" mnemonicParsing="false" onAction="#OnSwitch2Click" prefHeight="35.0" prefWidth="200.0" style="-fx-background-color: #6170ba; -fx-background-radius: 30 0 0 30;" text="Play" />
-            <Button fx:id="historyButton" layoutX="-3.0" layoutY="49.0" mnemonicParsing="false" onAction="#displayHistory" prefHeight="35.0" prefWidth="200.0" style="-fx-background-color: #6170ba; -fx-background-radius: 30 0 0 30;" text="Scoreboard" />
-         </children>
-      </AnchorPane>
-   </children>
+<AnchorPane fx:id="scene1AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+            minWidth="-Infinity" prefHeight="502.0" prefWidth="658.0" style="-fx-background-color: #2F2B43;"
+            xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controller.HomeController">
+   <Label layoutX="216.0" layoutY="167.0" text="Name :" textFill="WHITE"/>
+   <TextField fx:id="usernameField" layoutX="274.0" layoutY="163.0" style="-fx-background-color: #6170ba;"/>
+   <Label layoutX="224.0" layoutY="14.0" text="MORPION SOLITAIRE" textFill="WHITE">
+      <font>
+         <Font size="24.0"/>
+      </font>
+   </Label>
+   <Label layoutX="208.0" layoutY="200.0" text="Game mode:" textFill="WHITE"/>
+   <ComboBox fx:id="gameModeOptions" layoutX="287.0" layoutY="196.0" onAction="#gameModeChanged" prefHeight="26.0"
+             prefWidth="61.0" style="-fx-background-color: #6170ba;"/>
+   <Pane layoutX="441.0" layoutY="382.0" prefHeight="239.0" prefWidth="273.0" rotate="60.9"
+         style="-fx-background-color: #6170ba; -fx-background-radius: 70;"/>
+   <AnchorPane prefHeight="502.0" prefWidth="200.0" style="-fx-background-color: #393351;">
+      <Button fx:id="PlayButton" layoutX="-3.0" layoutY="361.0" mnemonicParsing="false" onAction="#OnSwitch2Click"
+              prefHeight="35.0" prefWidth="200.0"
+              style="-fx-background-color: #6170ba; -fx-background-radius: 30 0 0 30;" text="Play"/>
+      <Button fx:id="historyButton" layoutX="-3.0" layoutY="49.0" mnemonicParsing="false" onAction="#displayHistory"
+              prefHeight="35.0" prefWidth="200.0"
+              style="-fx-background-color: #6170ba; -fx-background-radius: 30 0 0 30;" text="Scoreboard"/>
+   </AnchorPane>
 </AnchorPane>

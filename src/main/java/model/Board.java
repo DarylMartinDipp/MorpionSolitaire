@@ -1,3 +1,7 @@
+package model;
+
+import controller.GameManager;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -21,81 +25,57 @@ public abstract class Board {
      */
     public void initBoard() {
         initCross();
-        //TODO: to delete after JavaFX
-        displayBoard();
-    }
-    ArrayList initialPoints = new ArrayList<>();
-
-    //TODO: to delete after JavaFX
-    public void displayBoard() {
-        for (int i = 0; i < GameManager.DIMENSION; i++) {
-            for (int j = 0; j < GameManager.DIMENSION; j++) {
-                if (pointsPlaced.contains(new Point(j,i)))
-                    System.out.print("O ");
-                else
-                    System.out.print(". ");
-            }
-            System.out.println();
-        }
     }
 
     /**
      * initializing of the points of the cross.
      */
     public void initCross() {
-        addInitialPoint(3, 6);
-        addInitialPoint(3, 7);
-        addInitialPoint(3, 8);
-        addInitialPoint(3, 9);
+        addPoint(3, 6);
+        addPoint(3, 7);
+        addPoint(3, 8);
+        addPoint(3, 9);
 
-        addInitialPoint(4, 6);
-        addInitialPoint(4, 9);
+        addPoint(4, 6);
+        addPoint(4, 9);
 
-        addInitialPoint(5, 6);
-        addInitialPoint(5, 9);
+        addPoint(5, 6);
+        addPoint(5, 9);
 
-        addInitialPoint(6, 3);
-        addInitialPoint(6, 4);
-        addInitialPoint(6, 5);
-        addInitialPoint(6, 6);
-        addInitialPoint(6, 9);
-        addInitialPoint(6, 10);
-        addInitialPoint(6, 11);
-        addInitialPoint(6, 12);
+        addPoint(6, 3);
+        addPoint(6, 4);
+        addPoint(6, 5);
+        addPoint(6, 6);
+        addPoint(6, 9);
+        addPoint(6, 10);
+        addPoint(6, 11);
+        addPoint(6, 12);
 
-        addInitialPoint(7, 3);
-        addInitialPoint(7, 12);
+        addPoint(7, 3);
+        addPoint(7, 12);
 
-        addInitialPoint(8, 3);
-        addInitialPoint(8, 12);
+        addPoint(8, 3);
+        addPoint(8, 12);
 
-        addInitialPoint(9, 3);
-        addInitialPoint(9, 4);
-        addInitialPoint(9, 5);
-        addInitialPoint(9, 6);
-        addInitialPoint(9, 9);
-        addInitialPoint(9, 10);
-        addInitialPoint(9, 11);
-        addInitialPoint(9, 12);
+        addPoint(9, 3);
+        addPoint(9, 4);
+        addPoint(9, 5);
+        addPoint(9, 6);
+        addPoint(9, 9);
+        addPoint(9, 10);
+        addPoint(9, 11);
+        addPoint(9, 12);
 
-        addInitialPoint(10, 6);
-        addInitialPoint(10, 9);
+        addPoint(10, 6);
+        addPoint(10, 9);
 
-        addInitialPoint(11, 6);
-        addInitialPoint(11, 9);
+        addPoint(11, 6);
+        addPoint(11, 9);
 
-        addInitialPoint(12, 6);
-        addInitialPoint(12, 7);
-        addInitialPoint(12, 8);
-        addInitialPoint(12, 9);
-    }
-
-    public void addInitialPoint(int x, int y) {
-        Point pointToAdd = new Point(x, y);
-        initialPoints.add(pointToAdd);
-
-        if (!pointsPlaced.contains(pointToAdd))
-            pointsPlaced.add(pointToAdd);
+        addPoint(12, 6);
+        addPoint(12, 7);
+        addPoint(12, 8);
+        addPoint(12, 9);
     }
 
     /**
@@ -286,7 +266,7 @@ public abstract class Board {
      * @param pointsOfNewLine The list of points forming the new line.
      * @param directionOfNewLine The direction of the new line (HORIZONTAL, VERTICAL, B_DIAGONAL, T_DIAGONAL).
      */
-    protected void addLine(ArrayList<Point> pointsOfNewLine, Direction directionOfNewLine) {
+    public void addLine(ArrayList<Point> pointsOfNewLine, Direction directionOfNewLine) {
         Line newLine = new Line(pointsOfNewLine, directionOfNewLine, lines.size() + 1);
         lines.add(newLine);
     }
