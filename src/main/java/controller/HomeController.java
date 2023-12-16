@@ -1,5 +1,6 @@
 package controller;
 
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -7,22 +8,19 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import model.Player;
 
 import java.io.IOException;
-import java.util.Objects;
 
 
 public class HomeController {
-    private Scene scene;
-    private Parent root;
-
     private String mode;
 
     @FXML
-    private Button PlayButton;
+    private Button playButton;
 
     @FXML
     private ComboBox<String> gameModeOptions;
@@ -42,16 +40,23 @@ public class HomeController {
 
     @FXML
     public void launchTheGame(ActionEvent event) throws IOException {
-        System.out.println("Hello " + usernameField.getText() + ".");
+        String username = usernameField.getText().trim();
+
+        if (username.isEmpty()) {
+            showAlertUsername();
+            return;
+        }
+
+        System.out.println("Hello " + username + ".");
         System.out.println("You will be playing in " + mode + " mode. Good game.");
 
-        Player player = new Player(HomeController.setName(usernameField));
+        Player player = new Player(username);
         setupOptions();
         GameManager gm = new GameManager(mode);
+
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/MorpionSolitaire-view.fxml"));
         Parent root = loader.load();
         MorpionSolitaireController mpc = loader.getController();
-
         mpc.start();
 
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -59,6 +64,22 @@ public class HomeController {
         stage.setScene(scene);
         stage.show();
     }
+
+    @FXML
+    private void initialize() {
+        playButton.setOnMouseEntered(event -> {
+            playButton.setStyle("-fx-background-color: lightblue; -fx-background-radius: 30 0 0 30;");
+        });
+
+        playButton.setOnMouseExited(event -> playButton.setStyle("-fx-background-color: #6170ba; -fx-background-radius: 30 0 0 30;"));
+
+        scoreBoardButton.setOnMouseEntered(event -> {
+            scoreBoardButton.setStyle("-fx-background-color: lightblue; -fx-background-radius: 30 0 0 30;");
+        });
+
+        scoreBoardButton.setOnMouseExited(event -> scoreBoardButton.setStyle("-fx-background-color: #6170ba; -fx-background-radius: 30 0 0 30;"));
+    }
+
 
     @FXML
     private void loadScoreBoard() {
@@ -83,6 +104,14 @@ public class HomeController {
 
     public void start() {
         setupOptions();
+    }
+
+    private void showAlertUsername() {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Warning");
+        alert.setHeaderText(null);
+        alert.setContentText("Please enter your username.");
+        alert.showAndWait();
     }
 
     public static String setName(TextField usernameField){
