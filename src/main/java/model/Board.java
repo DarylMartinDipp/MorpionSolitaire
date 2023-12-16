@@ -141,8 +141,10 @@ public abstract class Board {
             System.out.println("The point cannot be placed here.");
             askPoint();
         // Play the point.
-        } else
-            playPoint(x,y);
+        } else {
+            playPoint(x, y);
+            score++;
+        }
     }
 
     /**
