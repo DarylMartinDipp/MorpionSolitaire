@@ -25,10 +25,10 @@
    <Pane layoutX="441.0" layoutY="382.0" prefHeight="239.0" prefWidth="273.0" rotate="60.9"
          style="-fx-background-color: #6170ba; -fx-background-radius: 70;"/>
    <AnchorPane prefHeight="502.0" prefWidth="200.0" style="-fx-background-color: #393351;">
-      <Button fx:id="PlayButton" layoutX="-3.0" layoutY="361.0" mnemonicParsing="false" onAction="#OnSwitch2Click"
+      <Button fx:id="PlayButton" layoutX="-3.0" layoutY="361.0" mnemonicParsing="false" onAction="#launchTheGame"
               prefHeight="35.0" prefWidth="200.0"
               style="-fx-background-color: #6170ba; -fx-background-radius: 30 0 0 30;" text="Play"/>
-      <Button fx:id="historyButton" layoutX="-3.0" layoutY="49.0" mnemonicParsing="false" onAction="#displayHistory"
+      <Button fx:id="scoreBoardButton" layoutX="-3.0" layoutY="49.0" mnemonicParsing="false" onAction="#loadScoreBoard"
               prefHeight="35.0" prefWidth="200.0"
               style="-fx-background-color: #6170ba; -fx-background-radius: 30 0 0 30;" text="Scoreboard"/>
    </AnchorPane>

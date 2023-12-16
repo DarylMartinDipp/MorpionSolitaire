@@ -28,7 +28,7 @@ public class HomeController {
     private ComboBox<String> gameModeOptions;
 
     @FXML
-    private Button historyButton;
+    private Button scoreBoardButton;
 
     @FXML
     private AnchorPane scene1AnchorPane;
@@ -41,7 +41,10 @@ public class HomeController {
     }
 
     @FXML
-    public void OnSwitch2Click(ActionEvent event) throws IOException {
+    public void launchTheGame(ActionEvent event) throws IOException {
+        System.out.println("Hello " + usernameField.getText() + ".");
+        System.out.println("You will be playing in " + mode + " mode. Good game.");
+
         Player player = new Player(HomeController.setName(usernameField));
         setupOptions();
         GameManager gm = new GameManager(mode);
@@ -58,32 +61,28 @@ public class HomeController {
     }
 
     @FXML
-    private void displayHistory() {
-
+    private void loadScoreBoard() {
+        //TODO
+        System.out.println("The score board should be displayed.");
     }
 
     @FXML
     private void gameModeChanged(){
-        if(Objects.equals(gameModeOptions.getSelectionModel().getSelectedItem(), "5D"))
-            mode="5T";
-        else if(Objects.equals(gameModeOptions.getSelectionModel().getSelectedItem(), "5T"))
-            mode="5D";
-    }
+        String selectedMode = gameModeOptions.getSelectionModel().getSelectedItem();
 
+        if ("5D".equals(selectedMode) || "5T".equals(selectedMode))
+            this.mode = selectedMode;
+    }
 
     private void setupOptions() {
         gameModeOptions.getItems().removeAll(gameModeOptions.getItems());
         gameModeOptions.getItems().addAll("5T", "5D");
         gameModeOptions.getSelectionModel().select("5D");
+        this.mode = "5D";
     }
 
     public void start() {
         setupOptions();
-        reset();
-    }
-
-    private void reset() {
-
     }
 
     public static String setName(TextField usernameField){
