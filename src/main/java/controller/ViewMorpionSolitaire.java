@@ -40,17 +40,18 @@ public class ViewMorpionSolitaire {
     }
 
     private static void drawClickablePoint(GraphicsContext gc, double x, double y) {
-        gc.setFill(Color.GREEN);
+        gc.setFill(Color.LIGHTGREEN);
         gc.fillOval(x, y, OBJECTS_WIDTH * 4, OBJECTS_WIDTH * 4);
     }
 
     private static void drawPlacedPoint(GraphicsContext gc, double x, double y) {
-        gc.setFill(Color.RED);
+        gc.setFill(Color.LIGHTSALMON);
         gc.fillOval(x, y, OBJECTS_WIDTH * 4, OBJECTS_WIDTH * 4);
     }
 
     private static void drawGrid(GraphicsContext gc) {
         gc.clearRect(0, 0, WIDTH, HEIGHT);
+        gc.setStroke(Color.LIGHTBLUE);
 
         // Draw horizontal lines
         for (int i = 0; i <= GameManager.DIMENSION; i++) {
