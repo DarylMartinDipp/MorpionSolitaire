@@ -3,7 +3,6 @@
 <?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ButtonBar?>
-<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -14,13 +13,10 @@
    <bottom>
       <ButtonBar prefWidth="1047.0" style="-fx-background-color: #2F2B43;">
          <buttons>
-            <Label text="model.Player" textFill="WHITE" />
-            <ComboBox fx:id="playerOptions" onAction="#playerChanged" prefHeight="25.0" prefWidth="99.0" style="-fx-background-color: #6170ba;" />
-            <Label text="Algorithm" textFill="WHITE" />
-            <ComboBox fx:id="algorithmOptions" prefHeight="26.0" prefWidth="99.0" style="-fx-background-color: #6170ba;" />
+            <Label text="Player :" textFill="WHITE" />
             <Button fx:id="simulateButton" mnemonicParsing="false"  prefHeight="26.0" prefWidth="64.0" style="-fx-background-color: #6170ba;" text="Simulate" />
-            <Button fx:id="bestScoreButton1" mnemonicParsing="false" onAction="#reset" prefHeight="26.0" prefWidth="52.0" style="-fx-background-color: #6170ba;" text="Restart" />
-            <Button fx:id="hintButton" mnemonicParsing="false" style="-fx-background-color: #6170ba;" text="Show Hint" />
+            <Button fx:id="restartButton" mnemonicParsing="false" onAction="#restart" prefHeight="26.0" prefWidth="52.0" style="-fx-background-color: #6170ba;" text="Restart" />
+            <Button fx:id="hintButton" mnemonicParsing="false" style="-fx-background-color: #6170ba;" text="Hint" />
          </buttons>
       </ButtonBar>
    </bottom>
@@ -37,8 +33,7 @@
                <Font size="26.0"/>
             </font>
          </Label>
-         <Button fx:id="graphButton1" layoutX="979.0" layoutY="7.0" mnemonicParsing="false"
-                 style="-fx-background-color: #6170ba;" text="Undo"/>
+         <Button fx:id="undoButton" layoutX="979.0" layoutY="7.0" mnemonicParsing="false" onAction="#undo" style="-fx-background-color: #6170ba;" text="Undo"/>
       </AnchorPane>
    </top>
 </BorderPane>

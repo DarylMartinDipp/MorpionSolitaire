@@ -1,6 +1,5 @@
 package controller;
 
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -8,7 +7,6 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import model.Player;
@@ -17,26 +15,12 @@ import java.io.IOException;
 
 
 public class HomeController {
+    public AnchorPane scene1AnchorPane;
+    public TextField usernameField;
+    public ComboBox<String> gameModeOptions;
+    public Button playButton;
+    public Button scoreBoardButton;
     private String mode;
-
-    @FXML
-    private Button playButton;
-
-    @FXML
-    private ComboBox<String> gameModeOptions;
-
-    @FXML
-    private Button scoreBoardButton;
-
-    @FXML
-    private AnchorPane scene1AnchorPane;
-
-    @FXML
-    private TextField usernameField;
-
-    public HomeController() {
-
-    }
 
     @FXML
     public void launchTheGame(ActionEvent event) throws IOException {
@@ -67,19 +51,17 @@ public class HomeController {
 
     @FXML
     private void initialize() {
-        playButton.setOnMouseEntered(event -> {
-            playButton.setStyle("-fx-background-color: lightblue; -fx-background-radius: 30 0 0 30;");
-        });
-
-        playButton.setOnMouseExited(event -> playButton.setStyle("-fx-background-color: #6170ba; -fx-background-radius: 30 0 0 30;"));
-
-        scoreBoardButton.setOnMouseEntered(event -> {
-            scoreBoardButton.setStyle("-fx-background-color: lightblue; -fx-background-radius: 30 0 0 30;");
-        });
-
-        scoreBoardButton.setOnMouseExited(event -> scoreBoardButton.setStyle("-fx-background-color: #6170ba; -fx-background-radius: 30 0 0 30;"));
+        setColorMouseEnteredHome(playButton);
+        setColorMouseEnteredHome(scoreBoardButton);
     }
 
+    static void setColorMouseEnteredHome(Button button) {
+        button.setOnMouseEntered(event -> {
+            button.setStyle("-fx-background-color: lightblue; -fx-background-radius: 30 0 0 30;");
+        });
+
+        button.setOnMouseExited(event -> button.setStyle("-fx-background-color: #6170ba; -fx-background-radius: 30 0 0 30;"));
+    }
 
     @FXML
     private void loadScoreBoard() {
@@ -89,7 +71,7 @@ public class HomeController {
 
     @FXML
     private void gameModeChanged(){
-        String selectedMode = gameModeOptions.getSelectionModel().getSelectedItem();
+        String selectedMode = (String) gameModeOptions.getSelectionModel().getSelectedItem();
 
         if ("5D".equals(selectedMode) || "5T".equals(selectedMode))
             this.mode = selectedMode;
