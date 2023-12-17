@@ -17,6 +17,11 @@ public class ViewMorpionSolitaire {
     static List<Point> clickablePoints = new ArrayList<>();
 
     public static void drawBoard(GraphicsContext gc, Board board) {
+        // Set background color
+        gc.setFill(Color.web("#6170ba"));
+        gc.fillRect(0, 0, WIDTH, HEIGHT);
+
+        //Draw grid lines
         drawGrid(gc);
 
         // Draw all points on the grid and make them clickable.
@@ -50,8 +55,7 @@ public class ViewMorpionSolitaire {
     }
 
     private static void drawGrid(GraphicsContext gc) {
-        gc.clearRect(0, 0, WIDTH, HEIGHT);
-        gc.setStroke(Color.LIGHTBLUE);
+
 
         // Draw horizontal lines
         for (int i = 0; i <= GameManager.DIMENSION; i++) {

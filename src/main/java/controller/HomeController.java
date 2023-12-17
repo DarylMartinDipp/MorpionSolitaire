@@ -22,9 +22,14 @@ public class HomeController {
     public Button scoreBoardButton;
     private String mode;
 
+    private String username;
+    private Player player;
+
+
+
     @FXML
     public void launchTheGame(ActionEvent event) throws IOException {
-        String username = usernameField.getText().trim();
+         username = usernameField.getText().trim();
 
         if (username.isEmpty()) {
             showAlertUsername();
@@ -35,12 +40,15 @@ public class HomeController {
         System.out.println("You will be playing in " + mode + " mode. Good game.");
 
         Player player = new Player(username);
-        setupOptions();
+
         GameManager gm = new GameManager(mode);
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/MorpionSolitaire-view.fxml"));
         Parent root = loader.load();
         MorpionSolitaireController mpc = loader.getController();
+        mpc.setGameManager(gm);
+        mpc.setPlayer(player);
+        mpc.setMode(mode);
         mpc.start();
 
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -70,12 +78,17 @@ public class HomeController {
     }
 
     @FXML
-    private void gameModeChanged(){
-        String selectedMode = (String) gameModeOptions.getSelectionModel().getSelectedItem();
+    private void gameModeChanged() {
+        String selectedMode = gameModeOptions.getSelectionModel().getSelectedItem();
+        System.out.println("Selected Mode: " + selectedMode);
 
-        if ("5D".equals(selectedMode) || "5T".equals(selectedMode))
+        if (selectedMode != null && ("5D".equals(selectedMode) || "5T".equals(selectedMode))) {
             this.mode = selectedMode;
+            System.out.println("Updated Mode: " + mode);
+        }
     }
+
+
 
     private void setupOptions() {
         gameModeOptions.getItems().removeAll(gameModeOptions.getItems());
@@ -96,7 +109,4 @@ public class HomeController {
         alert.showAndWait();
     }
 
-    public static String setName(TextField usernameField){
-        return usernameField.getText().trim();
-    }
 }

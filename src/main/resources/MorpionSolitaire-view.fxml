@@ -4,36 +4,42 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ButtonBar?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="483.0" prefWidth="1047.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MorpionSolitaireController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="518.0" prefWidth="624.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MorpionSolitaireController">
    <bottom>
-      <ButtonBar prefWidth="1047.0" style="-fx-background-color: #2F2B43;">
+      <ButtonBar prefHeight="37.0" prefWidth="591.0" style="-fx-background-color: #2F2B43;">
          <buttons>
-            <Label text="Player :" textFill="WHITE" />
-            <Button fx:id="simulateButton" mnemonicParsing="false"  prefHeight="26.0" prefWidth="64.0" style="-fx-background-color: #6170ba;" text="Simulate" />
+            <Label fx:id="playerLabel" text="Player: " textFill="WHITE" />
+            <Button fx:id="simulateButton" mnemonicParsing="false" prefHeight="26.0" prefWidth="64.0" style="-fx-background-color: #6170ba;" text="Simulate" />
             <Button fx:id="restartButton" mnemonicParsing="false" onAction="#restart" prefHeight="26.0" prefWidth="52.0" style="-fx-background-color: #6170ba;" text="Restart" />
             <Button fx:id="hintButton" mnemonicParsing="false" style="-fx-background-color: #6170ba;" text="Hint" />
          </buttons>
       </ButtonBar>
    </bottom>
    <center>
-      <ScrollPane style="-fx-background-color: #6170ba;" BorderPane.alignment="CENTER">
-         <Canvas fx:id="gameCanvas" height="600.0" onMousePressed="#canvasMousePressed" width="600.0"/>
-      </ScrollPane>
+      <Pane prefWidth="647.0" style="-fx-background-color: #6170ba;" BorderPane.alignment="CENTER">
+         <children>
+            <Canvas fx:id="gameCanvas" height="300.0" layoutX="162.0" layoutY="71.0" onMousePressed="#canvasMousePressed" width="300.0" />
+         </children>
+      </Pane>
    </center>
    <top>
-      <AnchorPane style="-fx-background-color: #2F2B43;">
-         <Label fx:id="scoreLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="18.0" prefWidth="210.0"
-                text="Score : " textFill="WHITE">
+      <AnchorPane minWidth="300.0" prefHeight="38.0" prefWidth="300.0" style="-fx-background-color: #2F2B43;">
+         <Label fx:id="scoreLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="18.0" prefWidth="210.0" text="Score : " textFill="WHITE">
             <font>
-               <Font size="26.0"/>
+               <Font size="26.0" />
             </font>
          </Label>
-         <Button fx:id="undoButton" layoutX="979.0" layoutY="7.0" mnemonicParsing="false" onAction="#undo" style="-fx-background-color: #6170ba;" text="Undo"/>
+         <Label fx:id="modeLabel" layoutX="535.0" layoutY="11.0" text="Mode: " textFill="WHITE">
+            <font>
+               <Font size="16.0" />
+            </font>
+         </Label>
+         <Button fx:id="undoButton" layoutX="353.0" layoutY="6.0" mnemonicParsing="false" onAction="#undo" style="-fx-background-color: #6170ba;" text="Undo" />
       </AnchorPane>
    </top>
 </BorderPane>
