@@ -70,7 +70,8 @@ public class HomeController {
     }
 
     /**
-     * Sets the mouse-entered and mouse-exited styles for a button, changing its background color.
+     * Sets the mouse-entered and mouse-exited styles for a button, changing its background color and its radius.
+     * It is specific to the home page.
      * @param button The Button object to which the styles are applied.
      */
     static void setColorMouseEnteredHome(Button button) {

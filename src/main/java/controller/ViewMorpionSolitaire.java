@@ -12,13 +12,19 @@ import java.util.List;
 
 public class ViewMorpionSolitaire {
     private static final double OBJECTS_WIDTH = 1.0;
-    public static final int WIDTH = GameManager.DIMENSION * 20;
-    public static final int HEIGHT = GameManager.DIMENSION * 20;
+    private static final int WIDTH = GameManager.DIMENSION * 20;
+    private static final int HEIGHT = GameManager.DIMENSION * 20;
 
-    static List<Point> clickablePoints = new ArrayList<>();
-    static List<Point> highlightPoints = new ArrayList<>();
+    protected static List<Point> clickablePoints = new ArrayList<>();
+    protected static List<Point> highlightPoints = new ArrayList<>();
 
-    public static void drawBoard(GraphicsContext gc, Board board) {
+    /**
+     * Draws the Morpion Solitaire game board.
+     * This includes the background color, grid lines, clickable points, placed points, and highlighted points.
+     * @param gc The GraphicsContext on which to draw the board.
+     * @param board The Board object representing the game state.
+     */
+    protected static void drawBoard(GraphicsContext gc, Board board) {
         // Set background color
         gc.setFill(Color.web("#6170ba"));
         gc.fillRect(0, 0, WIDTH, HEIGHT);
@@ -45,27 +51,13 @@ public class ViewMorpionSolitaire {
             drawPlacedPoint(gc, x, y);
         }
 
+        // Draw all highlighted points if any.
         for (Point point : highlightPoints) {
             int x = point.getX() * (WIDTH / GameManager.DIMENSION);
             int y = point.getY()* (HEIGHT / GameManager.DIMENSION);
 
             drawHighlightedPoint(gc, x, y);
         }
-    }
-
-    private static void drawClickablePoint(GraphicsContext gc, double x, double y) {
-        gc.setFill(Color.LIGHTGREEN);
-        gc.fillOval(x, y, OBJECTS_WIDTH * 4, OBJECTS_WIDTH * 4);
-    }
-
-    private static void drawPlacedPoint(GraphicsContext gc, double x, double y) {
-        gc.setFill(Color.LIGHTSALMON);
-        gc.fillOval(x, y, OBJECTS_WIDTH * 4, OBJECTS_WIDTH * 4);
-    }
-
-    protected static void drawHighlightedPoint(GraphicsContext gc, double x, double y) {
-        gc.setFill(Color.RED);
-        gc.fillOval(x, y, OBJECTS_WIDTH * 6, OBJECTS_WIDTH * 6);
     }
 
     private static void drawGrid(GraphicsContext gc) {
@@ -82,7 +74,31 @@ public class ViewMorpionSolitaire {
         }
     }
 
-    static void handleCanvasClick(MouseEvent event, GameManager gameManagerWithBoard, Canvas gameCanvas) {
+    private static void drawClickablePoint(GraphicsContext gc, double x, double y) {
+        gc.setFill(Color.LIGHTGREEN);
+        gc.fillOval(x, y, OBJECTS_WIDTH * 4, OBJECTS_WIDTH * 4);
+    }
+
+    private static void drawPlacedPoint(GraphicsContext gc, double x, double y) {
+        gc.setFill(Color.LIGHTSALMON);
+        gc.fillOval(x, y, OBJECTS_WIDTH * 4, OBJECTS_WIDTH * 4);
+    }
+
+    private static void drawHighlightedPoint(GraphicsContext gc, double x, double y) {
+        gc.setFill(Color.RED);
+        gc.fillOval(x, y, OBJECTS_WIDTH * 6, OBJECTS_WIDTH * 6);
+    }
+
+    /**
+     * Handles mouse-click events on the Morpion Solitaire game canvas.
+     * This method is called if the game aren't waiting confirmation of the point to play in 5T mode.
+     * Translates the clicked coordinates to the corresponding grid point,
+     * then delegates the handling to the board by asking it to process the clicked point.
+     * @param event The MouseEvent triggered by the user's mouse click.
+     * @param gameManagerWithBoard The GameManager instance containing the game board.
+     * @param gameCanvas The Canvas on which the game board is displayed.
+     */
+    protected static void handleClick(MouseEvent event, GameManager gameManagerWithBoard, Canvas gameCanvas) {
         double clickedX = event.getX();
         double clickedY = event.getY();
 
@@ -105,7 +121,12 @@ public class ViewMorpionSolitaire {
         }
     }
 
-    static Point handleCanvasClickForChoice(MouseEvent event) {
+    /**
+     * Handles mouse-click events for the 5T game mode, when the user need to choose a point between two.
+     * @param event The MouseEvent triggered by the user's mouse click.
+     * @return The Point on the grid corresponding to the clicked coordinates, or null if no matching point is found.
+     */
+    protected static Point handle5TChoiceClick(MouseEvent event) {
         double clickedX = event.getX();
         double clickedY = event.getY();
 
@@ -124,10 +145,20 @@ public class ViewMorpionSolitaire {
         return null;
     }
 
+    /**
+     * Translates a coordinate from the grid space to the corresponding X-coordinate on the game board.
+     * @param gridX The X-coordinate in the grid space.
+     * @return The translated X-coordinate on the game board.
+     */
     private static int coordinateTranslatorX(double gridX) {
         return (int) (gridX / (WIDTH / GameManager.DIMENSION));
     }
 
+    /**
+     * Translates a coordinate from the grid space to the corresponding Y-coordinate on the game board.
+     * @param gridY The Y-coordinate in the grid space.
+     * @return The translated Y-coordinate on the game board.
+     */
     private static int coordinateTranslatorY(double gridY) {
         return (int) (gridY / (HEIGHT / GameManager.DIMENSION));
     }

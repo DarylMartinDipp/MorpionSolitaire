@@ -9,8 +9,7 @@ import model.Player;
 import model.Point;
 
 public class MorpionSolitaireController {
-    @FXML
-    private Canvas gameCanvas;
+    public Canvas gameCanvas;
     public Label scoreLabel;
     public Label playerLabel;
     public Label modeLabel;
@@ -26,12 +25,12 @@ public class MorpionSolitaireController {
     // Those 3 attributes will be used to know if the player
     // needs to choose the point to play during 5T mode.
     private static boolean waitForUserChoice = false;
-    public static Point pointA;
-    public static Point pointB;
+    protected static Point pointA;
+    protected static Point pointB;
 
     public void start() {
         displayName(player);
-        displayScore(player);
+        displayScore();
         displayMode(mode);
         drawBoard();
     }
@@ -55,10 +54,9 @@ public class MorpionSolitaireController {
         // If the game are waiting confirmation of the point to play in 5T mode.
         if (waitForUserChoice) {
             Point clickedPoint;
-            clickedPoint = ViewMorpionSolitaire.handleCanvasClickForChoice(me);
-            assert clickedPoint != null;
+            clickedPoint = ViewMorpionSolitaire.handle5TChoiceClick(me);
             // If the point clicked if one of the expected points.
-            if (clickedPoint.equals(pointA) || clickedPoint.equals(pointB)) {
+            if (clickedPoint != null && (clickedPoint.equals(pointA) || clickedPoint.equals(pointB))) {
                 waitForUserChoice = false;
                 // Process the user input.
                 gm.getBoard().process5TUserChoice(clickedPoint);
@@ -67,12 +65,16 @@ public class MorpionSolitaireController {
         }
         // In all other cases.
         else
-            ViewMorpionSolitaire.handleCanvasClick(me, gm, gameCanvas);
+            ViewMorpionSolitaire.handleClick(me, gm, gameCanvas);
 
-        // Draw the board, to have any information missing.
+        // Draw the board and update the score.
         drawBoard();
+        displayScore();
     }
 
+    /**
+     * Sets mouse-entered and mouse-exited styles for specific buttons.
+     */
     @FXML
     private void initialize() {
         setColorMouseEnteredGame(undoButton);
@@ -81,15 +83,18 @@ public class MorpionSolitaireController {
         setColorMouseEnteredGame(hintButton);
     }
 
+    /**
+     * Sets the mouse-entered and mouse-exited styles for a button, changing its background color.
+     * It is specific to the home page.
+     * @param button The Button object to which the styles are applied.
+     */
     static void setColorMouseEnteredGame(Button button) {
-        button.setOnMouseEntered(event -> {
-            button.setStyle("-fx-background-color: lightblue;");
-        });
-
+        button.setOnMouseEntered(event -> button.setStyle("-fx-background-color: lightblue;"));
         button.setOnMouseExited(event -> button.setStyle("-fx-background-color: #6170ba;"));
     }
-    public void displayScore(Player player){
-        scoreLabel.setText("Score: " + player.getScore());
+
+    public void displayScore(){
+        scoreLabel.setText("Score: " + gm.getBoard().getScore());
     }
 
     public void displayName(Player player){
@@ -125,13 +130,21 @@ public class MorpionSolitaireController {
         this.mode=mode;
     }
 
+    /**
+     * Initiates the process of asking the user for their choice in the 5T game mode.
+     * @param pointA The first user choice.
+     * @param pointB The second user choice.
+     */
     public static void ask5TUserChoiceGraphic(Point pointA, Point pointB) {
+        // Set the user choices, to get them in Board5T.process5TUserChoice.
         MorpionSolitaireController.pointA = pointA;
         MorpionSolitaireController.pointB = pointB;
 
+        // Add the user choices to the list of highlighted points in the view.
         ViewMorpionSolitaire.highlightPoints.add(pointA);
         ViewMorpionSolitaire.highlightPoints.add(pointB);
 
+        // Flag that the system is waiting for the user's input.
         waitForUserChoice = true;
     }
 }

@@ -1,17 +1,15 @@
 package model;
 
 import controller.GameManager;
-
 import java.util.ArrayList;
-import java.util.Scanner;
 
 /**
  * The game board, containing the points and the lines.
  */
 public abstract class Board {
-    protected ArrayList<Point> pointsPlaced;
-    protected int score;
-    protected ArrayList<Line> lines;
+    private final ArrayList<Point> pointsPlaced;
+    private int score;
+    private final ArrayList<Line> lines;
 
     public Board() {
         this.pointsPlaced = new ArrayList<>();
@@ -222,6 +220,13 @@ public abstract class Board {
     protected abstract void playPoint(int x, int y);
 
     /**
+     * Processes the user's choice in the 5T game mode based on the selected point to play.
+     * THIS METHOD IS ONLY USEFUL IN BOARD5T.
+     * @param userPointChoice The chosen point to play on the game board.
+     */
+    public abstract void process5TUserChoice(Point userPointChoice);
+
+    /**
      * Adds a new line to the list of lines on the game grid based on the given points and direction.
      * @param pointsOfNewLine The list of points forming the new line.
      * @param directionOfNewLine The direction of the new line (HORIZONTAL, VERTICAL, B_DIAGONAL, T_DIAGONAL).
@@ -239,5 +244,7 @@ public abstract class Board {
         return lines;
     }
 
-    public abstract void process5TUserChoice(Point userPointChoice);
+    public int getScore() {
+        return score;
+    }
 }

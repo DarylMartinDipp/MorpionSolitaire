@@ -5,7 +5,7 @@ import model.Board5D;
 import model.Board5T;
 
 public class GameManager {
-    static Board board;
+    private static Board board;
     public static int DIMENSION = 16;
 
     /**

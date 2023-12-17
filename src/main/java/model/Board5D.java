@@ -34,6 +34,10 @@ public class Board5D extends Board{
         System.out.println("Point successfully added.");
     }
 
+    /**
+     * This method is useless in Board5D.
+     * @param userPointChoice The chosen point to play on the game board.
+     */
     @Override
     public void process5TUserChoice(Point userPointChoice) {
     }

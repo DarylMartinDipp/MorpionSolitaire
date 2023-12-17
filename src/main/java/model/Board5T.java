@@ -112,7 +112,7 @@ public class Board5T extends Board {
                 Point currentUpPoint = new Point(currentXUp, currentYUp);
 
                 // Check if the point above is placed.
-                if (pointsPlaced.contains(currentUpPoint)) {
+                if (getPointsPlaced().contains(currentUpPoint)) {
                     upPoints.add(currentUpPoint);
                 }
                 else
@@ -124,7 +124,7 @@ public class Board5T extends Board {
                 Point currentDownPoint = new Point(currentXDown, currentYDown);
 
                 // Check if the point below is placed.
-                if (pointsPlaced.contains(currentDownPoint)) {
+                if (getPointsPlaced().contains(currentDownPoint)) {
                     downPoints.add(currentDownPoint);
                 }
                 else
@@ -153,7 +153,7 @@ public class Board5T extends Board {
      */
     private boolean isUpPoint() {
         // Iterate through existing lines.
-        for (Line line : lines) {
+        for (Line line : getLines()) {
             if (line.getPointsOfTheLine().contains(upPoints.get(1)))
                 // The point is part of an existing line: the points in downPoint can be used to draw the new line
                 return false;
@@ -164,7 +164,7 @@ public class Board5T extends Board {
     }
 
     /**
-     * Processes the user's choice for connecting a point in a 5T game.
+     * Ask the user's choice for connecting a point in a 5T game.
      * @param x The x-coordinate of the selected point.
      * @param y The y-coordinate of the selected point.
      * @param pointsForA ArrayList containing the points for option A.
@@ -174,16 +174,22 @@ public class Board5T extends Board {
         System.out.println("A = " + pointsForA.get(1));
         System.out.println("B = " + pointsForB.get(0));
 
+        // Saving useful variables.
         this.pointsForAFor5T = pointsForA;
         this.pointsForBFor5T = pointsForB;
         this.xFor5T = x;
         this.yFor5T = y;
 
+        // Graphically asks for the user's choice/
         MorpionSolitaireController.ask5TUserChoiceGraphic(pointsForA.get(1), pointsForB.get(0));
     }
 
-    public void process5TUserChoice(Point pointToPlay) {
-        if (pointToPlay.equals(pointsForAFor5T.get(1))) {
+    /**
+     * Processes the user's choice in the 5T game mode based on the selected point to play.
+     * @param userPointChoice The chosen point to play on the game board.
+     */
+    public void process5TUserChoice(Point userPointChoice) {
+        if (userPointChoice.equals(pointsForAFor5T.get(1))) {
             addPoint(xFor5T, yFor5T);
             // Create an ArrayList for option A.
             ArrayList<Point> arrayListForA = new ArrayList<>();
@@ -195,7 +201,7 @@ public class Board5T extends Board {
             // Add a line for option A.
             addLine(arrayListForA, dir);
             System.out.println("Point successfully added.");
-        } else if (pointToPlay.equals(pointsForBFor5T.get(0))) {
+        } else if (userPointChoice.equals(pointsForBFor5T.get(0))) {
             addPoint(xFor5T, yFor5T);
             // Add a line for option B.
             addLine(pointsForBFor5T, dir);
