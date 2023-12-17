@@ -11,7 +11,7 @@ public abstract class Board {
     private int score;
     private final ArrayList<Line> lines;
 
-    private final ArrayList<Point> lastAddedPoints= new ArrayList<>();
+    private final ArrayList<Point> pointsAddedByUser = new ArrayList<>();
 
     public Board() {
         this.pointsPlaced = new ArrayList<>();
@@ -103,7 +103,7 @@ public abstract class Board {
         // Check if the point already exists.
         if (!pointsPlaced.contains(pointToAdd) && canPointBePlayed(pointToAdd)) {
             playPoint(x, y);
-            lastAddedPoints.add(new Point(x, y));
+            pointsAddedByUser.add(new Point(x, y));
             score++;
         }
     }
@@ -253,7 +253,7 @@ public abstract class Board {
         return score;
     }
 
-    public ArrayList<Point> getLastAddedPoints() {
-        return lastAddedPoints;
+    public ArrayList<Point> getPointsAddedByUser() {
+        return pointsAddedByUser;
     }
 }

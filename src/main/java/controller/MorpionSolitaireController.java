@@ -15,7 +15,7 @@ public class MorpionSolitaireController {
     public Label modeLabel;
     public Button undoButton;
     public Button simulateButton;
-    public Button restartButton;
+    public Button quitButton;
     public Button hintButton;
 
     private GameManager gm;
@@ -79,7 +79,7 @@ public class MorpionSolitaireController {
     private void initialize() {
         setColorMouseEnteredGame(undoButton);
         setColorMouseEnteredGame(simulateButton);
-        setColorMouseEnteredGame(restartButton);
+        setColorMouseEnteredGame(quitButton);
         setColorMouseEnteredGame(hintButton);
     }
 
@@ -112,9 +112,10 @@ public class MorpionSolitaireController {
     }
 
     @FXML
-    private void restart() {
-        //TODO
-        System.out.println("The game should restart.");
+    private void quit() {
+        //TODO: TextBox "Are you sure you want to quit?" "Yes" "No"
+        // If No, stay on the screen
+        // If Yes, go to Home page
     }
 
     public void setGameManager(GameManager gameManager) {

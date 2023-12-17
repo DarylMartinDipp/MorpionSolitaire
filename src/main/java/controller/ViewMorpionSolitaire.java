@@ -53,18 +53,18 @@ public class ViewMorpionSolitaire {
         }
 
         // Draw lines for the points in the board.
-                drawLines(gc, board);
-        // Draw all scored points
-        int position = 1; // Initialiser le compteur à 1
+        drawLines(gc, board);
 
-        for (Point point : board.getLastAddedPoints()) {
+        int pointNumber = 1;
+
+        // Draw all points number
+        for (Point point : board.getPointsAddedByUser()) {
             int x = point.getX() * (WIDTH / GameManager.DIMENSION);
             int y = point.getY() * (HEIGHT / GameManager.DIMENSION);
 
-            drawScoredPoint(gc, x, y, position);
-            position++; // Incrémenter le compteur pour la prochaine itération
+            drawScoredPoint(gc, x, y, pointNumber);
+            pointNumber++;
         }
-
 
         // Draw all highlighted points if any.
         for (Point point : highlightPoints) {
