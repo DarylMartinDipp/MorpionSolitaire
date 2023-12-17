@@ -22,7 +22,7 @@ public class GameManager {
         } while (!mode.equals("5T") && !mode.equals("5D"));
     }
 
-    public Board getBoard() {
+    public static Board getBoard() {
         return board;
     }
 }

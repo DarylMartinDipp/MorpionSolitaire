@@ -5,10 +5,14 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import model.Board;
+import model.Line;
 import model.Point;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static model.Board.lastAddedPoint;
+import static model.Board.lastAddedPoints;
 
 public class ViewMorpionSolitaire {
     private static final double OBJECTS_WIDTH = 1.0;
@@ -29,7 +33,8 @@ public class ViewMorpionSolitaire {
         gc.setFill(Color.web("#6170ba"));
         gc.fillRect(0, 0, WIDTH, HEIGHT);
 
-        //Draw grid lines
+
+        // Utilisez la méthode drawGrid avec le contexte graphique
         drawGrid(gc);
 
         // Draw all points on the grid and make them clickable.
@@ -50,6 +55,17 @@ public class ViewMorpionSolitaire {
 
             drawPlacedPoint(gc, x, y);
         }
+        // Draw all scored points
+        int position = 1; // Initialiser le compteur à 1
+
+        for (Point point : lastAddedPoints) {
+            int x = point.getX() * (WIDTH / GameManager.DIMENSION);
+            int y = point.getY() * (HEIGHT / GameManager.DIMENSION);
+
+            drawScoredPoint(gc, x, y, position);
+            position++; // Incrémenter le compteur pour la prochaine itération
+        }
+
 
         // Draw all highlighted points if any.
         for (Point point : highlightPoints) {
@@ -58,6 +74,9 @@ public class ViewMorpionSolitaire {
 
             drawHighlightedPoint(gc, x, y);
         }
+
+        // Draw lines for the points in the board.
+        drawLines(gc, board);
     }
 
     private static void drawGrid(GraphicsContext gc) {
@@ -75,19 +94,70 @@ public class ViewMorpionSolitaire {
     }
 
     private static void drawClickablePoint(GraphicsContext gc, double x, double y) {
-        gc.setFill(Color.LIGHTGREEN);
-        gc.fillOval(x, y, OBJECTS_WIDTH * 4, OBJECTS_WIDTH * 4);
+        double ovalSize = OBJECTS_WIDTH * 12.5; // Changer la taille des ovales
+        double halfSize = ovalSize / 2.0;
+
+        gc.setFill(Color.rgb(144, 238, 144, 0.0)); // Couleur avec une composante alpha de 0.0 (totalement transparente)
+        gc.fillOval(x - halfSize, y - halfSize, ovalSize, ovalSize);
     }
 
     private static void drawPlacedPoint(GraphicsContext gc, double x, double y) {
+        double ovalSize = OBJECTS_WIDTH * 12.5; // Augmenter la taille des ovales
+        double halfSize = ovalSize / 2.0;
+
         gc.setFill(Color.LIGHTSALMON);
-        gc.fillOval(x, y, OBJECTS_WIDTH * 4, OBJECTS_WIDTH * 4);
+        gc.fillOval(x - halfSize, y - halfSize, ovalSize, ovalSize);
+
     }
 
-    private static void drawHighlightedPoint(GraphicsContext gc, double x, double y) {
-        gc.setFill(Color.RED);
-        gc.fillOval(x, y, OBJECTS_WIDTH * 6, OBJECTS_WIDTH * 6);
+    private static void drawScoredPoint(GraphicsContext gc, double x, double y, int position) {
+        double ovalSize = OBJECTS_WIDTH * 12.5; // Augmenter la taille des ovales
+        double halfSize = ovalSize / 2.0;
+
+        gc.setFill(Color.LIGHTSALMON);
+        gc.fillOval(x - halfSize, y - halfSize, ovalSize, ovalSize);
+        gc.setFill(Color.BLACK); // Couleur du texte
+        gc.fillText(String.valueOf(position), x - halfSize + 2, y + halfSize - 2);
     }
+
+
+
+
+
+    private static void drawHighlightedPoint(GraphicsContext gc, double x, double y) {
+        double ovalSize = OBJECTS_WIDTH * 12; // Augmenter la taille des ovales
+        double halfSize = ovalSize / 2.0;
+
+        gc.setFill(Color.RED);
+        gc.fillOval(x - halfSize, y - halfSize, ovalSize, ovalSize);
+    }
+    private static void drawLines(GraphicsContext gc, Board board) {
+        gc.setStroke(Color.BLACK); // Couleur de la ligne
+
+        for (Line line : board.getLines()) {
+            ArrayList<Point> pointsOfTheLine = line.getPointsOfTheLine();
+
+            if (pointsOfTheLine.size() > 1) {
+                // Commencer le dessin de la ligne à partir du premier point
+                Point startPoint = pointsOfTheLine.get(0);
+                double startX = startPoint.getX() * (WIDTH / GameManager.DIMENSION);
+                double startY = startPoint.getY() * (HEIGHT / GameManager.DIMENSION);
+                gc.beginPath();
+                gc.moveTo(startX, startY);
+
+                // Ajouter des segments de ligne pour les points suivants
+                for (int i = 1; i < pointsOfTheLine.size(); i++) {
+                    Point point = pointsOfTheLine.get(i);
+                    double x = point.getX() * (WIDTH / GameManager.DIMENSION);
+                    double y = point.getY() * (HEIGHT / GameManager.DIMENSION);
+                    gc.lineTo(x, y);
+                }
+
+                gc.stroke(); // Dessiner la ligne
+            }
+        }
+    }
+
 
     /**
      * Handles mouse-click events on the Morpion Solitaire game canvas.

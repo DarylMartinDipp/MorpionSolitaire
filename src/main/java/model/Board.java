@@ -2,6 +2,7 @@ package model;
 
 import controller.GameManager;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The game board, containing the points and the lines.
@@ -10,6 +11,10 @@ public abstract class Board {
     private final ArrayList<Point> pointsPlaced;
     private int score;
     private final ArrayList<Line> lines;
+    public static Point lastAddedPoint;
+
+    public static ArrayList<Point> lastAddedPoints= new ArrayList<Point>();
+
 
     public Board() {
         this.pointsPlaced = new ArrayList<>();
@@ -92,15 +97,19 @@ public abstract class Board {
     /**
      * Ask a point, to know if the point can be placed or not.
      */
-    public void askPoint(int x, int y) {
+    public List<Point> askPoint(int x, int y) {
+        //TODO:Changer le commentaire
         // Here, the point entered is valid, so it is created.
         Point pointToAdd = new Point(x, y);
 
         // Check if the point already exists.
         if (!pointsPlaced.contains(pointToAdd) && canPointBePlayed(pointToAdd)) {
             playPoint(x, y);
+            lastAddedPoint = new Point(x, y);
+            lastAddedPoints.add(lastAddedPoint);
             score++;
         }
+        return  lastAddedPoints;
     }
 
     /**
@@ -247,4 +256,6 @@ public abstract class Board {
     public int getScore() {
         return score;
     }
+
+
 }
