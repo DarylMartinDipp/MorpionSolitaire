@@ -101,7 +101,7 @@ public abstract class Board {
         Point pointToAdd = new Point(x, y);
 
         // Check if the point already exists.
-        if (!pointsPlaced.contains(pointToAdd) && canPointBePlayed(pointToAdd)) {
+        if (!pointsPlaced.contains(pointToAdd) && canPointBePlayed(pointToAdd, true)) {
             playPoint(x, y);
             pointsAddedByUser.add(new Point(x, y));
             score++;
@@ -111,9 +111,11 @@ public abstract class Board {
     /**
      * Check if the point can be placed here.
      * @param pointToPlay the point to be placed.
+     * @param hasToPlay True if the points hs to be played, false otherwise.
+     *                  False is for having all the playable points.
      * @return True if the point can be placed, false otherwise.
      */
-    protected abstract boolean canPointBePlayed(Point pointToPlay);
+    public abstract boolean canPointBePlayed(Point pointToPlay, boolean hasToPlay);
 
     /**
      * Check if there is a potential alignment of 5 points in the specified direction starting from the given coordinates.

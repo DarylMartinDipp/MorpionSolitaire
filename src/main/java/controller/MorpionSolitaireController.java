@@ -8,6 +8,8 @@ import javafx.scene.input.MouseEvent;
 import model.Player;
 import model.Point;
 
+import java.util.ArrayList;
+
 public class MorpionSolitaireController {
     public Canvas gameCanvas;
     public Label scoreLabel;
@@ -27,6 +29,8 @@ public class MorpionSolitaireController {
     private static boolean waitForUserChoice = false;
     protected static Point pointA;
     protected static Point pointB;
+
+    public static boolean hintActivated;
 
     public void start() {
         displayName(player);
@@ -126,6 +130,59 @@ public class MorpionSolitaireController {
         gm.getBoard().setScore(gm.getBoard().getScore() - 1);
 
         drawBoard();
+    }
+
+    /**
+     * Toggles the display of a hint in the user interface.
+     * If the hint is currently activated, it hides the hint; otherwise, it shows the hint.
+     */
+    @FXML
+    public void performHint() {
+        if (hintActivated) {
+            hideHint();
+            hintActivated = false;
+        } else {
+            showHint();
+            hintActivated = true;
+        }
+    }
+
+    /**
+     * Display hints on the user interface by highlighting all playable points.
+     */
+    private void showHint() {
+        ArrayList<Point> allPlayablePoints = searchAllPlayablePoints();
+
+        //TODO: display these points (transparent)
+    }
+
+    /**
+     * Hides the previously displayed hints on the user interface.
+     */
+    private void hideHint() {
+        //TODO: hide these points.
+    }
+
+    /**
+     * Searches for all playable points on the game board.
+     * @return An ArrayList containing all playable points on the game board.
+     */
+    private ArrayList<Point> searchAllPlayablePoints() {
+        ArrayList<Point> allPlayablePoints = new ArrayList<>();
+
+        // Loop through all points on the game board.
+        for (int i = 0; i < GameManager.DIMENSION; i++) {
+            for (int j = 0; j < GameManager.DIMENSION; j++) {
+                Point pointToDefine = new Point(i,j);
+
+                // Check if it can be played.
+                // The 'false' parameter indicates that this is a hypothetical move
+                if (gm.getBoard().canPointBePlayed(pointToDefine, false))
+                    allPlayablePoints.add(pointToDefine);
+            }
+        }
+
+        return allPlayablePoints;
     }
 
     @FXML

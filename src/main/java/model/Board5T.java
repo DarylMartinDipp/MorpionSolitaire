@@ -20,10 +20,12 @@ public class Board5T extends Board {
     /**
      * Check if the point can be placed here.
      * @param pointToPlay the point to be placed.
+     * @param hasToPlay True if the points hs to be played, false otherwise.
+     *                  False is for having all the playable points.
      * @return True if the point can be placed, false otherwise.
      */
     @Override
-    protected boolean canPointBePlayed(Point pointToPlay) {
+    public boolean canPointBePlayed(Point pointToPlay, boolean hasToPlay) {
         int x = pointToPlay.getX();
         int y = pointToPlay.getY();
 
