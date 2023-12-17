@@ -31,6 +31,10 @@ public class Board5D extends Board{
     @Override
     protected void playPoint(int x, int y) {
         addPoint(x,y);
-        System.out.println("model.Point successfully added.");
+        System.out.println("Point successfully added.");
+    }
+
+    @Override
+    public void process5TUserChoice(Point userPointChoice) {
     }
 }

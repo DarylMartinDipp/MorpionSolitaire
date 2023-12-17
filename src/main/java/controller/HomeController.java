@@ -13,7 +13,10 @@ import model.Player;
 
 import java.io.IOException;
 
-
+/**
+ * Controller class for the Home view, responsible for handling user interactions related to launching
+ * the Morpion Solitaire game, setting up options (username and mode), and displaying the score board.
+ */
 public class HomeController {
     public AnchorPane scene1AnchorPane;
     public TextField usernameField;
@@ -22,14 +25,14 @@ public class HomeController {
     public Button scoreBoardButton;
     private String mode;
 
-    private String username;
-    private Player player;
-
-
-
+    /**
+     * Launches the Morpion Solitaire game based on the provided username and game mode.
+     * @param event The ActionEvent triggered by the launch action, the playButton.
+     * @throws IOException If an I/O error occurs during the loading of the game view.
+     */
     @FXML
     public void launchTheGame(ActionEvent event) throws IOException {
-         username = usernameField.getText().trim();
+        String username = usernameField.getText().trim();
 
         if (username.isEmpty()) {
             showAlertUsername();
@@ -57,39 +60,50 @@ public class HomeController {
         stage.show();
     }
 
+    /**
+     * Sets mouse-entered and mouse-exited styles for specific buttons.
+     */
     @FXML
     private void initialize() {
         setColorMouseEnteredHome(playButton);
         setColorMouseEnteredHome(scoreBoardButton);
     }
 
+    /**
+     * Sets the mouse-entered and mouse-exited styles for a button, changing its background color.
+     * @param button The Button object to which the styles are applied.
+     */
     static void setColorMouseEnteredHome(Button button) {
-        button.setOnMouseEntered(event -> {
-            button.setStyle("-fx-background-color: lightblue; -fx-background-radius: 30 0 0 30;");
-        });
-
+        button.setOnMouseEntered(event -> button.setStyle("-fx-background-color: lightblue; -fx-background-radius: 30 0 0 30;"));
         button.setOnMouseExited(event -> button.setStyle("-fx-background-color: #6170ba; -fx-background-radius: 30 0 0 30;"));
     }
 
+    /**
+     * Loads and displays the score board.
+     */
     @FXML
     private void loadScoreBoard() {
         //TODO
         System.out.println("The score board should be displayed.");
     }
 
+    /**
+     * Handles the event when the game mode is changed.
+     */
     @FXML
     private void gameModeChanged() {
         String selectedMode = gameModeOptions.getSelectionModel().getSelectedItem();
         System.out.println("Selected Mode: " + selectedMode);
 
-        if (selectedMode != null && ("5D".equals(selectedMode) || "5T".equals(selectedMode))) {
+        if (("5D".equals(selectedMode) || "5T".equals(selectedMode))) {
             this.mode = selectedMode;
             System.out.println("Updated Mode: " + mode);
         }
     }
 
-
-
+    /**
+     * Set up the start options. The gameModeOptions ComboBox is updated,as the mode.
+     */
     private void setupOptions() {
         gameModeOptions.getItems().removeAll(gameModeOptions.getItems());
         gameModeOptions.getItems().addAll("5T", "5D");
@@ -101,6 +115,9 @@ public class HomeController {
         setupOptions();
     }
 
+    /**
+     * Show an alert if the username is not filled.
+     */
     private void showAlertUsername() {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("Warning");
@@ -108,5 +125,4 @@ public class HomeController {
         alert.setContentText("Please enter your username.");
         alert.showAndWait();
     }
-
 }

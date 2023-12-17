@@ -94,54 +94,12 @@ public abstract class Board {
     /**
      * Ask a point, to know if the point can be placed or not.
      */
-    public void askPoint() {
-        Scanner scannerPoint = new Scanner(System.in);
-        int x = 0;
-        int y = 0;
-        boolean isXValid = false;
-        boolean isYValid = false;
-
-        do {
-            // Ask for the x-value.
-            System.out.println("What is the x coordinate of the point to place?");
-            try {
-                // Try if the x-value is valid.
-                x = scannerPoint.nextInt();
-                new Point(x, 1);
-                isXValid = true;
-            } catch (IllegalArgumentException e) {
-                System.out.println("The x value is not valid.");
-                scannerPoint.nextLine();
-            }
-        } while (!isXValid);
-
-        do {
-            // Ask for the y-value.
-            System.out.println("What is the y coordinate of the point to place?");
-            try {
-                // Try if the x-value is valid.
-                y = scannerPoint.nextInt();
-                new Point(1, y);
-                isYValid = true;
-            } catch (IllegalArgumentException e) {
-                System.out.println("The y value is not valid.");
-                scannerPoint.nextLine();
-            }
-        } while (!isYValid);
-
+    public void askPoint(int x, int y) {
         // Here, the point entered is valid, so it is created.
         Point pointToAdd = new Point(x, y);
 
         // Check if the point already exists.
-        if (pointsPlaced.contains(pointToAdd)) {
-            System.out.println("The point already exists.");
-            askPoint();
-        // Check if the point can be placed.
-        } else if (!canPointBePlayed(pointToAdd)) {
-            System.out.println("The point cannot be placed here.");
-            askPoint();
-        // Play the point.
-        } else {
+        if (!pointsPlaced.contains(pointToAdd) && canPointBePlayed(pointToAdd)) {
             playPoint(x, y);
             score++;
         }
@@ -281,5 +239,5 @@ public abstract class Board {
         return lines;
     }
 
-
+    public abstract void process5TUserChoice(Point userPointChoice);
 }

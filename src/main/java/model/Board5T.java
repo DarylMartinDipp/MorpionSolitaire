@@ -1,9 +1,9 @@
 package model;
 
 import controller.GameManager;
+import controller.MorpionSolitaireController;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
 /**
  * The game board in the 5T mode.
@@ -12,6 +12,10 @@ public class Board5T extends Board {
     private Direction dir;
     private final ArrayList<Point> upPoints = new ArrayList<>();
     private final ArrayList<Point> downPoints = new ArrayList<>();
+    private ArrayList<Point> pointsForAFor5T = new ArrayList<>();
+    private ArrayList<Point> pointsForBFor5T = new ArrayList<>();
+    private int xFor5T;
+    private int yFor5T;
 
     /**
      * Check if the point can be placed here.
@@ -48,18 +52,16 @@ public class Board5T extends Board {
             // Redo hasAlignmentInDirection to save the line with addLine.
             hasAlignmentInDirection(x, y, dir, true);
             addPoint(x, y);
-            System.out.println("model.Point successfully added.");
+            System.out.println("Point successfully added.");
         }
 
         // Here, two lines can touch.
         else {
-            System.out.println("Choose where the line is starting (A or B) :");
-
             // Check if we use the upPoint or the downPoint ArrayLists.
             if (isUpPoint())
-                process5TUserChoice(x, y, downPoints, upPoints);
+                ask5TUserChoice(x, y, downPoints, upPoints);
             else
-                process5TUserChoice(x, y, upPoints, downPoints);
+                ask5TUserChoice(x, y, upPoints, downPoints);
         }
     }
 
@@ -168,36 +170,36 @@ public class Board5T extends Board {
      * @param pointsForA ArrayList containing the points for option A.
      * @param pointsForB ArrayList containing the points for option B.
      */
-    private void process5TUserChoice(int x, int y, ArrayList<Point> pointsForA, ArrayList<Point> pointsForB) {
-        Scanner scannerPlay = new Scanner(System.in);
-        String playerChoiceInput;
+    private void ask5TUserChoice(int x, int y, ArrayList<Point> pointsForA, ArrayList<Point> pointsForB) {
         System.out.println("A = " + pointsForA.get(1));
         System.out.println("B = " + pointsForB.get(0));
 
-        do {
-            playerChoiceInput = scannerPlay.nextLine().toUpperCase();
-            switch (playerChoiceInput) {
-                case "A" -> {
-                    addPoint(x, y);
-                    // Create an ArrayList for option A.
-                    ArrayList<Point> arrayListForA = new ArrayList<>();
-                    arrayListForA.add(pointsForA.get(1));
-                    arrayListForA.add(pointsForB.get(0));
-                    arrayListForA.add(pointsForB.get(1));
-                    arrayListForA.add(pointsForB.get(2));
-                    arrayListForA.add(pointsForB.get(3));
-                    // Add a line for option A.
-                    addLine(arrayListForA, dir);
-                    System.out.println("model.Point successfully added.");
-                }
-                case "B" -> {
-                    addPoint(x, y);
-                    // Add a line for option B.
-                    addLine(pointsForB, dir);
-                    System.out.println("model.Point successfully added.");
-                }
-                default -> System.out.println("Invalid mode for the point. Please choose A or B.");
-            }
-        } while (!playerChoiceInput.equals("A") && !playerChoiceInput.equals("B"));
+        this.pointsForAFor5T = pointsForA;
+        this.pointsForBFor5T = pointsForB;
+        this.xFor5T = x;
+        this.yFor5T = y;
+
+        MorpionSolitaireController.ask5TUserChoiceGraphic(pointsForA.get(1), pointsForB.get(0));
+    }
+
+    public void process5TUserChoice(Point pointToPlay) {
+        if (pointToPlay.equals(pointsForAFor5T.get(1))) {
+            addPoint(xFor5T, yFor5T);
+            // Create an ArrayList for option A.
+            ArrayList<Point> arrayListForA = new ArrayList<>();
+            arrayListForA.add(pointsForAFor5T.get(1));
+            arrayListForA.add(pointsForBFor5T.get(0));
+            arrayListForA.add(pointsForBFor5T.get(1));
+            arrayListForA.add(pointsForBFor5T.get(2));
+            arrayListForA.add(pointsForBFor5T.get(3));
+            // Add a line for option A.
+            addLine(arrayListForA, dir);
+            System.out.println("Point successfully added.");
+        } else if (pointToPlay.equals(pointsForBFor5T.get(0))) {
+            addPoint(xFor5T, yFor5T);
+            // Add a line for option B.
+            addLine(pointsForBFor5T, dir);
+            System.out.println("Point successfully added.");
+        }
     }
 }

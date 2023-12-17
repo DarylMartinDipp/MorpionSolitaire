@@ -1,5 +1,6 @@
 package controller;
 
+import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
@@ -15,6 +16,7 @@ public class ViewMorpionSolitaire {
     public static final int HEIGHT = GameManager.DIMENSION * 20;
 
     static List<Point> clickablePoints = new ArrayList<>();
+    static List<Point> highlightPoints = new ArrayList<>();
 
     public static void drawBoard(GraphicsContext gc, Board board) {
         // Set background color
@@ -42,6 +44,13 @@ public class ViewMorpionSolitaire {
 
             drawPlacedPoint(gc, x, y);
         }
+
+        for (Point point : highlightPoints) {
+            int x = point.getX() * (WIDTH / GameManager.DIMENSION);
+            int y = point.getY()* (HEIGHT / GameManager.DIMENSION);
+
+            drawHighlightedPoint(gc, x, y);
+        }
     }
 
     private static void drawClickablePoint(GraphicsContext gc, double x, double y) {
@@ -54,9 +63,12 @@ public class ViewMorpionSolitaire {
         gc.fillOval(x, y, OBJECTS_WIDTH * 4, OBJECTS_WIDTH * 4);
     }
 
+    protected static void drawHighlightedPoint(GraphicsContext gc, double x, double y) {
+        gc.setFill(Color.RED);
+        gc.fillOval(x, y, OBJECTS_WIDTH * 6, OBJECTS_WIDTH * 6);
+    }
+
     private static void drawGrid(GraphicsContext gc) {
-
-
         // Draw horizontal lines
         for (int i = 0; i <= GameManager.DIMENSION; i++) {
             int y = i * (HEIGHT / GameManager.DIMENSION);
@@ -70,24 +82,46 @@ public class ViewMorpionSolitaire {
         }
     }
 
-    static void handleCanvasClick(MouseEvent event) {
+    static void handleCanvasClick(MouseEvent event, GameManager gameManagerWithBoard, Canvas gameCanvas) {
         double clickedX = event.getX();
         double clickedY = event.getY();
 
-        // Check if the click coordinates are within the bounds of any clickable point
+        // Check if the click coordinates are within the bounds of any clickable point.
         for (Point point : clickablePoints) {
             double pointX = point.getX();
             double pointY = point.getY();
-            double radius = 5.0;
 
-            if (Math.pow(clickedX - pointX, 2) + Math.pow(clickedY - pointY, 2) <= Math.pow(radius, 2)) {
+            if (Math.pow(clickedX - pointX, 2) + Math.pow(clickedY - pointY, 2) <= Math.pow(5.0, 2)) {
                 int translatedX = coordinateTranslatorX(pointX);
                 int translatedY = coordinateTranslatorY(pointY);
 
                 System.out.println("Click at the position of the point: (x=" + translatedX + ", y=" + translatedY + ")");
+
+                gameManagerWithBoard.getBoard().askPoint(translatedX, translatedY);
+                drawBoard(gameCanvas.getGraphicsContext2D(), gameManagerWithBoard.getBoard());
+
                 break;
             }
         }
+    }
+
+    static Point handleCanvasClickForChoice(MouseEvent event) {
+        double clickedX = event.getX();
+        double clickedY = event.getY();
+
+        // Check if the click coordinates are within the bounds of any clickable point.
+        for (Point point : clickablePoints) {
+            double pointX = point.getX();
+            double pointY = point.getY();
+
+            if (Math.pow(clickedX - pointX, 2) + Math.pow(clickedY - pointY, 2) <= Math.pow(5.0, 2)) {
+                int translatedX = coordinateTranslatorX(pointX);
+                int translatedY = coordinateTranslatorY(pointY);
+
+                return new Point(translatedX, translatedY);
+            }
+        }
+        return null;
     }
 
     private static int coordinateTranslatorX(double gridX) {
