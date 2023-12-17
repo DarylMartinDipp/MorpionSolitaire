@@ -8,16 +8,10 @@ import java.util.ArrayList;
 public class Line {
     private final ArrayList<Point> points;
     private final Direction direction;
-    private final int lineNumber;
 
-    public Line(ArrayList<Point> points, Direction direction, int lineNumber) {
+    public Line(ArrayList<Point> points, Direction direction) {
         this.points = points;
         this.direction = direction;
-        this.lineNumber = lineNumber;
-    }
-
-    public int getLineNumber() {
-        return lineNumber;
     }
 
     public ArrayList<Point> getPointsOfTheLine() {
@@ -27,6 +21,4 @@ public class Line {
     public Direction getDirection() {
         return direction;
     }
-
-
 }

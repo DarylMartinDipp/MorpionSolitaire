@@ -2,7 +2,6 @@ package model;
 
 import controller.GameManager;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * The game board, containing the points and the lines.
@@ -11,10 +10,8 @@ public abstract class Board {
     private final ArrayList<Point> pointsPlaced;
     private int score;
     private final ArrayList<Line> lines;
-    public static Point lastAddedPoint;
 
-    public static ArrayList<Point> lastAddedPoints= new ArrayList<Point>();
-
+    private final ArrayList<Point> lastAddedPoints= new ArrayList<>();
 
     public Board() {
         this.pointsPlaced = new ArrayList<>();
@@ -96,20 +93,19 @@ public abstract class Board {
 
     /**
      * Ask a point, to know if the point can be placed or not.
+     * @param x The X-coordinate of the point to be added.
+     * @param y The Y-coordinate of the point to be added.
      */
-    public List<Point> askPoint(int x, int y) {
-        //TODO:Changer le commentaire
+    public void askPoint(int x, int y) {
         // Here, the point entered is valid, so it is created.
         Point pointToAdd = new Point(x, y);
 
         // Check if the point already exists.
         if (!pointsPlaced.contains(pointToAdd) && canPointBePlayed(pointToAdd)) {
             playPoint(x, y);
-            lastAddedPoint = new Point(x, y);
-            lastAddedPoints.add(lastAddedPoint);
+            lastAddedPoints.add(new Point(x, y));
             score++;
         }
-        return  lastAddedPoints;
     }
 
     /**
@@ -121,8 +117,8 @@ public abstract class Board {
 
     /**
      * Check if there is a potential alignment of 5 points in the specified direction starting from the given coordinates.
-     * @param x The x-coordinate to start checking from.
-     * @param y The y-coordinate to start checking from.
+     * @param x The X-coordinate to start checking from.
+     * @param y The Y-coordinate to start checking from.
      * @param direction The direction in which to check for alignment (HORIZONTAL, VERTICAL, B_DIAGONAL, T_DIAGONAL).
      * @param addLineDirectly If true, a line is directlyAdded (for 5D), false otherwise (for 5T)
      * @return True if an alignment is found and a line is added; otherwise, false.
@@ -223,8 +219,8 @@ public abstract class Board {
 
     /**
      * Play the point as in the mode.
-     * @param x The x-coordinate of the point to be added.
-     * @param y The y-coordinate of the point to be added.
+     * @param x The X-coordinate of the point to be added.
+     * @param y The Y-coordinate of the point to be added.
      */
     protected abstract void playPoint(int x, int y);
 
@@ -241,7 +237,7 @@ public abstract class Board {
      * @param directionOfNewLine The direction of the new line (HORIZONTAL, VERTICAL, B_DIAGONAL, T_DIAGONAL).
      */
     public void addLine(ArrayList<Point> pointsOfNewLine, Direction directionOfNewLine) {
-        Line newLine = new Line(pointsOfNewLine, directionOfNewLine, lines.size() + 1);
+        Line newLine = new Line(pointsOfNewLine, directionOfNewLine);
         lines.add(newLine);
     }
 
@@ -257,5 +253,7 @@ public abstract class Board {
         return score;
     }
 
-
+    public ArrayList<Point> getLastAddedPoints() {
+        return lastAddedPoints;
+    }
 }

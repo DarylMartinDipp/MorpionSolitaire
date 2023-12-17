@@ -41,17 +41,4 @@ public class Point {
     public String toString() {
         return "(" + x + ";" + y + ")";
     }
-
-    /**
-     * Checks if this point is adjacent to another point.
-     * @param other The point to check adjacency with.
-     * @return True if this point is adjacent to the specified point, false otherwise.
-     */
-    public boolean isAdjacentTo(Point other) {
-        // TODO:delete if not useful
-        int dx = Math.abs(this.x - other.x);
-        int dy = Math.abs(this.y - other.y);
-        return (dx <= 1 && dy <= 1);
-    }
-
 }

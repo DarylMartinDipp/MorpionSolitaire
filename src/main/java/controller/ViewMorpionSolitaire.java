@@ -11,9 +11,6 @@ import model.Point;
 import java.util.ArrayList;
 import java.util.List;
 
-import static model.Board.lastAddedPoint;
-import static model.Board.lastAddedPoints;
-
 public class ViewMorpionSolitaire {
     private static final double OBJECTS_WIDTH = 1.0;
     private static final int WIDTH = GameManager.DIMENSION * 20;
@@ -32,7 +29,6 @@ public class ViewMorpionSolitaire {
         // Set background color
         gc.setFill(Color.web("#6170ba"));
         gc.fillRect(0, 0, WIDTH, HEIGHT);
-
 
         // Utilisez la méthode drawGrid avec le contexte graphique
         drawGrid(gc);
@@ -61,7 +57,7 @@ public class ViewMorpionSolitaire {
         // Draw all scored points
         int position = 1; // Initialiser le compteur à 1
 
-        for (Point point : lastAddedPoints) {
+        for (Point point : board.getLastAddedPoints()) {
             int x = point.getX() * (WIDTH / GameManager.DIMENSION);
             int y = point.getY() * (HEIGHT / GameManager.DIMENSION);
 
@@ -77,10 +73,12 @@ public class ViewMorpionSolitaire {
 
             drawHighlightedPoint(gc, x, y);
         }
-
-
     }
 
+    /**
+     * Draws the grid on the canvas.
+     * @param gc The GraphicsContext used for drawing on the canvas.
+     */
     private static void drawGrid(GraphicsContext gc) {
         // Draw horizontal lines
         for (int i = 0; i <= GameManager.DIMENSION; i++) {
@@ -111,11 +109,10 @@ public class ViewMorpionSolitaire {
 
         gc.setFill(Color.LIGHTSALMON);
         gc.fillOval(x - halfSize, y - halfSize, ovalSize, ovalSize);
-
     }
 
     private static void drawScoredPoint(GraphicsContext gc, double x, double y, int position) {
-        double ovalSize = OBJECTS_WIDTH * 12.5; // Augmenter la taille des ovales
+        double ovalSize = OBJECTS_WIDTH * 12.5;
         double halfSize = ovalSize / 2.0;
 
         gc.setFill(Color.LIGHTSALMON);
@@ -124,10 +121,6 @@ public class ViewMorpionSolitaire {
         gc.fillText(String.valueOf(position), x - halfSize + 2, y + halfSize - 2);
     }
 
-
-
-
-
     private static void drawHighlightedPoint(GraphicsContext gc, double x, double y) {
         double ovalSize = OBJECTS_WIDTH * 12; // Augmenter la taille des ovales
         double halfSize = ovalSize / 2.0;
@@ -135,6 +128,7 @@ public class ViewMorpionSolitaire {
         gc.setFill(Color.RED);
         gc.fillOval(x - halfSize, y - halfSize, ovalSize, ovalSize);
     }
+
     private static void drawLines(GraphicsContext gc, Board board) {
         gc.setStroke(Color.WHITE); // Couleur de la ligne
 
@@ -144,16 +138,16 @@ public class ViewMorpionSolitaire {
             if (pointsOfTheLine.size() > 1) {
                 // Commencer le dessin de la ligne à partir du premier point
                 Point startPoint = pointsOfTheLine.get(0);
-                double startX = startPoint.getX() * (WIDTH / GameManager.DIMENSION);
-                double startY = startPoint.getY() * (HEIGHT / GameManager.DIMENSION);
+                int startX = startPoint.getX() * (WIDTH / GameManager.DIMENSION);
+                int startY = startPoint.getY() * (HEIGHT / GameManager.DIMENSION);
                 gc.beginPath();
                 gc.moveTo(startX, startY);
 
                 // Ajouter des segments de ligne pour les points suivants
                 for (int i = 1; i < pointsOfTheLine.size(); i++) {
                     Point point = pointsOfTheLine.get(i);
-                    double x = point.getX() * (WIDTH / GameManager.DIMENSION);
-                    double y = point.getY() * (HEIGHT / GameManager.DIMENSION);
+                    int x = point.getX() * (WIDTH / GameManager.DIMENSION);
+                    int y = point.getY() * (HEIGHT / GameManager.DIMENSION);
                     gc.lineTo(x, y);
                 }
 
@@ -161,7 +155,6 @@ public class ViewMorpionSolitaire {
             }
         }
     }
-
 
     /**
      * Handles mouse-click events on the Morpion Solitaire game canvas.
