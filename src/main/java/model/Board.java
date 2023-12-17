@@ -253,6 +253,10 @@ public abstract class Board {
         return score;
     }
 
+    public void setScore(int score) {
+        this.score = score;
+    }
+
     public ArrayList<Point> getPointsAddedByUser() {
         return pointsAddedByUser;
     }

@@ -11,9 +11,8 @@
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="518.0" prefWidth="624.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MorpionSolitaireController">
    <center>
       <Pane prefWidth="647.0" style="-fx-background-color: #6170ba;" BorderPane.alignment="CENTER">
-         <children>
-            <Canvas fx:id="gameCanvas" height="300.0" layoutX="162.0" layoutY="71.0" onMousePressed="#canvasMousePressed" width="300.0" />
-         </children>
+         <Canvas fx:id="gameCanvas" height="300.0" layoutX="162.0" layoutY="71.0" onMousePressed="#canvasMousePressed"
+                 width="300.0"/>
       </Pane>
    </center>
    <top>
@@ -32,13 +31,16 @@
       </AnchorPane>
    </top>
    <bottom>
-      <AnchorPane minWidth="300.0" prefHeight="38.0" prefWidth="300.0" style="-fx-background-color: #2F2B43;" BorderPane.alignment="CENTER">
-         <children>
-            <Label fx:id="playerLabel" layoutX="14.0" layoutY="8.0" minWidth="52.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="17.0" prefWidth="75.0" text="Player: " textFill="WHITE" />
-            <Button fx:id="hintButton" layoutX="296.0" layoutY="4.0" mnemonicParsing="false" style="-fx-background-color: #6170ba;" text="Hint" />
-            <Button fx:id="quitButton" layoutX="130.0" layoutY="4.0" mnemonicParsing="false" onAction="#quit" prefHeight="26.0" prefWidth="52.0" style="-fx-background-color: #6170ba;" text="Quit the game" />
-            <Button fx:id="simulateButton" layoutX="516.0" layoutY="4.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="64.0" style="-fx-background-color: #6170ba;" text="Simulate" />
-         </children>
+      <AnchorPane minWidth="300.0" prefHeight="38.0" prefWidth="300.0" style="-fx-background-color: #2F2B43;"
+                  BorderPane.alignment="CENTER">
+         <Label fx:id="playerLabel" layoutX="14.0" layoutY="8.0" minWidth="52.0" nodeOrientation="LEFT_TO_RIGHT"
+                prefHeight="17.0" prefWidth="75.0" text="Player: " textFill="WHITE"/>
+         <Button fx:id="hintButton" layoutX="296.0" layoutY="4.0" mnemonicParsing="false"
+                 style="-fx-background-color: #6170ba;" text="Hint"/>
+         <Button fx:id="quitButton" layoutX="130.0" layoutY="4.0" mnemonicParsing="false" onAction="#quit"
+                 prefHeight="26.0" prefWidth="52.0" style="-fx-background-color: #6170ba;" text="Quit the game"/>
+         <Button fx:id="simulateButton" layoutX="516.0" layoutY="4.0" mnemonicParsing="false" prefHeight="26.0"
+                 prefWidth="64.0" style="-fx-background-color: #6170ba;" text="Simulate"/>
       </AnchorPane>
    </bottom>
 </BorderPane>

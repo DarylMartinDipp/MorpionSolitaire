@@ -40,6 +40,7 @@ public class MorpionSolitaireController {
      */
     public void drawBoard() {
         ViewMorpionSolitaire.drawBoard(gameCanvas.getGraphicsContext2D(),gm.getBoard());
+        displayScore();
     }
 
     /**
@@ -67,9 +68,8 @@ public class MorpionSolitaireController {
         else
             ViewMorpionSolitaire.handleClick(me, gm, gameCanvas);
 
-        // Draw the board and update the score.
+        // Draw the board.
         drawBoard();
-        displayScore();
     }
 
     /**
@@ -105,10 +105,27 @@ public class MorpionSolitaireController {
         modeLabel.setText("Mode: " + mode);
     }
 
+    /**
+     * Undo the last player move.
+     */
     @FXML
     private void undo() {
-        //TODO
-        System.out.println("The previous move should be canceled.");
+        if (gm.getBoard().getPointsAddedByUser().isEmpty())
+            return;
+
+        // Remove the last point from pointsAddedByUser
+        gm.getBoard().getPointsAddedByUser().remove(gm.getBoard().getPointsAddedByUser().size() - 1);
+
+        // Remove the last point from pointsPlaced
+        gm.getBoard().getPointsPlaced().remove(gm.getBoard().getPointsPlaced().size() - 1);
+
+        // Remove the last line
+        gm.getBoard().getLines().remove(gm.getBoard().getLines().size() - 1);
+
+        // Set the new score
+        gm.getBoard().setScore(gm.getBoard().getScore() - 1);
+
+        drawBoard();
     }
 
     @FXML
