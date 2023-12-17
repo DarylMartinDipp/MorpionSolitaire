@@ -55,6 +55,9 @@ public class ViewMorpionSolitaire {
 
             drawPlacedPoint(gc, x, y);
         }
+
+        // Draw lines for the points in the board.
+                drawLines(gc, board);
         // Draw all scored points
         int position = 1; // Initialiser le compteur à 1
 
@@ -75,20 +78,21 @@ public class ViewMorpionSolitaire {
             drawHighlightedPoint(gc, x, y);
         }
 
-        // Draw lines for the points in the board.
-        drawLines(gc, board);
+
     }
 
     private static void drawGrid(GraphicsContext gc) {
         // Draw horizontal lines
         for (int i = 0; i <= GameManager.DIMENSION; i++) {
             int y = i * (HEIGHT / GameManager.DIMENSION);
+            gc.setStroke(Color.BLACK);
             gc.strokeLine(0, y, WIDTH, y);
         }
 
         // Draw vertical lines
         for (int i = 0; i <= GameManager.DIMENSION; i++) {
             int x = i * (WIDTH / GameManager.DIMENSION);
+            gc.setStroke(Color.BLACK);
             gc.strokeLine(x, 0, x, HEIGHT);
         }
     }
@@ -132,7 +136,7 @@ public class ViewMorpionSolitaire {
         gc.fillOval(x - halfSize, y - halfSize, ovalSize, ovalSize);
     }
     private static void drawLines(GraphicsContext gc, Board board) {
-        gc.setStroke(Color.BLACK); // Couleur de la ligne
+        gc.setStroke(Color.WHITE); // Couleur de la ligne
 
         for (Line line : board.getLines()) {
             ArrayList<Point> pointsOfTheLine = line.getPointsOfTheLine();
