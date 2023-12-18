@@ -123,16 +123,16 @@ public class MorpionSolitaireController {
         if (gm.getBoard().getPointsAddedByUser().isEmpty())
             return;
 
-        // Remove the last point from pointsAddedByUser
+        // Remove the last point from pointsAddedByUser.
         gm.getBoard().getPointsAddedByUser().remove(gm.getBoard().getPointsAddedByUser().size() - 1);
 
-        // Remove the last point from pointsPlaced
+        // Remove the last point from pointsPlaced.
         gm.getBoard().getPointsPlaced().remove(gm.getBoard().getPointsPlaced().size() - 1);
 
-        // Remove the last line
+        // Remove the last line.
         gm.getBoard().getLines().remove(gm.getBoard().getLines().size() - 1);
 
-        // Set the new score
+        // Set the new score.
         gm.getBoard().setScore(gm.getBoard().getScore() - 1);
 
         drawBoard();
@@ -140,12 +140,12 @@ public class MorpionSolitaireController {
 
 
     /**
-     * Toggles the display of a hint in the user interface.
-     * If the hint is currently activated, it hides the hint; otherwise, it shows the hint.
+     * Toggles the hint functionality on or off.
+     * Depending on the flag hintActivated, drawBoard() display the hint or not.
      */
     @FXML
     public void performHint() {
-        hintActivated = !hintActivated; // Inversion de la valeur de hintActivated
+        hintActivated = !hintActivated;
         drawBoard();
     }
 
@@ -153,7 +153,7 @@ public class MorpionSolitaireController {
      * Searches for all playable points on the game board.
      * @return An ArrayList containing all playable points on the game board.
      */
-    private ArrayList<Point> searchAllPlayablePoints() {
+    public ArrayList<Point> searchAllPlayablePoints() {
         ArrayList<Point> allPlayablePoints = new ArrayList<>();
 
         // Loop through all points on the game board.
@@ -171,12 +171,11 @@ public class MorpionSolitaireController {
         return allPlayablePoints;
     }
 
+    /**
+     * Quit the game, to get back to the home page.
+     */
     @FXML
     private void quit() {
-        //TODO: TextBox "Are you sure you want to quit?" "Yes" "No"
-        // If No, stay on the screen
-        // If Yes, go to Home page
-        //MODIFICATION GUILLAUME
         try {
             showAlertQuitTheGame();
         } catch (IOException e) {
@@ -214,48 +213,53 @@ public class MorpionSolitaireController {
         // Flag that the system is waiting for the user's input.
         waitForUserChoice = true;
     }
+
+    /**
+     * Display a confirmation alert to inquire if the player is certain about quitting the game.
+     * @throws IOException Thrown if there is an issue loading the home-view.fxml file.
+     */
     private void showAlertQuitTheGame() throws IOException {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Warning");
+        alert.setTitle("Quit");
         alert.setHeaderText(null);
-        alert.setContentText("Do you really want to quit the game? You will be sent back to home screen");
+        alert.setContentText("Do you really want to quit the game? You will be sent back to the home screen");
 
-        // Ajouter des boutons personnalisés (Yes et No)
         ButtonType buttonTypeYes = new ButtonType("Yes", ButtonBar.ButtonData.YES);
         ButtonType buttonTypeNo = new ButtonType("No", ButtonBar.ButtonData.NO);
         alert.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo);
 
-        // Récupérer le bouton "Yes" et ajouter un gestionnaire d'événements
+        // Retrieve the "Yes" button and attach an event handler
         Button yesButton = (Button) alert.getDialogPane().lookupButton(buttonTypeYes);
-        yesButton.setOnAction(event -> {
-            // Fermer la fenêtre actuelle
-            Stage currentStage = (Stage) gameCanvas.getScene().getWindow(); // Remplacez gameCanvas par le composant que vous voulez utiliser
-            currentStage.close();
+        yesButton.setOnAction(event -> handleQuitGameConfirmation());
 
-            // Ouvrir la nouvelle fenêtre d'accueil
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/home-view.fxml"));
-            Parent root = null;
-            try {
-                root = loader.load();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            HomeController hc = loader.getController();
-            hc.start();
-
-            // Afficher la nouvelle fenêtre
-            Stage newStage = new Stage();
-            newStage.setTitle("Morpion Solitaire");
-            newStage.setScene(new Scene(root));
-            newStage.show();
-        });
-
+        // Show the alert and wait for user input
         alert.showAndWait();
     }
 
-   //TODO MODIFICATION GUILLAUME
-    public ArrayList<Point> getSearchAllPlayablePoints(){
-        return searchAllPlayablePoints();
-    }
+    /**
+     * Handle the event when the player confirms quitting the game.
+     * @throws RuntimeException Thrown if there is an issue loading the home-view.fxml file.
+     */
+    private void handleQuitGameConfirmation() {
+        // Close the current game window
+        Stage currentStage = (Stage) gameCanvas.getScene().getWindow();
+        currentStage.close();
 
+        // Open the new home screen window
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/home-view.fxml"));
+        Parent root;
+        try {
+            root = loader.load();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        HomeController hc = loader.getController();
+        hc.start();
+
+        Stage newStage = new Stage();
+        newStage.setTitle("Morpion Solitaire");
+        newStage.setScene(new Scene(root));
+        newStage.show();
+    }
 }

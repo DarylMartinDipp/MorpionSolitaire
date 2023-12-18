@@ -52,8 +52,7 @@ public class HomeController {
         mpc.setGameManager(gm);
         mpc.setPlayer(player);
         mpc.setMode(mode);
-        //TODO MODIFICATION GUILLAUME , il me fallait une instance de mpc dans ViewMorpionSolitaireh
-        ViewMorpionSolitaire.hintController=mpc;
+        ViewMorpionSolitaire.hintController = mpc;
         mpc.start();
 
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();

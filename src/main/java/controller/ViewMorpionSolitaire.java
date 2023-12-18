@@ -22,76 +22,32 @@ public class ViewMorpionSolitaire {
     protected static MorpionSolitaireController hintController;
 
     /**
-     * Draws the Morpion Solitaire game board.
-     * This includes the background color, grid lines, clickable points, placed points, and highlighted points.
+     * Draw the Morpion Solitaire game board entirely.
      * @param gc The GraphicsContext on which to draw the board.
      * @param board The Board object representing the game state.
      */
     protected static void drawBoard(GraphicsContext gc, Board board) {
-        // Set background color
-        gc.setFill(Color.web("#6170ba"));
-        gc.fillRect(0, 0, WIDTH, HEIGHT);
-
-        // Utilisez la méthode drawGrid avec le contexte graphique
+        drawBackgroundColor(gc);
         drawGrid(gc);
-
-        // Draw all points on the grid and make them clickable.
-        for (int i = 0; i < GameManager.DIMENSION; i++) {
-            for (int j = 0; j < GameManager.DIMENSION; j++) {
-                int x = i * (WIDTH / GameManager.DIMENSION);
-                int y = j * (HEIGHT / GameManager.DIMENSION);
-
-                drawClickablePoint(gc, x, y);
-                clickablePoints.add(new Point(x, y));
-            }
-        }
-
-        // Draw all the placed points.
-        for (Point point : board.getPointsPlaced()) {
-            int x = point.getX() * (WIDTH / GameManager.DIMENSION);
-            int y = point.getY()* (HEIGHT / GameManager.DIMENSION);
-
-            drawPlacedPoint(gc, x, y);
-        }
-
-        //Draw all hint points.
-        //TODO GUILLAUME
-        if (MorpionSolitaireController.hintActivated) {
-            ArrayList<Point> hintPoints = hintController.getSearchAllPlayablePoints();
-
-            for (Point hintPoint : hintPoints) {
-                int x = hintPoint.getX() * (WIDTH / GameManager.DIMENSION);
-                int y = hintPoint.getY() * (HEIGHT / GameManager.DIMENSION);
-
-                drawHintPoint(gc, x, y);
-            }
-        }
-
-        // Draw lines for the points in the board.
+        drawClickablePoints(gc);
+        drawPlacedPoints(gc, board);
+        drawHintPoints(gc);
         drawLines(gc, board);
-
-        int pointNumber = 1;
-
-        // Draw all points number
-        for (Point point : board.getPointsAddedByUser()) {
-            int x = point.getX() * (WIDTH / GameManager.DIMENSION);
-            int y = point.getY() * (HEIGHT / GameManager.DIMENSION);
-
-            drawScoredPoint(gc, x, y, pointNumber);
-            pointNumber++;
-        }
-
-        // Draw all highlighted points if any.
-        for (Point point : highlightPoints) {
-            int x = point.getX() * (WIDTH / GameManager.DIMENSION);
-            int y = point.getY()* (HEIGHT / GameManager.DIMENSION);
-
-            drawHighlightedPoint(gc, x, y);
-        }
+        drawScoredPoints(gc, board.getPointsAddedByUser());
+        drawHighlightedPoints(gc);
     }
 
     /**
-     * Draws the grid on the canvas.
+     * Set the background color of the game board.
+     * @param gc The GraphicsContext on which to draw the background color.
+     */
+    private static void drawBackgroundColor(GraphicsContext gc) {
+        gc.setFill(Color.web("#6170ba"));
+        gc.fillRect(0, 0, WIDTH, HEIGHT);
+    }
+
+    /**
+     * Draw the grid of the game board.
      * @param gc The GraphicsContext used for drawing on the canvas.
      */
     private static void drawGrid(GraphicsContext gc) {
@@ -110,6 +66,22 @@ public class ViewMorpionSolitaire {
         }
     }
 
+    /**
+     * Draw all clickable points on the game board.
+     * @param gc The GraphicsContext on which to draw the clickable points.
+     */
+    private static void drawClickablePoints(GraphicsContext gc) {
+        for (int i = 0; i < GameManager.DIMENSION; i++) {
+            for (int j = 0; j < GameManager.DIMENSION; j++) {
+                int x = i * (WIDTH / GameManager.DIMENSION);
+                int y = j * (HEIGHT / GameManager.DIMENSION);
+
+                drawClickablePoint(gc, x, y);
+                clickablePoints.add(new Point(x, y));
+            }
+        }
+    }
+
     private static void drawClickablePoint(GraphicsContext gc, double x, double y) {
         double ovalSize = OBJECTS_WIDTH * 10; // Changer la taille des ovales
         double halfSize = ovalSize / 2.0;
@@ -118,28 +90,129 @@ public class ViewMorpionSolitaire {
         gc.fillOval(x - halfSize, y - halfSize, ovalSize, ovalSize);
     }
 
+    /**
+     * Draw all placed points on the game board.
+     * @param gc The GraphicsContext on which to draw the placed points.
+     * @param board The game board.
+     */
+    private static void drawPlacedPoints(GraphicsContext gc, Board board) {
+        for (Point point : board.getPointsPlaced()) {
+            int x = point.getX() * (WIDTH / GameManager.DIMENSION);
+            int y = point.getY() * (HEIGHT / GameManager.DIMENSION);
+
+            drawPlacedPoint(gc, x, y);
+        }
+    }
+
     private static void drawPlacedPoint(GraphicsContext gc, double x, double y) {
         double ovalSize = OBJECTS_WIDTH * 10; // Augmenter la taille des ovales
         double halfSize = ovalSize / 2.0;
 
         gc.setFill(Color.LIGHTBLUE);
         gc.fillOval(x - halfSize, y - halfSize, ovalSize, ovalSize);
+    }
 
+    /**
+     * Draw all hint points on the game board if hint functionality is activated.
+     * @param gc The GraphicsContext on which to draw the hint points.
+     */
+    private static void drawHintPoints(GraphicsContext gc) {
+        if (MorpionSolitaireController.hintActivated) {
+            ArrayList<Point> hintPoints = hintController.searchAllPlayablePoints();
+
+            for (Point hintPoint : hintPoints) {
+                int x = hintPoint.getX() * (WIDTH / GameManager.DIMENSION);
+                int y = hintPoint.getY() * (HEIGHT / GameManager.DIMENSION);
+
+                drawHintPoint(gc, x, y);
+            }
+        }
+    }
+
+    private static void drawHintPoint(GraphicsContext gc, double x, double y) {
+        double ovalSize = OBJECTS_WIDTH * 10;
+        double halfSize = ovalSize / 2.0;
+
+        gc.setFill(Color.rgb(0, 0, 139, 0.5));
+
+        gc.fillOval(x - halfSize, y - halfSize, ovalSize, ovalSize);
+    }
+
+    /**
+     * Draw all lines on the game board.
+     * @param gc The GraphicsContext on which to draw the placed points.
+     * @param board The game board.
+     */
+    private static void drawLines(GraphicsContext gc, Board board) {
+        gc.setStroke(Color.WHITE);
+
+        // Iterate through all the lines on the board.
+        for (Line line : board.getLines()) {
+            ArrayList<Point> pointsOfTheLine = line.getPointsOfTheLine();
+
+            if (pointsOfTheLine.size() > 1) {
+                // Get the starting point of the line (the first point in the sorted list).
+                Point startPoint = pointsOfTheLine.get(0);
+                int startX = startPoint.getX() * (WIDTH / GameManager.DIMENSION);
+                int startY = startPoint.getY() * (HEIGHT / GameManager.DIMENSION);
+                gc.beginPath();
+                gc.moveTo(startX, startY);
+
+                // Add line segments for the remaining points
+                for (int i = 1; i < pointsOfTheLine.size(); i++) {
+                    Point point = pointsOfTheLine.get(i);
+                    int x = point.getX() * (WIDTH / GameManager.DIMENSION);
+                    int y = point.getY() * (HEIGHT / GameManager.DIMENSION);
+                    gc.lineTo(x, y);
+                }
+
+                // Draw the line.
+                gc.stroke();
+            }
+        }
+    }
+
+    /**
+     * Draw each point added by the user, with the right number on it.
+     * @param gc The GraphicsContext on which to draw the point numbers.
+     * @param points The list of points added by the user.
+     */
+    private static void drawScoredPoints(GraphicsContext gc, List<Point> points) {
+        int pointNumber = 1;
+
+        for (Point point : points) {
+            int x = point.getX() * (WIDTH / GameManager.DIMENSION);
+            int y = point.getY() * (HEIGHT / GameManager.DIMENSION);
+
+            drawScoredPoint(gc, x, y, pointNumber);
+            pointNumber++;
+        }
     }
 
     private static void drawScoredPoint(GraphicsContext gc, double x, double y, int position) {
-        double ovalSize = OBJECTS_WIDTH * 20; // Augmenter la taille des ovales
+        double ovalSize = OBJECTS_WIDTH * 20;
         double halfSize = ovalSize / 2.0;
 
         gc.setFill(Color.DARKBLUE);
         gc.fillOval(x - halfSize, y - halfSize, ovalSize, ovalSize);
-        gc.setFill(Color.WHITE); // Couleur du texte
-        if (Integer.valueOf(position)<10)
-        { gc.fillText(String.valueOf(position), x - halfSize + 6, y + halfSize - 6);}
+        gc.setFill(Color.WHITE);
+        if (position < 10)
+            gc.fillText(String.valueOf(position), x - halfSize + 6, y + halfSize - 6);
         else
             gc.fillText(String.valueOf(position), x - halfSize + 3, y + halfSize - 5);
+    }
 
+    /**
+     * Draw all highlighted points on the game board.
+     * @param gc The GraphicsContext on which to draw the highlighted points.
+     */
+    private static void drawHighlightedPoints(GraphicsContext gc) {
+        for (Point point : highlightPoints) {
+            int x = point.getX() * (WIDTH / GameManager.DIMENSION);
+            int y = point.getY() * (HEIGHT / GameManager.DIMENSION);
 
+            drawHighlightedPoint(gc, x, y);
+        }
     }
 
     private static void drawHighlightedPoint(GraphicsContext gc, double x, double y) {
@@ -148,46 +221,6 @@ public class ViewMorpionSolitaire {
 
         gc.setFill(Color.RED);
         gc.fillOval(x - halfSize, y - halfSize, ovalSize, ovalSize);
-    }
-    private static void drawHintPoint(GraphicsContext gc, double x, double y) {
-        //TODO MODIFICATION GUILLAUME
-        double ovalSize = OBJECTS_WIDTH * 10; // Augmenter la taille des ovales
-        double halfSize = ovalSize / 2.0;
-
-        // Définir la couleur de remplissage avec une opacité réduite
-        gc.setFill(Color.rgb(0, 0, 139, 0.5)); // Dark blue with reduced opacity
-
-        gc.fillOval(x - halfSize, y - halfSize, ovalSize, ovalSize);
-
-    }
-
-
-
-    private static void drawLines(GraphicsContext gc, Board board) {
-        gc.setStroke(Color.WHITE); // Couleur de la ligne
-
-        for (Line line : board.getLines()) {
-            ArrayList<Point> pointsOfTheLine = line.getPointsOfTheLine();
-
-            if (pointsOfTheLine.size() > 1) {
-                // Commencer le dessin de la ligne à partir du premier point
-                Point startPoint = pointsOfTheLine.get(0);
-                int startX = startPoint.getX() * (WIDTH / GameManager.DIMENSION);
-                int startY = startPoint.getY() * (HEIGHT / GameManager.DIMENSION);
-                gc.beginPath();
-                gc.moveTo(startX, startY);
-
-                // Ajouter des segments de ligne pour les points suivants
-                for (int i = 1; i < pointsOfTheLine.size(); i++) {
-                    Point point = pointsOfTheLine.get(i);
-                    int x = point.getX() * (WIDTH / GameManager.DIMENSION);
-                    int y = point.getY() * (HEIGHT / GameManager.DIMENSION);
-                    gc.lineTo(x, y);
-                }
-
-                gc.stroke(); // Dessiner la ligne
-            }
-        }
     }
 
     /**
