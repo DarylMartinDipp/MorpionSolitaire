@@ -22,7 +22,8 @@ public class MorpionSolitaireController {
     public Label playerLabel;
     public Label modeLabel;
     public Button undoButton;
-    public Button simulateButton;
+    public Button randomButton;
+    public Button nmcsButton;
     public Button quitButton;
     public Button hintButton;
 
@@ -88,7 +89,7 @@ public class MorpionSolitaireController {
     @FXML
     private void initialize() {
         setColorMouseEnteredGame(undoButton);
-        setColorMouseEnteredGame(simulateButton);
+        setColorMouseEnteredGame(randomButton);
         setColorMouseEnteredGame(quitButton);
         setColorMouseEnteredGame(hintButton);
     }
@@ -143,9 +144,15 @@ public class MorpionSolitaireController {
      * Toggles the hint functionality on or off.
      * Depending on the flag hintActivated, drawBoard() display the hint or not.
      */
+
     @FXML
     public void performHint() {
-        hintActivated = !hintActivated;
+        hintActivated = !hintActivated; // Inversion de la valeur de hintActivated
+
+        // Change the text of the button based on the hint activation status
+        hintButton.setText(hintActivated ? "Hide Hint" : "Show Hint");
+
+        // Perform other actions as needed
         drawBoard();
     }
 
@@ -220,46 +227,42 @@ public class MorpionSolitaireController {
      */
     private void showAlertQuitTheGame() throws IOException {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Quit");
+        alert.setTitle("Warning");
         alert.setHeaderText(null);
-        alert.setContentText("Do you really want to quit the game? You will be sent back to the home screen");
+        alert.setContentText("Do you really want to quit the game? You will be sent back to home screen");
 
+        // Ajouter des boutons personnalisés (Yes et No)
         ButtonType buttonTypeYes = new ButtonType("Yes", ButtonBar.ButtonData.YES);
         ButtonType buttonTypeNo = new ButtonType("No", ButtonBar.ButtonData.NO);
         alert.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo);
 
-        // Retrieve the "Yes" button and attach an event handler
+        // Récupérer le bouton "Yes" et ajouter un gestionnaire d'événements
         Button yesButton = (Button) alert.getDialogPane().lookupButton(buttonTypeYes);
-        yesButton.setOnAction(event -> handleQuitGameConfirmation());
+        yesButton.setOnAction(event -> {
+            ViewMorpionSolitaire.highlightPoints.clear();
+            hintActivated=false;
+            // Fermer la fenêtre actuelle
+            Stage currentStage = (Stage) gameCanvas.getScene().getWindow(); // Remplacez gameCanvas par le composant que vous voulez utiliser
+            currentStage.close();
 
-        // Show the alert and wait for user input
+            // Ouvrir la nouvelle fenêtre d'accueil
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/home-view.fxml"));
+            Parent root = null;
+            try {
+                root = loader.load();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            HomeController hc = loader.getController();
+            hc.start();
+
+            // Afficher la nouvelle fenêtre
+            Stage newStage = new Stage();
+            newStage.setTitle("Morpion Solitaire");
+            newStage.setScene(new Scene(root));
+            newStage.show();
+        });
+
         alert.showAndWait();
-    }
-
-    /**
-     * Handle the event when the player confirms quitting the game.
-     * @throws RuntimeException Thrown if there is an issue loading the home-view.fxml file.
-     */
-    private void handleQuitGameConfirmation() {
-        // Close the current game window
-        Stage currentStage = (Stage) gameCanvas.getScene().getWindow();
-        currentStage.close();
-
-        // Open the new home screen window
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/home-view.fxml"));
-        Parent root;
-        try {
-            root = loader.load();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        HomeController hc = loader.getController();
-        hc.start();
-
-        Stage newStage = new Stage();
-        newStage.setTitle("Morpion Solitaire");
-        newStage.setScene(new Scene(root));
-        newStage.show();
     }
 }
