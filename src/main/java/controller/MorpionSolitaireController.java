@@ -14,6 +14,7 @@ import model.Point;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.Random;
 
 
 public class MorpionSolitaireController {
@@ -52,6 +53,11 @@ public class MorpionSolitaireController {
     public void drawBoard() {
         ViewMorpionSolitaire.drawBoard(gameCanvas.getGraphicsContext2D(),gm.getBoard());
         displayScore();
+
+        if (isGameOver()) {
+            System.out.println("Game over !");
+            //TODO : performGameOver();
+        }
     }
 
     /**
@@ -166,7 +172,7 @@ public class MorpionSolitaireController {
 
                 // Check if it can be played.
                 // The 'false' parameter indicates that this is a hypothetical move
-                if (gm.getBoard().canPointBePlayed(pointToDefine, false))
+                if (gm.getBoard().canPointBePlayed(pointToDefine, false) && !gm.getBoard().getPointsPlaced().contains(pointToDefine))
                     allPlayablePoints.add(pointToDefine);
             }
         }
@@ -284,5 +290,47 @@ public class MorpionSolitaireController {
         newStage.setTitle("Morpion Solitaire");
         newStage.setScene(new Scene(root));
         newStage.show();
+    }
+
+    /**
+     * Performs the random solver in the Morpion Solitaire game.
+     */
+    public void performRandom() {
+        do {
+            ArrayList<Point> missingPoints = searchAllPlayablePoints();
+
+            if (waitForUserChoice) {
+                int randomNumberFor5T = new Random().nextInt(2) + 1;
+                waitForUserChoice = false;
+
+                if (randomNumberFor5T == 1) {
+                    gm.getBoard().process5TUserChoice(pointA);
+                }
+                else
+                    gm.getBoard().process5TUserChoice(pointB);
+
+                ViewMorpionSolitaire.highlightPoints.clear();
+            }
+
+            // Play a random point in the missing points.
+            if (!missingPoints.isEmpty()) {
+                int randomIndex = new Random().nextInt(missingPoints.size());
+                Point pointToPlayRandomly = missingPoints.get(randomIndex);
+
+                gm.getBoard().askPoint(pointToPlayRandomly.getX(), pointToPlayRandomly.getY());
+            }
+
+            drawBoard();
+        } while (!isGameOver());
+    }
+
+    /**
+     * Checks if the Morpion Solitaire game is over.
+     * @return True if the game is over, false otherwise.
+     */
+    public boolean isGameOver() {
+        ArrayList<Point> missingPoints = searchAllPlayablePoints();
+
+        return missingPoints.isEmpty();
     }
 }
