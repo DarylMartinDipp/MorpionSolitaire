@@ -97,6 +97,7 @@ public class MorpionSolitaireController {
     private void initialize() {
         setColorMouseEnteredGame(undoButton);
         setColorMouseEnteredGame(randomButton);
+        setColorMouseEnteredGame(NMCSButton);
         setColorMouseEnteredGame(goHomeScreenButton);
         setColorMouseEnteredGame(hintButton);
     }
@@ -325,6 +326,10 @@ public class MorpionSolitaireController {
 
             drawBoard();
         } while (!isGameOver());
+    }
+
+    public void performNMCS() {
+        // PERFORM NMCS HERE
     }
 
     /**

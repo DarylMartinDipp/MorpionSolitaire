@@ -20,5 +20,4 @@ public class GameUI extends Application {
         stage.setScene(scene);
         stage.show();
     }
-
 }
