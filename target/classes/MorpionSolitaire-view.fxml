@@ -11,31 +11,33 @@
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="580.0" prefWidth="645.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MorpionSolitaireController">
    <center>
       <Pane prefWidth="647.0" style="-fx-background-color: #6170ba;" BorderPane.alignment="CENTER">
-         <Canvas fx:id="gameCanvas" height="417.0" layoutX="162.0" layoutY="71.0" onMousePressed="#canvasMousePressed" width="492.0" />
+         <Canvas fx:id="gameCanvas" height="417.0" layoutX="7.0" layoutY="71.0" onMousePressed="#canvasMousePressed" width="705.0" />
       </Pane>
    </center>
    <top>
       <AnchorPane minWidth="300.0" prefHeight="38.0" prefWidth="300.0" style="-fx-background-color: #2F2B43;">
-         <Label fx:id="scoreLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="18.0" prefWidth="210.0" text="Score : " textFill="WHITE">
+         <Label fx:id="scoreLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="-52.0" prefHeight="18.0" prefWidth="210.0" text="Score : " textFill="WHITE">
             <font>
                <Font size="26.0" />
             </font>
          </Label>
-         <Label fx:id="modeLabel" layoutX="535.0" layoutY="11.0" text="Mode: " textFill="WHITE">
+         <Label fx:id="modeLabel" layoutX="526.0" prefHeight="18.0" prefWidth="210.0" text="Mode: " textFill="WHITE">
             <font>
-               <Font size="16.0" />
+               <Font size="26.0" />
             </font>
          </Label>
-         <Button fx:id="undoButton" layoutX="353.0" layoutY="6.0" mnemonicParsing="false" onAction="#undo" style="-fx-background-color: #6170ba;" text="Undo" />
+         <Button fx:id="undoButton" layoutX="276.0" layoutY="6.0" mnemonicParsing="false" onAction="#undo" prefHeight="26.0" prefWidth="93.0" style="-fx-background-color: #6170ba;" text="Undo" />
       </AnchorPane>
    </top>
    <bottom>
       <AnchorPane minWidth="300.0" prefHeight="38.0" prefWidth="300.0" style="-fx-background-color: #2F2B43;" BorderPane.alignment="CENTER">
-         <Label fx:id="playerLabel" layoutX="14.0" layoutY="8.0" minWidth="52.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="17.0" prefWidth="75.0" text="Player: " textFill="WHITE" />
-         <Button fx:id="hintButton" layoutX="296.0" layoutY="4.0" mnemonicParsing="false" onAction="#performHint" style="-fx-background-color: #6170ba;" text="Show Hint" />
-         <Button fx:id="goHomeScreenButton" layoutX="130.0" layoutY="4.0" mnemonicParsing="false" onAction="#goHomeScreen" prefHeight="26.0" prefWidth="120.0" style="-fx-background-color: #6170ba;" text="Go to home screen" />
-         <Button fx:id="randomButton" layoutX="413.0" layoutY="4.0" mnemonicParsing="false" onAction="#performRandom" prefHeight="26.0" prefWidth="64.0" style="-fx-background-color: #6170ba;" text="Random" />
-         <Button fx:id="NMCSButton" layoutX="517.0" layoutY="4.0" mnemonicParsing="false" onAction="#performNMCS" prefHeight="26.0" prefWidth="64.0" style="-fx-background-color: #6170ba;" text="NMCS" />
+         <Label fx:id="playerLabel" layoutX="14.0" layoutY="8.0" minWidth="52.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="19.0" prefWidth="177.0" text="Player: " textFill="WHITE">
+            <font>
+               <Font size="13.0" />
+            </font></Label>
+         <Button fx:id="hintButton" layoutX="436.0" layoutY="6.0" mnemonicParsing="false" onAction="#performHint" prefHeight="26.0" prefWidth="93.0" style="-fx-background-color: #6170ba;" text="Show Hint" />
+         <Button fx:id="goHomeScreenButton" layoutX="537.0" layoutY="6.0" mnemonicParsing="false" onAction="#goHomeScreen" prefHeight="26.0" prefWidth="93.0" style="-fx-background-color: #6170ba;" text="Quit the game" />
+         <Button fx:id="randomButton" layoutX="336.0" layoutY="6.0" mnemonicParsing="false" onAction="#performRandom" prefHeight="26.0" prefWidth="93.0" style="-fx-background-color: #6170ba;" text="Random" />
       </AnchorPane>
    </bottom>
 </BorderPane>

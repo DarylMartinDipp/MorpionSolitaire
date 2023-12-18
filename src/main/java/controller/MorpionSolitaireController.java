@@ -30,7 +30,6 @@ public class MorpionSolitaireController {
     public Label modeLabel;
     public Button undoButton;
     public Button randomButton;
-    public Button NMCSButton;
     public Button goHomeScreenButton;
     public Button hintButton;
 
@@ -104,7 +103,6 @@ public class MorpionSolitaireController {
     private void initialize() {
         setColorMouseEnteredGame(undoButton);
         setColorMouseEnteredGame(randomButton);
-        setColorMouseEnteredGame(NMCSButton);
         setColorMouseEnteredGame(goHomeScreenButton);
         setColorMouseEnteredGame(hintButton);
     }

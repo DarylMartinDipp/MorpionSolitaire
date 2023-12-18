@@ -89,60 +89,49 @@ public abstract class Board {
      * Initializing of the points of the tsunami.
      */
     public void initTsunami() {
-        addPoint(6, 1);
-        addPoint(7, 1);
-        addPoint(8, 1);
-        addPoint(9, 1);
+        // Arrow points
 
-        addPoint(6, 3);
-        addPoint(7, 3);
-        addPoint(8, 3);
-        addPoint(9, 3);
+        addPoint(2,7);
 
-        addPoint(6, 4);
-        addPoint(7, 4);
-        addPoint(8, 4);
-        addPoint(9, 4);
+        addPoint(4, 4);
+        addPoint(5, 4);
 
-        addPoint(6, 5);
-        addPoint(7, 5);
-        addPoint(8, 5);
-        addPoint(9, 5);
 
+        addPoint(3, 5);
+        addPoint(4, 5);
+        addPoint(5, 5);
+
+
+        addPoint(2, 6);
+        addPoint(3, 6);
+        addPoint(4, 6);
+
+        addPoint(3, 7);
+        addPoint(4, 7);
         addPoint(6, 7);
         addPoint(7, 7);
-        addPoint(8, 7);
-        addPoint(9, 7);
 
-        addPoint(6, 8);
-        addPoint(7, 8);
-        addPoint(8, 8);
-        addPoint(9, 8);
+        addPoint(4, 8);
 
-        addPoint(6, 9);
-        addPoint(7, 9);
-        addPoint(8, 9);
-        addPoint(9, 9);
 
-        addPoint(6, 11);
-        addPoint(7, 11);
-        addPoint(8, 11);
-        addPoint(9, 11);
+        addPoint(5, 9);
 
-        addPoint(6, 12);
-        addPoint(7, 12);
-        addPoint(8, 12);
-        addPoint(9, 12);
-
-        addPoint(6, 13);
-        addPoint(7, 13);
-        addPoint(8, 13);
-        addPoint(9, 13);
-
-        addPoint(6, 15);
-        addPoint(7, 15);
-        addPoint(8, 15);
-        addPoint(9, 15);
+        // Additional specified points
+        addPoint(1, 7);
+        addPoint(2, 6);
+        addPoint(3, 5);
+        addPoint(4, 4);
+        addPoint(2, 8);
+        addPoint(3, 9);
+        addPoint(4, 10);
+        addPoint(3,8);
+        addPoint(4,9);
+        addPoint(5,10);
+        addPoint(10,7);
+        addPoint(11,7);
+        addPoint(12,7);
+        addPoint(14,7);
+        addPoint(8,7);
     }
 
     /**

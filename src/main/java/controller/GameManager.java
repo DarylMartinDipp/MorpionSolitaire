@@ -6,7 +6,7 @@ import model.Board5T;
 
 public class GameManager {
     private Board board;
-    public static int DIMENSION = 16;
+    public static int DIMENSION = 15;
 
     /**
      * Constructs a board with a specified game mode.

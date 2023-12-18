@@ -71,8 +71,8 @@ public class ViewMorpionSolitaire {
      * @param gc The GraphicsContext on which to draw the clickable points.
      */
     private static void drawClickablePoints(GraphicsContext gc) {
-        for (int i = 0; i < GameManager.DIMENSION; i++) {
-            for (int j = 0; j < GameManager.DIMENSION; j++) {
+        for (int i = 0; i <= GameManager.DIMENSION; i++) {
+            for (int j = 0; j <= GameManager.DIMENSION; j++) {
                 int x = i * (WIDTH / GameManager.DIMENSION);
                 int y = j * (HEIGHT / GameManager.DIMENSION);
 
