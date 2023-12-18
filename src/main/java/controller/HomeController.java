@@ -44,9 +44,6 @@ public class HomeController {
             return;
         }
 
-        System.out.println("Hello " + username + ".");
-        System.out.println("You will be playing in " + mode + " mode. Good game.");
-
         Player player = new Player(username);
 
         GameManager gm = new GameManager(mode);
@@ -90,13 +87,11 @@ public class HomeController {
      */
     @FXML
     private void loadScoreBoard() {
-        System.out.println("Connecting to the database...");
 
         try{
             // Connecting to the database.
             Connection con = MorpionSolitaireController.connectToDataBase();
             Statement stmt = con.createStatement();
-            System.out.println("Connected to the database.");
 
             ResultSet rs = stmt.executeQuery("SELECT * FROM Player ORDER BY score DESC");
 
@@ -133,20 +128,13 @@ public class HomeController {
     @FXML
     private void gameModeChanged() {
         selectedMode = gameModeOptions.getSelectionModel().getSelectedItem();
-        System.out.println("Selected Mode: " + selectedMode);
 
-        if (("5D".equals(selectedMode) || "5T".equals(selectedMode))) {
+        if (("5D".equals(selectedMode) || "5T".equals(selectedMode)))
             this.mode = selectedMode;
-            System.out.println("Updated Mode: " + mode);
-        }
-        else if (("5D#".equals(selectedMode))) {
+        else if (("5D#".equals(selectedMode)))
             this.mode ="5D";
-            System.out.println("Updated Mode: " + mode);
-        }
-        else if (("5T#".equals(selectedMode))) {
+        else if (("5T#".equals(selectedMode)))
             this.mode ="5T";
-            System.out.println("Updated Mode: " + mode);
-        }
     }
 
     /**

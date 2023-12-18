@@ -62,7 +62,6 @@ public class MorpionSolitaireController {
         displayScore();
 
         if (isGameOver()) {
-            System.out.println("Game over !");
             performGameOver();
         }
     }
@@ -225,7 +224,6 @@ public class MorpionSolitaireController {
             // Connecting to the database.
             Connection con = connectToDataBase();
             Statement stmt = con.createStatement();
-            System.out.println("Connected to the database.");
 
             // Insert the player's name and score into the Player table.
             String playerName = username;
@@ -237,7 +235,6 @@ public class MorpionSolitaireController {
 
             // Close the connection.
             con.close();
-            System.out.println("disconnected from Database");
 
             showAlertGameOver();
         } catch (IOException | SQLException | ClassNotFoundException e) {
@@ -254,7 +251,6 @@ public class MorpionSolitaireController {
     }
 
     public void setMode(String mode){
-        System.out.println(mode);
         this.mode=mode;
     }
 

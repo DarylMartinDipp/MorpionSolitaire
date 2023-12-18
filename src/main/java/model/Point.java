@@ -27,14 +27,11 @@ public class Point {
      * @return True if the objects are equal, false otherwise.
      */
     public boolean equals(Object pointToCompare) {
-        if (this == pointToCompare) {
+        if (this == pointToCompare)
             return true;
-        }
-        if (pointToCompare == null || getClass() != pointToCompare.getClass()) {
+        if (pointToCompare == null || getClass() != pointToCompare.getClass())
             return false;
-        }
         return x == ((Point) pointToCompare).x && y == ((Point) pointToCompare).y;
-
     }
 
     @Override

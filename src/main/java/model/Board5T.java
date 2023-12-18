@@ -54,7 +54,6 @@ public class Board5T extends Board {
             // Redo hasAlignmentInDirection to save the line with addLine.
             hasAlignmentInDirection(x, y, dir, true);
             addPoint(x, y);
-            System.out.println("Point successfully added.");
         }
 
         // Here, two lines can touch.
@@ -173,9 +172,6 @@ public class Board5T extends Board {
      * @param pointsForB ArrayList containing the points for option B.
      */
     private void ask5TUserChoice(int x, int y, ArrayList<Point> pointsForA, ArrayList<Point> pointsForB) {
-        System.out.println("A = " + pointsForA.get(1));
-        System.out.println("B = " + pointsForB.get(0));
-
         // Saving useful variables.
         this.pointsForAFor5T = pointsForA;
         this.pointsForBFor5T = pointsForB;
@@ -202,12 +198,10 @@ public class Board5T extends Board {
             arrayListForA.add(pointsForBFor5T.get(3));
             // Add a line for option A.
             addLine(arrayListForA, dir);
-            System.out.println("Point successfully added.");
         } else if (userPointChoice.equals(pointsForBFor5T.get(0))) {
             addPoint(xFor5T, yFor5T);
             // Add a line for option B.
             addLine(pointsForBFor5T, dir);
-            System.out.println("Point successfully added.");
         }
     }
 }

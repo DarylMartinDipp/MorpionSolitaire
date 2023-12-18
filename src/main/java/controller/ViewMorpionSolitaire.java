@@ -245,8 +245,6 @@ public class ViewMorpionSolitaire {
                 int translatedX = coordinateTranslatorX(pointX);
                 int translatedY = coordinateTranslatorY(pointY);
 
-                System.out.println("Click at the position of the point: (x=" + translatedX + ", y=" + translatedY + ")");
-
                 gameManagerWithBoard.getBoard().askPoint(translatedX, translatedY);
                 drawBoard(gameCanvas.getGraphicsContext2D(), gameManagerWithBoard.getBoard());
 
