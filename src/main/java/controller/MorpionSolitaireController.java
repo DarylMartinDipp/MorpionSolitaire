@@ -12,9 +12,15 @@ import model.Player;
 import model.Point;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Random;
+
+import static controller.HomeController.selectedMode;
 
 
 public class MorpionSolitaireController {
@@ -39,6 +45,7 @@ public class MorpionSolitaireController {
     protected static Point pointB;
 
     public static boolean hintActivated;
+    private String username;
 
     public void start() {
         displayName(player);
@@ -117,6 +124,7 @@ public class MorpionSolitaireController {
     }
 
     public void displayName(Player player){
+        username=player.getName();
         playerLabel.setText("Player: " + player.getName());
     }
 
@@ -195,10 +203,41 @@ public class MorpionSolitaireController {
 
     private void performGameOver(){
         try {
+            // Load the MySQL JDBC driver
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            // Replace the connection URL, username, and password with your own
+            String url = "jdbc:mysql://sql11.freesqldatabase.com:3306/sql11671276";
+            String user = "sql11671276";
+            String password = "SKRsyy1vJr";
+
+            // Establish the database connection
+            Connection con = DriverManager.getConnection(url, user, password);
+            System.out.println("Connected to the database.");
+
+            // Create a statement
+            Statement stmt = con.createStatement();
+
+            // Insert the player's name and score into the Player table
+            String playerName = username;
+            int score = gm.getBoard().getScore();
+            String boardMode= selectedMode;
+
+            String insertQuery = "INSERT INTO Player (Name, Score, Mode) VALUES ('" + playerName + "', " + score + ", '" + boardMode + "')";
+            stmt.executeUpdate(insertQuery);
+
+            // Close the database connection
+            con.close();
+            System.out.println("disconnected from Database");
             showAlertGameOver();
         } catch (IOException e) {
             throw new RuntimeException(e);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
         }
+
     }
 
     public void setGameManager(GameManager gameManager) {
@@ -300,6 +339,7 @@ public class MorpionSolitaireController {
      * Performs the random solver in the Morpion Solitaire game.
      */
     public void performRandom() {
+        setName(username);
         do {
             ArrayList<Point> missingPoints = searchAllPlayablePoints();
 
@@ -367,7 +407,7 @@ public class MorpionSolitaireController {
         alert.setTitle("Game Over");
         alert.setHeaderText(null);
 
-        alert.setContentText("The game is over!\nName : "+player.getName()+"\nScore: "+gm.getBoard().getScore());
+        alert.setContentText("The game is over!\nName : "+username+"\nScore: "+gm.getBoard().getScore());
 
         ButtonType buttonTypeYes = new ButtonType("Go to home screen", ButtonBar.ButtonData.YES);
         ButtonType buttonTypeNo = new ButtonType("Close the game", ButtonBar.ButtonData.NO);
@@ -396,5 +436,9 @@ public class MorpionSolitaireController {
         // Close the current game window.
         Stage currentStage = (Stage) gameCanvas.getScene().getWindow();
         currentStage.close();
+    }
+
+    public void setName(String name){
+        username=name+"(random)";
     }
 }

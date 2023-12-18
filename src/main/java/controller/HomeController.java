@@ -8,10 +8,15 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.Player;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 
 /**
  * Controller class for the Home view, responsible for handling user interactions related to launching
@@ -84,10 +89,64 @@ public class HomeController {
     /**
      * Loads and displays the score board.
      */
+
     @FXML
     private void loadScoreBoard() {
         //TODO
-        System.out.println("The score board should be displayed.");
+        // Connecting to the database
+        System.out.println("Connecting to the database...");
+
+        try{
+
+            // Load the MySQL JDBC driver
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            // Replace the connection URL, username, and password with your own
+            String url = "jdbc:mysql://sql11.freesqldatabase.com:3306/sql11671276";
+            String username = "sql11671276";
+            String password = "SKRsyy1vJr";
+
+            // Establish the database connection
+            Connection con = DriverManager.getConnection(url, username, password);
+            System.out.println("Connected to the database.");
+
+            // Create a statement
+            Statement stmt = con.createStatement();
+
+            ResultSet rs = stmt.executeQuery("SELECT * FROM Player ORDER BY score DESC");
+
+            // Create a ListView to display scores
+            ListView<String> scoreListView = new ListView<>();
+
+            // Populate the ListView with scores from the database
+            while (rs.next()) {
+                String playerName = rs.getString(2);
+                int score = rs.getInt(3);
+                String Mode=rs.getString(4);
+
+                // Display the score in the ListView
+                scoreListView.getItems().add("Player Name: " + playerName + " | Score: " + score + " | Mode: "+ Mode);
+            }
+
+            // Close the database connection
+            con.close();
+
+            // Create a VBox to hold the ListView
+            VBox root = new VBox(scoreListView);
+
+            // Create the scene
+            Scene scene = new Scene(root, 400, 300);
+
+            // Create the new stage
+            Stage secondaryStage = new Stage();
+            secondaryStage.setTitle("Scoreboard");
+            secondaryStage.setScene(scene);
+
+            // Show the stage
+            secondaryStage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -117,7 +176,7 @@ public class HomeController {
      */
     private void setupOptions() {
         gameModeOptions.getItems().removeAll(gameModeOptions.getItems());
-        gameModeOptions.getItems().addAll("5T", "5D","5DTsunami","5TTsunami");
+        gameModeOptions.getItems().addAll("5D", "5T","5DTsunami","5TTsunami");
         gameModeOptions.getSelectionModel().select("5D");
         selectedMode = "5D";
         this.mode = "5D";
