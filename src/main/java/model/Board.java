@@ -3,6 +3,8 @@ package model;
 import controller.GameManager;
 import java.util.ArrayList;
 
+import static controller.HomeController.selectedMode;
+
 /**
  * The game board, containing the points and the lines.
  */
@@ -17,14 +19,17 @@ public abstract class Board {
         this.pointsPlaced = new ArrayList<>();
         this.score = 0;
         this.lines = new ArrayList<>();
-        initBoard();
+        // Initialize the board with the default pattern, you can adjust this as needed
+        initBoard(selectedMode);
     }
 
     /**
      * Initialization of the board, by initializing the points of the cross.
      */
-    public void initBoard() {
+    public void initBoard(String mode) {
+        if ("5T".equals(mode) || "5D".equals(mode))
         initCross();
+        else initTsunami();
     }
 
     /**
@@ -77,6 +82,67 @@ public abstract class Board {
         addPoint(12, 8);
         addPoint(12, 9);
     }
+    public void initTsunami() {
+        addPoint(6, 1);
+        addPoint(7, 1);
+        addPoint(8, 1);
+        addPoint(9, 1);
+
+        addPoint(6, 3);
+        addPoint(7, 3);
+        addPoint(8, 3);
+        addPoint(9, 3);
+
+        addPoint(6, 4);
+        addPoint(7, 4);
+        addPoint(8, 4);
+        addPoint(9, 4);
+
+        addPoint(6, 5);
+        addPoint(7, 5);
+        addPoint(8, 5);
+        addPoint(9, 5);
+
+        addPoint(6, 7);
+        addPoint(7, 7);
+        addPoint(8, 7);
+        addPoint(9, 7);
+
+        addPoint(6, 8);
+        addPoint(7, 8);
+        addPoint(8, 8);
+        addPoint(9, 8);
+
+        addPoint(6, 9);
+        addPoint(7, 9);
+        addPoint(8, 9);
+        addPoint(9, 9);
+
+        addPoint(6, 11);
+        addPoint(7, 11);
+        addPoint(8, 11);
+        addPoint(9, 11);
+
+        addPoint(6, 12);
+        addPoint(7, 12);
+        addPoint(8, 12);
+        addPoint(9, 12);
+
+        addPoint(6, 13);
+        addPoint(7, 13);
+        addPoint(8, 13);
+        addPoint(9, 13);
+
+        addPoint(6, 15);
+        addPoint(7, 15);
+        addPoint(8, 15);
+        addPoint(9, 15);
+
+    }
+
+
+
+
 
     /**
      * Adds a point to the collection of placed points on the game grid.

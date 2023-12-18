@@ -30,16 +30,12 @@
       </AnchorPane>
    </top>
    <bottom>
-      <AnchorPane minWidth="300.0" prefHeight="38.0" prefWidth="300.0" style="-fx-background-color: #2F2B43;"
-                  BorderPane.alignment="CENTER">
-         <Label fx:id="playerLabel" layoutX="14.0" layoutY="8.0" minWidth="52.0" nodeOrientation="LEFT_TO_RIGHT"
-                prefHeight="17.0" prefWidth="75.0" text="Player: " textFill="WHITE"/>
+      <AnchorPane minWidth="300.0" prefHeight="38.0" prefWidth="300.0" style="-fx-background-color: #2F2B43;" BorderPane.alignment="CENTER">
+         <Label fx:id="playerLabel" layoutX="14.0" layoutY="8.0" minWidth="52.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="17.0" prefWidth="75.0" text="Player: " textFill="WHITE" />
          <Button fx:id="hintButton" layoutX="296.0" layoutY="4.0" mnemonicParsing="false" onAction="#performHint" style="-fx-background-color: #6170ba;" text="Show Hint" />
          <Button fx:id="quitButton" layoutX="130.0" layoutY="4.0" mnemonicParsing="false" onAction="#quit" prefHeight="26.0" prefWidth="93.0" style="-fx-background-color: #6170ba;" text="Quit the game" />
-         <Button fx:id="randomButton" layoutX="516.0" layoutY="4.0" mnemonicParsing="false" prefHeight="26.0"
-                 prefWidth="64.0" style="-fx-background-color: #6170ba;" text="Random"/>
-         <Button fx:id="nmcsButton" layoutX="516.0" layoutY="4.0" mnemonicParsing="false" prefHeight="26.0"
-                 prefWidth="64.0" style="-fx-background-color: #6170ba;" text="NMCS"/>
+         <Button fx:id="randomButton" layoutX="413.0" layoutY="4.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="64.0" style="-fx-background-color: #6170ba;" text="Random" />
+         <Button fx:id="nmcsButton" layoutX="517.0" layoutY="4.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="64.0" style="-fx-background-color: #6170ba;" text="NMCS" />
       </AnchorPane>
    </bottom>
 </BorderPane>

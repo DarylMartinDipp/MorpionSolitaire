@@ -24,6 +24,7 @@ public class HomeController {
     public Button playButton;
     public Button scoreBoardButton;
     private String mode;
+    public static String selectedMode;
 
     /**
      * Launches the Morpion Solitaire game based on the provided username and game mode.
@@ -94,11 +95,19 @@ public class HomeController {
      */
     @FXML
     private void gameModeChanged() {
-        String selectedMode = gameModeOptions.getSelectionModel().getSelectedItem();
+        selectedMode = gameModeOptions.getSelectionModel().getSelectedItem();
         System.out.println("Selected Mode: " + selectedMode);
 
         if (("5D".equals(selectedMode) || "5T".equals(selectedMode))) {
             this.mode = selectedMode;
+            System.out.println("Updated Mode: " + mode);
+        }
+        else if (("5DTsunami".equals(selectedMode))) {
+            this.mode ="5D";
+            System.out.println("Updated Mode: " + mode);
+        }
+        else if (("5TTsunami".equals(selectedMode))) {
+            this.mode ="5T";
             System.out.println("Updated Mode: " + mode);
         }
     }
@@ -108,7 +117,7 @@ public class HomeController {
      */
     private void setupOptions() {
         gameModeOptions.getItems().removeAll(gameModeOptions.getItems());
-        gameModeOptions.getItems().addAll("5T", "5D");
+        gameModeOptions.getItems().addAll("5T", "5D","5DTsunami","5TTsunami");
         gameModeOptions.getSelectionModel().select("5D");
         this.mode = "5D";
     }
