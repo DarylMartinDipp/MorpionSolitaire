@@ -19,21 +19,23 @@ public abstract class Board {
         this.pointsPlaced = new ArrayList<>();
         this.score = 0;
         this.lines = new ArrayList<>();
-        // Initialize the board with the default pattern, you can adjust this as needed
+        // Initialize the board with the right pattern, Cross or Tsunami
         initBoard(selectedMode);
     }
 
     /**
-     * Initialization of the board, by initializing the points of the cross.
+     * Initialization of the board, by initializing the points of the cross or of the tsunami, depending on the chosen mode.
+     * @param mode The mode to use for the board, Cross ("5D" and "5T") or Tsunami ("5DTsunami" or "5TTsunami").
      */
     public void initBoard(String mode) {
         if ("5T".equals(mode) || "5D".equals(mode))
-        initCross();
-        else initTsunami();
+            initCross();
+        else
+            initTsunami();
     }
 
     /**
-     * initializing of the points of the cross.
+     * Initializing of the points of the cross.
      */
     public void initCross() {
         addPoint(3, 6);
@@ -82,6 +84,10 @@ public abstract class Board {
         addPoint(12, 8);
         addPoint(12, 9);
     }
+
+    /**
+     * Initializing of the points of the tsunami.
+     */
     public void initTsunami() {
         addPoint(6, 1);
         addPoint(7, 1);
@@ -137,12 +143,7 @@ public abstract class Board {
         addPoint(7, 15);
         addPoint(8, 15);
         addPoint(9, 15);
-
     }
-
-
-
-
 
     /**
      * Adds a point to the collection of placed points on the game grid.

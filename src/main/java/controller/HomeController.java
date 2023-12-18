@@ -119,6 +119,7 @@ public class HomeController {
         gameModeOptions.getItems().removeAll(gameModeOptions.getItems());
         gameModeOptions.getItems().addAll("5T", "5D","5DTsunami","5TTsunami");
         gameModeOptions.getSelectionModel().select("5D");
+        selectedMode = "5D";
         this.mode = "5D";
     }
 

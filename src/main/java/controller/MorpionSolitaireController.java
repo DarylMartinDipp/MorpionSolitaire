@@ -13,7 +13,7 @@ import model.Point;
 
 import java.io.IOException;
 import java.util.ArrayList;
-
+import java.util.Optional;
 
 
 public class MorpionSolitaireController {
@@ -23,7 +23,7 @@ public class MorpionSolitaireController {
     public Label modeLabel;
     public Button undoButton;
     public Button randomButton;
-    public Button nmcsButton;
+    public Button NMCSButton;
     public Button quitButton;
     public Button hintButton;
 
@@ -147,12 +147,8 @@ public class MorpionSolitaireController {
 
     @FXML
     public void performHint() {
-        hintActivated = !hintActivated; // Inversion de la valeur de hintActivated
-
-        // Change the text of the button based on the hint activation status
+        hintActivated = !hintActivated;
         hintButton.setText(hintActivated ? "Hide Hint" : "Show Hint");
-
-        // Perform other actions as needed
         drawBoard();
     }
 
@@ -222,47 +218,71 @@ public class MorpionSolitaireController {
     }
 
     /**
-     * Display a confirmation alert to inquire if the player is certain about quitting the game.
+     * Displays a confirmation alert to inquire if the player is certain about quitting the game.
      * @throws IOException Thrown if there is an issue loading the home-view.fxml file.
      */
     private void showAlertQuitTheGame() throws IOException {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Warning");
-        alert.setHeaderText(null);
-        alert.setContentText("Do you really want to quit the game? You will be sent back to home screen");
+        Alert alert = createQuitGameConfirmationAlert();
 
-        // Ajouter des boutons personnalisés (Yes et No)
+        // Show the alert and wait for user input.
+        Optional<ButtonType> result = alert.showAndWait();
+
+        // Check if the user clicked "Yes".
+        if (result.isPresent() && result.get() == ButtonType.YES) {
+            initiateQuitGameProcess();
+        }
+    }
+
+    /**
+     * Create a confirmation alert for quitting the game.
+     * @return The created confirmation alert.
+     */
+    private Alert createQuitGameConfirmationAlert() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Quit");
+        alert.setHeaderText(null);
+        alert.setContentText("Do you really want to quit the game? You will be sent back to the home screen");
+
         ButtonType buttonTypeYes = new ButtonType("Yes", ButtonBar.ButtonData.YES);
         ButtonType buttonTypeNo = new ButtonType("No", ButtonBar.ButtonData.NO);
         alert.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo);
 
-        // Récupérer le bouton "Yes" et ajouter un gestionnaire d'événements
+        // Set up the "Yes" button event handler
         Button yesButton = (Button) alert.getDialogPane().lookupButton(buttonTypeYes);
-        yesButton.setOnAction(event -> {
-            ViewMorpionSolitaire.highlightPoints.clear();
-            hintActivated=false;
-            // Fermer la fenêtre actuelle
-            Stage currentStage = (Stage) gameCanvas.getScene().getWindow(); // Remplacez gameCanvas par le composant que vous voulez utiliser
-            currentStage.close();
+        if (yesButton != null) {
+            yesButton.setOnAction(event -> initiateQuitGameProcess());
+        }
 
-            // Ouvrir la nouvelle fenêtre d'accueil
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/home-view.fxml"));
-            Parent root = null;
-            try {
-                root = loader.load();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            HomeController hc = loader.getController();
-            hc.start();
+        return alert;
+    }
 
-            // Afficher la nouvelle fenêtre
-            Stage newStage = new Stage();
-            newStage.setTitle("Morpion Solitaire");
-            newStage.setScene(new Scene(root));
-            newStage.show();
-        });
+    /**
+     * Initiate the quit game process.
+     * @throws RuntimeException Thrown if there is an issue loading the home-view.fxml file.
+     */
+    private void initiateQuitGameProcess() {
+        ViewMorpionSolitaire.highlightPoints.clear();
+        hintActivated = false;
 
-        alert.showAndWait();
+        // Close the current game window.
+        Stage currentStage = (Stage) gameCanvas.getScene().getWindow();
+        currentStage.close();
+
+        // Open the new home screen window.
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/home-view.fxml"));
+        Parent root;
+        try {
+            root = loader.load();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        HomeController hc = loader.getController();
+        hc.start();
+
+        Stage newStage = new Stage();
+        newStage.setTitle("Morpion Solitaire");
+        newStage.setScene(new Scene(root));
+        newStage.show();
     }
 }
