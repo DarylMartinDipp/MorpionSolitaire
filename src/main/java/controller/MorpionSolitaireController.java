@@ -57,8 +57,10 @@ public class MorpionSolitaireController {
         if (isGameOver()) {
             System.out.println("Game over !");
             //TODO : performGameOver();
+            performGameOver();
         }
     }
+
 
     /**
      * Handles mouse-pressed events on the canvas in the Morpion Solitaire game.
@@ -192,6 +194,16 @@ public class MorpionSolitaireController {
         }
     }
 
+    private void performGameOver(){
+        try {
+            showAlertGameOver();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+
     public void setGameManager(GameManager gameManager) {
         this.gm = gameManager;
     }
@@ -267,12 +279,7 @@ public class MorpionSolitaireController {
      * @throws RuntimeException Thrown if there is an issue loading the home-view.fxml file.
      */
     private void initiateQuitGameProcess() {
-        ViewMorpionSolitaire.highlightPoints.clear();
-        hintActivated = false;
-
-        // Close the current game window.
-        Stage currentStage = (Stage) gameCanvas.getScene().getWindow();
-        currentStage.close();
+        closeGame();
 
         // Open the new home screen window.
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/home-view.fxml"));
@@ -332,5 +339,58 @@ public class MorpionSolitaireController {
         ArrayList<Point> missingPoints = searchAllPlayablePoints();
 
         return missingPoints.isEmpty();
+    }
+
+    /**
+     * Displays a confirmation alert to inquire if the player is certain about quitting the game.
+     * @throws IOException Thrown if there is an issue loading the home-view.fxml file.
+     */
+    private void showAlertGameOver() throws IOException {
+        Alert alert = createGameOverConfirmationAlert();
+
+        // Show the alert and wait for user input.
+        Optional<ButtonType> result = alert.showAndWait();
+
+        // Check if the user clicked "Yes".
+        if (result.isPresent() && result.get() == ButtonType.YES) {
+            initiateQuitGameProcess();
+        }
+    }
+
+    /**
+     * Create a confirmation alert for quitting the game.
+     * @return The created confirmation alert.
+     */
+    private Alert createGameOverConfirmationAlert() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Game Over");
+        alert.setHeaderText(null);
+
+        alert.setContentText("game is over.\nName :"+player.getName()+" Score: "+gm.getBoard().getScore());
+
+        ButtonType buttonTypeYes = new ButtonType("Homescreen", ButtonBar.ButtonData.YES);
+        ButtonType buttonTypeNo = new ButtonType("Close the game", ButtonBar.ButtonData.NO);
+        alert.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo);
+
+        // Set up the "Yes" button event handler
+        Button yesButton = (Button) alert.getDialogPane().lookupButton(buttonTypeYes);
+        Button noButton = (Button) alert.getDialogPane().lookupButton(buttonTypeNo);
+
+        if (yesButton != null && noButton!=null) {
+            yesButton.setOnAction(event -> initiateQuitGameProcess());
+            noButton.setOnAction(event -> closeGame());
+
+        }
+
+        return alert;
+    }
+
+    public void closeGame(){
+        ViewMorpionSolitaire.highlightPoints.clear();
+        hintActivated = false;
+
+        // Close the current game window.
+        Stage currentStage = (Stage) gameCanvas.getScene().getWindow();
+        currentStage.close();
     }
 }
