@@ -1,14 +1,20 @@
 package controller;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 import model.Player;
 import model.Point;
 
+import java.io.IOException;
 import java.util.ArrayList;
+
+
 
 public class MorpionSolitaireController {
     public Canvas gameCanvas;
@@ -132,35 +138,15 @@ public class MorpionSolitaireController {
         drawBoard();
     }
 
+
     /**
      * Toggles the display of a hint in the user interface.
      * If the hint is currently activated, it hides the hint; otherwise, it shows the hint.
      */
     @FXML
     public void performHint() {
-        if (hintActivated) {
-            hideHint();
-            hintActivated = false;
-        } else {
-            showHint();
-            hintActivated = true;
-        }
-    }
-
-    /**
-     * Display hints on the user interface by highlighting all playable points.
-     */
-    private void showHint() {
-        ArrayList<Point> allPlayablePoints = searchAllPlayablePoints();
-
-        //TODO: display these points (transparent)
-    }
-
-    /**
-     * Hides the previously displayed hints on the user interface.
-     */
-    private void hideHint() {
-        //TODO: hide these points.
+        hintActivated = !hintActivated; // Inversion de la valeur de hintActivated
+        drawBoard();
     }
 
     /**
@@ -190,6 +176,12 @@ public class MorpionSolitaireController {
         //TODO: TextBox "Are you sure you want to quit?" "Yes" "No"
         // If No, stay on the screen
         // If Yes, go to Home page
+        //MODIFICATION GUILLAUME
+        try {
+            showAlertQuitTheGame();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void setGameManager(GameManager gameManager) {
@@ -222,4 +214,48 @@ public class MorpionSolitaireController {
         // Flag that the system is waiting for the user's input.
         waitForUserChoice = true;
     }
+    private void showAlertQuitTheGame() throws IOException {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Warning");
+        alert.setHeaderText(null);
+        alert.setContentText("Do you really want to quit the game? You will be sent back to home screen");
+
+        // Ajouter des boutons personnalisés (Yes et No)
+        ButtonType buttonTypeYes = new ButtonType("Yes", ButtonBar.ButtonData.YES);
+        ButtonType buttonTypeNo = new ButtonType("No", ButtonBar.ButtonData.NO);
+        alert.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo);
+
+        // Récupérer le bouton "Yes" et ajouter un gestionnaire d'événements
+        Button yesButton = (Button) alert.getDialogPane().lookupButton(buttonTypeYes);
+        yesButton.setOnAction(event -> {
+            // Fermer la fenêtre actuelle
+            Stage currentStage = (Stage) gameCanvas.getScene().getWindow(); // Remplacez gameCanvas par le composant que vous voulez utiliser
+            currentStage.close();
+
+            // Ouvrir la nouvelle fenêtre d'accueil
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/home-view.fxml"));
+            Parent root = null;
+            try {
+                root = loader.load();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            HomeController hc = loader.getController();
+            hc.start();
+
+            // Afficher la nouvelle fenêtre
+            Stage newStage = new Stage();
+            newStage.setTitle("Morpion Solitaire");
+            newStage.setScene(new Scene(root));
+            newStage.show();
+        });
+
+        alert.showAndWait();
+    }
+
+   //TODO MODIFICATION GUILLAUME
+    public ArrayList<Point> getSearchAllPlayablePoints(){
+        return searchAllPlayablePoints();
+    }
+
 }

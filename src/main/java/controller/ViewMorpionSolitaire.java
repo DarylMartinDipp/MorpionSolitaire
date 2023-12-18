@@ -19,6 +19,8 @@ public class ViewMorpionSolitaire {
     protected static List<Point> clickablePoints = new ArrayList<>();
     protected static List<Point> highlightPoints = new ArrayList<>();
 
+    protected static MorpionSolitaireController hintController;
+
     /**
      * Draws the Morpion Solitaire game board.
      * This includes the background color, grid lines, clickable points, placed points, and highlighted points.
@@ -50,6 +52,19 @@ public class ViewMorpionSolitaire {
             int y = point.getY()* (HEIGHT / GameManager.DIMENSION);
 
             drawPlacedPoint(gc, x, y);
+        }
+
+        //Draw all hint points.
+        //TODO GUILLAUME
+        if (MorpionSolitaireController.hintActivated) {
+            ArrayList<Point> hintPoints = hintController.getSearchAllPlayablePoints();
+
+            for (Point hintPoint : hintPoints) {
+                int x = hintPoint.getX() * (WIDTH / GameManager.DIMENSION);
+                int y = hintPoint.getY() * (HEIGHT / GameManager.DIMENSION);
+
+                drawHintPoint(gc, x, y);
+            }
         }
 
         // Draw lines for the points in the board.
@@ -96,7 +111,7 @@ public class ViewMorpionSolitaire {
     }
 
     private static void drawClickablePoint(GraphicsContext gc, double x, double y) {
-        double ovalSize = OBJECTS_WIDTH * 12.5; // Changer la taille des ovales
+        double ovalSize = OBJECTS_WIDTH * 10; // Changer la taille des ovales
         double halfSize = ovalSize / 2.0;
 
         gc.setFill(Color.rgb(144, 238, 144, 0.0)); // Couleur avec une composante alpha de 0.0 (totalement transparente)
@@ -104,30 +119,49 @@ public class ViewMorpionSolitaire {
     }
 
     private static void drawPlacedPoint(GraphicsContext gc, double x, double y) {
-        double ovalSize = OBJECTS_WIDTH * 12.5; // Augmenter la taille des ovales
+        double ovalSize = OBJECTS_WIDTH * 10; // Augmenter la taille des ovales
         double halfSize = ovalSize / 2.0;
 
-        gc.setFill(Color.LIGHTSALMON);
+        gc.setFill(Color.LIGHTBLUE);
         gc.fillOval(x - halfSize, y - halfSize, ovalSize, ovalSize);
+
     }
 
     private static void drawScoredPoint(GraphicsContext gc, double x, double y, int position) {
-        double ovalSize = OBJECTS_WIDTH * 12.5;
+        double ovalSize = OBJECTS_WIDTH * 20; // Augmenter la taille des ovales
         double halfSize = ovalSize / 2.0;
 
-        gc.setFill(Color.LIGHTSALMON);
+        gc.setFill(Color.DARKBLUE);
         gc.fillOval(x - halfSize, y - halfSize, ovalSize, ovalSize);
-        gc.setFill(Color.BLACK); // Couleur du texte
-        gc.fillText(String.valueOf(position), x - halfSize + 2, y + halfSize - 2);
+        gc.setFill(Color.WHITE); // Couleur du texte
+        if (Integer.valueOf(position)<10)
+        { gc.fillText(String.valueOf(position), x - halfSize + 6, y + halfSize - 6);}
+        else
+            gc.fillText(String.valueOf(position), x - halfSize + 3, y + halfSize - 5);
+
+
     }
 
     private static void drawHighlightedPoint(GraphicsContext gc, double x, double y) {
-        double ovalSize = OBJECTS_WIDTH * 12; // Augmenter la taille des ovales
+        double ovalSize = OBJECTS_WIDTH * 10; // Augmenter la taille des ovales
         double halfSize = ovalSize / 2.0;
 
         gc.setFill(Color.RED);
         gc.fillOval(x - halfSize, y - halfSize, ovalSize, ovalSize);
     }
+    private static void drawHintPoint(GraphicsContext gc, double x, double y) {
+        //TODO MODIFICATION GUILLAUME
+        double ovalSize = OBJECTS_WIDTH * 10; // Augmenter la taille des ovales
+        double halfSize = ovalSize / 2.0;
+
+        // Définir la couleur de remplissage avec une opacité réduite
+        gc.setFill(Color.rgb(0, 0, 139, 0.5)); // Dark blue with reduced opacity
+
+        gc.fillOval(x - halfSize, y - halfSize, ovalSize, ovalSize);
+
+    }
+
+
 
     private static void drawLines(GraphicsContext gc, Board board) {
         gc.setStroke(Color.WHITE); // Couleur de la ligne
@@ -230,4 +264,6 @@ public class ViewMorpionSolitaire {
         return (int) (gridY / (HEIGHT / GameManager.DIMENSION));
     }
 
+
 }
+
