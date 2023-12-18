@@ -18,7 +18,7 @@ public class Board5T extends Board {
     private int yFor5T;
 
     /**
-     * Check if the point can be placed here.
+     * Checks if the point can be placed here.
      * @param pointToPlay the point to be placed.
      * @param hasToPlay True if the points hs to be played, false otherwise.
      *                  False is for having all the playable points.
@@ -43,7 +43,7 @@ public class Board5T extends Board {
     }
 
     /**
-     * Play the point as in the mode.
+     * Plays the point as in the mode.
      * @param x The x-coordinate of the point to be added.
      * @param y The y-coordinate of the point to be added.
      */
@@ -166,7 +166,7 @@ public class Board5T extends Board {
     }
 
     /**
-     * Ask the user's choice for connecting a point in a 5T game.
+     * Asks the user's choice for connecting a point in a 5T game.
      * @param x The x-coordinate of the selected point.
      * @param y The y-coordinate of the selected point.
      * @param pointsForA ArrayList containing the points for option A.

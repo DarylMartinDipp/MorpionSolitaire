@@ -22,7 +22,7 @@ public class ViewMorpionSolitaire {
     protected static MorpionSolitaireController hintController;
 
     /**
-     * Draw the Morpion Solitaire game board entirely.
+     * Draws the Morpion Solitaire game board entirely.
      * @param gc The GraphicsContext on which to draw the board.
      * @param board The Board object representing the game state.
      */
@@ -38,7 +38,7 @@ public class ViewMorpionSolitaire {
     }
 
     /**
-     * Set the background color of the game board.
+     * Sets the background color of the game board.
      * @param gc The GraphicsContext on which to draw the background color.
      */
     private static void drawBackgroundColor(GraphicsContext gc) {
@@ -47,18 +47,18 @@ public class ViewMorpionSolitaire {
     }
 
     /**
-     * Draw the grid of the game board.
+     * Draws the grid of the game board.
      * @param gc The GraphicsContext used for drawing on the canvas.
      */
     private static void drawGrid(GraphicsContext gc) {
-        // Draw horizontal lines
+        // Draw horizontal lines.
         for (int i = 0; i <= GameManager.DIMENSION; i++) {
             int y = i * (HEIGHT / GameManager.DIMENSION);
             gc.setStroke(Color.BLACK);
             gc.strokeLine(0, y, WIDTH, y);
         }
 
-        // Draw vertical lines
+        // Draw vertical lines.
         for (int i = 0; i <= GameManager.DIMENSION; i++) {
             int x = i * (WIDTH / GameManager.DIMENSION);
             gc.setStroke(Color.BLACK);
@@ -67,7 +67,7 @@ public class ViewMorpionSolitaire {
     }
 
     /**
-     * Draw all clickable points on the game board.
+     * Draws all clickable points on the game board.
      * @param gc The GraphicsContext on which to draw the clickable points.
      */
     private static void drawClickablePoints(GraphicsContext gc) {
@@ -91,7 +91,7 @@ public class ViewMorpionSolitaire {
     }
 
     /**
-     * Draw all placed points on the game board.
+     * Draws all placed points on the game board.
      * @param gc The GraphicsContext on which to draw the placed points.
      * @param board The game board.
      */
@@ -113,7 +113,7 @@ public class ViewMorpionSolitaire {
     }
 
     /**
-     * Draw all hint points on the game board if hint functionality is activated.
+     * Draws all hint points on the game board if hint functionality is activated.
      * @param gc The GraphicsContext on which to draw the hint points.
      */
     private static void drawHintPoints(GraphicsContext gc) {
@@ -139,7 +139,7 @@ public class ViewMorpionSolitaire {
     }
 
     /**
-     * Draw all lines on the game board.
+     * Draws all lines on the game board.
      * @param gc The GraphicsContext on which to draw the placed points.
      * @param board The game board.
      */
@@ -173,7 +173,7 @@ public class ViewMorpionSolitaire {
     }
 
     /**
-     * Draw each point added by the user, with the right number on it.
+     * Draws each point added by the user, with the right number on it.
      * @param gc The GraphicsContext on which to draw the point numbers.
      * @param points The list of points added by the user.
      */
@@ -203,7 +203,7 @@ public class ViewMorpionSolitaire {
     }
 
     /**
-     * Draw all highlighted points on the game board.
+     * Draws all highlighted points on the game board.
      * @param gc The GraphicsContext on which to draw the highlighted points.
      */
     private static void drawHighlightedPoints(GraphicsContext gc) {
@@ -296,7 +296,5 @@ public class ViewMorpionSolitaire {
     private static int coordinateTranslatorY(double gridY) {
         return (int) (gridY / (HEIGHT / GameManager.DIMENSION));
     }
-
-
 }
 

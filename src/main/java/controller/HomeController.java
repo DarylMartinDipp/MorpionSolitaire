@@ -14,7 +14,6 @@ import model.Player;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
@@ -87,63 +86,42 @@ public class HomeController {
     }
 
     /**
-     * Loads and displays the score board.
+     * Loads and displays the score board, by connecting to the database.
      */
-
     @FXML
     private void loadScoreBoard() {
-        //TODO
-        // Connecting to the database
         System.out.println("Connecting to the database...");
 
         try{
-
-            // Load the MySQL JDBC driver
-            Class.forName("com.mysql.cj.jdbc.Driver");
-
-            // Replace the connection URL, username, and password with your own
-            String url = "jdbc:mysql://sql11.freesqldatabase.com:3306/sql11671276";
-            String username = "sql11671276";
-            String password = "SKRsyy1vJr";
-
-            // Establish the database connection
-            Connection con = DriverManager.getConnection(url, username, password);
-            System.out.println("Connected to the database.");
-
-            // Create a statement
+            // Connecting to the database.
+            Connection con = MorpionSolitaireController.connectToDataBase();
             Statement stmt = con.createStatement();
+            System.out.println("Connected to the database.");
 
             ResultSet rs = stmt.executeQuery("SELECT * FROM Player ORDER BY score DESC");
 
-            // Create a ListView to display scores
             ListView<String> scoreListView = new ListView<>();
 
-            // Populate the ListView with scores from the database
+            // Get the information from the database.
             while (rs.next()) {
                 String playerName = rs.getString(2);
                 int score = rs.getInt(3);
                 String Mode=rs.getString(4);
 
-                // Display the score in the ListView
                 scoreListView.getItems().add(" Player: " + playerName + " | Score: " + score + " | Mode: "+ Mode);
             }
 
-            // Close the database connection
+            // Close the connection.
             con.close();
 
-            // Create a VBox to hold the ListView
+            // Launch the scoreBoard scene.
             VBox root = new VBox(scoreListView);
-
-            // Create the scene
             Scene scene = new Scene(root, 400, 300);
+            Stage scoreBoard = new Stage();
+            scoreBoard.setTitle("Scoreboard");
+            scoreBoard.setScene(scene);
 
-            // Create the new stage
-            Stage secondaryStage = new Stage();
-            secondaryStage.setTitle("Scoreboard");
-            secondaryStage.setScene(scene);
-
-            // Show the stage
-            secondaryStage.show();
+            scoreBoard.show();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -161,22 +139,22 @@ public class HomeController {
             this.mode = selectedMode;
             System.out.println("Updated Mode: " + mode);
         }
-        else if (("5DTsunami".equals(selectedMode))) {
+        else if (("5D#".equals(selectedMode))) {
             this.mode ="5D";
             System.out.println("Updated Mode: " + mode);
         }
-        else if (("5TTsunami".equals(selectedMode))) {
+        else if (("5T#".equals(selectedMode))) {
             this.mode ="5T";
             System.out.println("Updated Mode: " + mode);
         }
     }
 
     /**
-     * Set up the start options. The gameModeOptions ComboBox is updated,as the mode.
+     * Sets up the start options. The gameModeOptions ComboBox is updated, as the mode.
      */
     private void setupOptions() {
         gameModeOptions.getItems().removeAll(gameModeOptions.getItems());
-        gameModeOptions.getItems().addAll("5D", "5T","5DTsunami","5TTsunami");
+        gameModeOptions.getItems().addAll("5D", "5T","5D#","5T#");
         gameModeOptions.getSelectionModel().select("5D");
         selectedMode = "5D";
         this.mode = "5D";
@@ -187,7 +165,7 @@ public class HomeController {
     }
 
     /**
-     * Show an alert if the username is not filled.
+     * Shows an alert if the username is not filled.
      */
     private void showAlertUsername() {
         Alert alert = new Alert(Alert.AlertType.WARNING);

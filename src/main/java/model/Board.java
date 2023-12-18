@@ -19,19 +19,19 @@ public abstract class Board {
         this.pointsPlaced = new ArrayList<>();
         this.score = 0;
         this.lines = new ArrayList<>();
-        // Initialize the board with the right pattern, Cross or Tsunami
+        // Initialize the board with the right pattern, Cross or Arrow
         initBoard(selectedMode);
     }
 
     /**
-     * Initialization of the board, by initializing the points of the cross or of the tsunami, depending on the chosen mode.
-     * @param mode The mode to use for the board, Cross ("5D" and "5T") or Tsunami ("5DTsunami" or "5TTsunami").
+     * Initialization of the board, by initializing the points of the cross or of the arrow, depending on the chosen mode.
+     * @param mode The mode to use for the board, Cross ("5D" and "5T") or Arrow ("5D#" or "5T#").
      */
     public void initBoard(String mode) {
         if ("5T".equals(mode) || "5D".equals(mode))
             initCross();
         else
-            initTsunami();
+            initArrow();
     }
 
     /**
@@ -86,21 +86,17 @@ public abstract class Board {
     }
 
     /**
-     * Initializing of the points of the tsunami.
+     * Initializing of the points of the arrow.
      */
-    public void initTsunami() {
-        // Arrow points
-
+    public void initArrow() {
         addPoint(2,7);
 
         addPoint(4, 4);
         addPoint(5, 4);
 
-
         addPoint(3, 5);
         addPoint(4, 5);
         addPoint(5, 5);
-
 
         addPoint(2, 6);
         addPoint(3, 6);
@@ -113,10 +109,8 @@ public abstract class Board {
 
         addPoint(4, 8);
 
-
         addPoint(5, 9);
 
-        // Additional specified points
         addPoint(1, 7);
         addPoint(2, 6);
         addPoint(3, 5);
@@ -148,7 +142,7 @@ public abstract class Board {
     }
 
     /**
-     * Ask a point, to know if the point can be placed or not.
+     * Asks a point, to know if the point can be placed or not.
      * @param x The X-coordinate of the point to be added.
      * @param y The Y-coordinate of the point to be added.
      */
@@ -165,7 +159,7 @@ public abstract class Board {
     }
 
     /**
-     * Check if the point can be placed here.
+     * Checks if the point can be placed here.
      * @param pointToPlay the point to be placed.
      * @param hasToPlay True if the points hs to be played, false otherwise.
      *                  False is for having all the playable points.
@@ -174,7 +168,7 @@ public abstract class Board {
     public abstract boolean canPointBePlayed(Point pointToPlay, boolean hasToPlay);
 
     /**
-     * Check if there is a potential alignment of 5 points in the specified direction starting from the given coordinates.
+     * Checks if there is a potential alignment of 5 points in the specified direction starting from the given coordinates.
      * @param x The X-coordinate to start checking from.
      * @param y The Y-coordinate to start checking from.
      * @param direction The direction in which to check for alignment (HORIZONTAL, VERTICAL, B_DIAGONAL, T_DIAGONAL).
@@ -234,7 +228,7 @@ public abstract class Board {
      * @param direction The direction for which to determine the offset.
      * @return An array representing the offset where index 0 is the x-coordinate offset and index 1 is the y-coordinate offset.
      */
-    int[] getOffset(Direction direction) {
+    protected int[] getOffset(Direction direction) {
         // Initialize the offset array with default values.
         int[] offset = {0, 0};
 
@@ -276,7 +270,7 @@ public abstract class Board {
     }
 
     /**
-     * Play the point as in the mode.
+     * Plays the point as in the mode.
      * @param x The X-coordinate of the point to be added.
      * @param y The Y-coordinate of the point to be added.
      */

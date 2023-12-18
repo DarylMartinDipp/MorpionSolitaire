@@ -5,7 +5,7 @@ package model;
  */
 public class Board5D extends Board{
     /**
-     * Check if the point can be placed here.
+     * Checks if the point can be placed here.
      * @param pointToPlay the point to be placed.
      * @param hasToPlay True if the points hs to be played, false otherwise.
      *                  False is for having all the playable points.
@@ -26,7 +26,7 @@ public class Board5D extends Board{
     }
 
     /**
-     * Play the point as in the mode.
+     * Plays the point as in the mode.
      * @param x The x-coordinate of the point to be added.
      * @param y The y-coordinate of the point to be added.
      */

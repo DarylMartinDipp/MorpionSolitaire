@@ -54,7 +54,7 @@ public class MorpionSolitaireController {
     }
 
     /**
-     * Draw the entire board, with the grid and the points (played or not, and highlighted).
+     * Draws the entire board, with the grid and the points (played or not, and highlighted).
      * Check if the game is over.
      */
     public void drawBoard() {
@@ -88,6 +88,7 @@ public class MorpionSolitaireController {
                 ViewMorpionSolitaire.highlightPoints.clear();
             }
         }
+
         // In all other cases.
         else
             ViewMorpionSolitaire.handleClick(me, gm, gameCanvas);
@@ -131,7 +132,7 @@ public class MorpionSolitaireController {
     }
 
     /**
-     * Undo the last player move.
+     * Undoes the last player move.
      */
     @FXML
     private void undo() {
@@ -152,7 +153,6 @@ public class MorpionSolitaireController {
 
         drawBoard();
     }
-
 
     /**
      * Toggles the hint functionality on or off.
@@ -199,24 +199,35 @@ public class MorpionSolitaireController {
         }
     }
 
+    /**
+     * Establishes a connection to a MySQL database.
+     * @return A Connection object representing the established database connection.
+     * @throws ClassNotFoundException If the MySQL JDBC driver class is not found.
+     * @throws SQLException           If a database access error occurs or the URL is null.
+     */
+    public static Connection connectToDataBase() throws ClassNotFoundException, SQLException {
+        Class.forName("com.mysql.cj.jdbc.Driver");
+
+        String url = "jdbc:mysql://sql11.freesqldatabase.com:3306/sql11671276";
+        String user = "sql11671276";
+        String password = "SKRsyy1vJr";
+
+        return DriverManager.getConnection(url, user, password);
+    }
+
+    /**
+     * Performs the necessary actions when the game is over, including connecting to the database,
+     * inserting player information (name, score, mode) into the Player table, and displaying a game-over alert.
+     * @throws RuntimeException If an IOException, SQLException, or ClassNotFoundException occurs during the process.
+     */
     private void performGameOver(){
         try {
-            // Load the MySQL JDBC driver
-            Class.forName("com.mysql.cj.jdbc.Driver");
-
-            // Replace the connection URL, username, and password with your own
-            String url = "jdbc:mysql://sql11.freesqldatabase.com:3306/sql11671276";
-            String user = "sql11671276";
-            String password = "SKRsyy1vJr";
-
-            // Establish the database connection
-            Connection con = DriverManager.getConnection(url, user, password);
+            // Connecting to the database.
+            Connection con = connectToDataBase();
+            Statement stmt = con.createStatement();
             System.out.println("Connected to the database.");
 
-            // Create a statement
-            Statement stmt = con.createStatement();
-
-            // Insert the player's name and score into the Player table
+            // Insert the player's name and score into the Player table.
             String playerName = username;
             int score = gm.getBoard().getScore();
             String boardMode= selectedMode;
@@ -224,18 +235,14 @@ public class MorpionSolitaireController {
             String insertQuery = "INSERT INTO Player (Name, Score, Mode) VALUES ('" + playerName + "', " + score + ", '" + boardMode + "')";
             stmt.executeUpdate(insertQuery);
 
-            // Close the database connection
+            // Close the connection.
             con.close();
             System.out.println("disconnected from Database");
+
             showAlertGameOver();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } catch (ClassNotFoundException e) {
+        } catch (IOException | SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
-
     }
 
     public void setGameManager(GameManager gameManager) {
@@ -249,6 +256,10 @@ public class MorpionSolitaireController {
     public void setMode(String mode){
         System.out.println(mode);
         this.mode=mode;
+    }
+
+    public void setName(String name){
+        username=name + " (random)";
     }
 
     /**
@@ -286,7 +297,7 @@ public class MorpionSolitaireController {
     }
 
     /**
-     * Create a confirmation alert for going to the home screen.
+     * Creates a confirmation alert for going to the home screen.
      * @return The created confirmation alert.
      */
     private Alert createGoHomeScreenConfirmationAlert() {
@@ -309,7 +320,7 @@ public class MorpionSolitaireController {
     }
 
     /**
-     * Initiate the quit game process.
+     * Initiates the quit game process.
      * @throws RuntimeException Thrown if there is an issue loading the home-view.fxml file.
      */
     private void initiateGoHomeScreenProcess() {
@@ -366,17 +377,12 @@ public class MorpionSolitaireController {
         } while (!isGameOver());
     }
 
-    public void performNMCS() {
-        // PERFORM NMCS HERE
-    }
-
     /**
      * Checks if the Morpion Solitaire game is over.
      * @return True if the game is over, false otherwise.
      */
     public boolean isGameOver() {
         ArrayList<Point> missingPoints = searchAllPlayablePoints();
-
         return missingPoints.isEmpty();
     }
 
@@ -397,7 +403,7 @@ public class MorpionSolitaireController {
     }
 
     /**
-     * Create a confirmation alert for quitting the game.
+     * Creates a confirmation alert for quitting the game.
      * @return The created confirmation alert.
      */
     private Alert createGameOverConfirmationAlert() {
@@ -425,7 +431,7 @@ public class MorpionSolitaireController {
     }
 
     /**
-     * Close the game.
+     * Closes the game.
      */
     public void closeGame(){
         ViewMorpionSolitaire.highlightPoints.clear();
@@ -434,9 +440,5 @@ public class MorpionSolitaireController {
         // Close the current game window.
         Stage currentStage = (Stage) gameCanvas.getScene().getWindow();
         currentStage.close();
-    }
-
-    public void setName(String name){
-        username=name+"(random)";
     }
 }
