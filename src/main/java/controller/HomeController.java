@@ -125,7 +125,7 @@ public class HomeController {
                 String Mode=rs.getString(4);
 
                 // Display the score in the ListView
-                scoreListView.getItems().add("Player Name: " + playerName + " | Score: " + score + " | Mode: "+ Mode);
+                scoreListView.getItems().add(" Player: " + playerName + " | Score: " + score + " | Mode: "+ Mode);
             }
 
             // Close the database connection
