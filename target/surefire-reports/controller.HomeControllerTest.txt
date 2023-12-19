@@ -1,0 +1,20 @@
+-------------------------------------------------------------------------------
+Test set: controller.HomeControllerTest
+-------------------------------------------------------------------------------
+Tests run: 2, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 0.091 sec <<< FAILURE!
+controller.HomeControllerTest.testInitialize()  Time elapsed: 0.079 sec  <<< FAILURE!
+org.testfx.service.query.EmptyNodeQueryException: there is no node in the scene-graph matching the query: NodeQuery: from nodes: [],
+lookup by function: "org.testfx.util.NodeQueryUtils$$Lambda$9/0x0000000800c36438@215be6bb",
+lookup by selector: "#playButton"
+	at org.testfx.service.query.impl.NodeQueryImpl.query(NodeQueryImpl.java:132)
+	at controller.HomeControllerTest.testInitialize(HomeControllerTest.java:45)
+
+controller.HomeControllerTest.testLaunchTheGameWithEmptyUsername()  Time elapsed: 0 sec  <<< FAILURE!
+org.testfx.api.FxRobotException: the query "#playButton" returned no nodes.
+	at org.testfx.api.FxRobot.queryVisibleNode(FxRobot.java:949)
+	at org.testfx.api.FxRobot.pointOfVisibleNode(FxRobot.java:922)
+	at org.testfx.api.FxRobot.clickOn(FxRobot.java:630)
+	at org.testfx.api.FxRobot.clickOn(FxRobot.java:59)
+	at org.testfx.api.FxRobotInterface.clickOn(FxRobotInterface.java:639)
+	at controller.HomeControllerTest.testLaunchTheGameWithEmptyUsername(HomeControllerTest.java:39)
+
